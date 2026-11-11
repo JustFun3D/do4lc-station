@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="de" id="htmlRoot">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DO4LC - Amateurfunk Station & Projects</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;700&family=Inter:wght@300;400;600;700&display=swap');
+    
+    body { 
+      font-family: 'Inter', sans-serif; 
+      background-color: #0b0c10; 
+      color: #ffffff;
+      background-image: linear-gradient(rgba(11, 12, 16, 0.92), rgba(11, 12, 16, 0.92)), url('https://i.ibb.co/fYZ4n53r/jaesu.jpg');
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      background-attachment: fixed;
+    }
+    
+    .font-mono-code { font-family: 'Fira Code', monospace; }
+    
+    .card-theme { 
+      background: linear-gradient(145deg, #161a24, #0f121a); 
+      border: 1px solid #d4af37;
+      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.7), 0 8px 10px -6px rgba(0, 0, 0, 0.5), inset 0 1px 1px rgba(212, 175, 55, 0.2);
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .card-theme:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 20px 30px -10px rgba(0, 0, 0, 0.8), 0 0 15px rgba(212, 175, 55, 0.3);
+    }
+    
+    .gold-border { border-color: #d4af37 !important; }
+    .accent-color { color: #ff3b30; }
+    
+    .accent-bg { 
+      background: linear-gradient(135deg, #ff4d4d, #cc1100); 
+      color: #ffffff;
+      box-shadow: 0 4px 15px rgba(255, 59, 48, 0.4), inset 0 1px 1px rgba(255, 255, 255, 0.3);
+    }
+
+    .accent-bg:hover {
+      box-shadow: 0 6px 20px rgba(255, 59, 48, 0.6), inset 0 1px 1px rgba(255, 255, 255, 0.4);
+    }
+
+    .glow-effect { box-shadow: 0 0 20px rgba(212, 175, 55, 0.3); }
+
+    #waterfallCanvas { 
+      position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0.15; pointer-events: none; 
+    }
+
+    /* Fixed Floating DX Widget on Right Edge */
+    .dx-floating-widget {
+      position: fixed;
+      right: 20px;
+      top: 50%;
+      transform: translateY(-50%);
+      z-index: 40;
+      max-width: 220px;
+      display: none;
+    }
+    @media (min-width: 1280px) {
+      .dx-floating-widget {
+        display: block;
+      }
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between selection:bg-red-600 selection:text-white">
+
+  <!-- Floating DX Weather Widget (Right Edge on large screens) -->
+  <div class="dx-floating-widget card-theme p-3 rounded-xl border shadow-2xl text-center">
+    <div class="text-[10px] font-mono-code text-amber-400 mb-2 uppercase tracking-wider border-b gold-border pb-1" data-i18n="dxWeatherTitle">Solar & DX Data</div>
+    <a href="https://www.hamqsl.com/solar.html" title="Solar-Terrestrial Data" target="_blank">
+      <img src="https://www.hamqsl.com/solarn0nbh.php" alt="Solar Terrestrial Data" class="rounded border gold-border w-full object-contain">
+    </a>
+  </div>
+
+  <!-- Header -->
+  <header class="sticky top-0 z-50 card-theme border-b backdrop-blur-md bg-opacity-90 shadow-2xl">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-16">
+        <div class="flex items-center gap-3">
+          <div class="h-10 px-3 rounded-lg card-theme border gold-border flex items-center justify-center shadow-lg bg-black/50">
+            <span class="font-mono-code font-bold text-xl tracking-wider accent-color">DO4LC</span>
+          </div>
+          <div class="hidden sm:block">
+            <span class="text-xs text-slate-400 font-mono-code block" data-i18n="subTitle">Amateurfunk Station</span>
+          </div>
+        </div>
+
+        <nav class="hidden md:flex gap-6 text-sm font-medium items-center">
+          <a href="#about" class="hover:text-red-500 transition drop-shadow" data-i18n="navAbout">Über mich</a>
+          <a href="#path" class="hover:text-red-500 transition drop-shadow" data-i18n="navPath">Mein Weg</a>
+          <a href="#projects" class="hover:text-red-500 transition drop-shadow" data-i18n="navProjects">Projekte</a>
+          <a href="#equipment" class="hover:text-red-500 transition drop-shadow" data-i18n="navEquipment">Ausrüstung</a>
+          <a href="links.html" class="hover:text-red-500 transition drop-shadow" data-i18n="navLinks">Links</a>
+          <a href="#contact" class="hover:text-red-500 transition drop-shadow" data-i18n="navContact">Kontakt</a>
+          
+          <select id="langSelect" onchange="changeLanguage(this.value)" class="card-theme border gold-border text-xs font-mono-code rounded px-2 py-1 text-red-500 focus:outline-none cursor-pointer ml-4 shadow-inner">
+            <option value="de">🇩🇪 DE</option>
+            <option value="en">🇬🇧 EN</option>
+          </select>
+        </nav>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="relative py-16 overflow-hidden border-b gold-border">
+    <canvas id="waterfallCanvas"></canvas>
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+      <div class="text-center max-w-3xl mx-auto space-y-6">
+        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full card-theme border text-xs font-mono-code glow-effect">
+          <span class="w-2 h-2 rounded-full bg-red-500 animate-ping"></span>
+          <span>STATION STATUS: <strong class="accent-color" data-i18n="statusOnAir">QRV / ON AIR</strong></span>
+        </div>
+        <h1 class="text-4xl sm:text-6xl font-extrabold tracking-tight drop-shadow-lg">
+          <span data-i18n="heroWelcome">Willkommen auf der Station</span> <span class="font-mono-code accent-color block sm:inline">DO4LC</span>
+        </h1>
+        <p class="text-lg text-slate-300 leading-relaxed font-light drop-shadow" data-i18n="heroText">
+          Faszination Funktechnik, digitale Betriebsarten, SDR-Experimente und Leidenschaft für Wellenausbreitung von Kurzwelle bis Mikrowelle.
+        </p>
+        <div class="flex flex-wrap justify-center gap-4 font-mono-code text-sm">
+          <a href="#contact" class="accent-bg px-6 py-3 rounded-lg font-bold transition flex items-center gap-2 border border-amber-400/50">
+            <i class="fa-solid fa-envelope"></i> <span data-i18n="btnMessage">Nachricht Senden</span>
+          </a>
+          <a href="#equipment" class="card-theme border px-6 py-3 rounded-lg font-medium hover:border-red-500 transition flex items-center gap-2">
+            <i class="fa-solid fa-tower-cell"></i> <span data-i18n="btnSetup">Shack Setup</span>
+          </a>
+        </div>
+        
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-6 text-xs font-mono-code">
+          <div class="card-theme p-3 rounded-lg border text-center">
+            <span class="text-slate-400 block" data-i18n="labelOp">OP Name</span>
+            <strong class="text-base text-white">Carsten</strong>
+          </div>
+          <div class="card-theme p-3 rounded-lg border text-center">
+            <span class="text-slate-400 block" data-i18n="labelLicense">Lizenzklasse</span>
+            <strong class="text-base accent-color">Klasse E</strong>
+          </div>
+          <div class="card-theme p-3 rounded-lg border text-center">
+            <span class="text-slate-400 block" data-i18n="labelClub">Förderverein</span>
+            <strong class="text-base text-white">Pfaffenhofen (C22)</strong>
+          </div>
+          <div class="card-theme p-3 rounded-lg border text-center">
+            <span class="text-slate-400 block" data-i18n="labelQth">LOC / QTH</span>
+            <strong class="text-base text-white">JN58...</strong>
+          </div>
+        </div>
+
+        <!-- Mobile / Smaller Screen fallback for DX Widget -->
+        <div class="pt-6 block xl:hidden">
+          <div class="card-theme p-3 rounded-xl border max-w-xs mx-auto shadow-xl">
+            <div class="text-[10px] font-mono-code text-amber-400 mb-2 uppercase tracking-wider" data-i18n="dxWeatherTitle">Solar & DX Propagation Data</div>
+            <center>
+              <a href="https://www.hamqsl.com/solar.html" title="Click to add Solar-Terrestrial Data to your website!" target="_blank">
+                <img src="https://www.hamqsl.com/solarn0nbh.php" alt="Solar Terrestrial Data" class="rounded border gold-border">
+              </a>
+            </center>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Main Content -->
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-16">
+
+    <!-- About Section -->
+    <section id="about" class="space-y-6 scroll-mt-20">
+      <div class="flex items-center gap-3">
+        <i class="fa-solid fa-user-gear accent-color text-2xl"></i>
+        <h2 class="text-2xl sm:text-3xl font-bold font-mono-code" data-i18n="aboutTitle">Über mich</h2>
+      </div>
+      <div class="card-theme p-6 sm:p-8 rounded-2xl border space-y-4 text-slate-300 leading-relaxed">
+        <p data-i18n="aboutP1">Mein Name ist <strong>Carsten</strong>, Jahrgang 1980. Meine Leidenschaft für den Funkverkehr begann bereits in meiner Jugend, als ich mehrere Jahre lang im CB-Funk aktiv war.</p>
+        <p data-i18n="aboutP2">Aufgrund gesundheitlicher Herausforderungen, die mich – während ich auf eine Organtransplantation warte – weitgehend an mein Zuhause binden, habe ich beschlossen, meine Zeit sinnvoll und abwechslungsreich zu nutzen. So fand ich über das <em>„Software Defined Radio“ (SDR)</em> den Weg zurück zur Funktechnik. Mein allererstes Erlebnis war der Empfang der Internationalen Raumstation (ISS) mit einem einfachen Handfunkgerät vom Typ <em>Baofeng UV-5R</em> – ein unglaubliches Erlebnis, das meine Begeisterung für den Amateurfunk neu entfacht hat!</p>
+        <div class="mt-4 p-4 rounded-xl border gold-border bg-amber-500/5 flex items-start gap-3 shadow-inner">
+          <i class="fa-solid fa-circle-info accent-color mt-1"></i>
+          <div class="text-sm">
+            <strong class="text-white block font-mono-code mb-1" data-i18n="clubTitle">Vereinsanbindung & Unterstützung:</strong>
+            <span data-i18n="clubText">Ich unterstütze den Ortsverband Pfaffenhofen a.d. Ilm (C22) über meine Mitgliedschaft im <strong>„Förderverein Amateurfunk in Pfaffenhofen a.d. Ilm e.V.“</strong>.</span>
+          </div>
+        </div>
+      </div>
+    </section>
+<!-- Path / Timeline -->
+    <section id="path" class="space-y-6 scroll-mt-20">
+      <div class="flex items-center gap-3">
+        <i class="fa-solid fa-graduation-cap accent-color text-2xl"></i>
+        <h2 class="text-2xl sm:text-3xl font-bold font-mono-code" data-i18n="pathTitle">Mein Weg im Amateurfunk</h2>
+      </div>
+      <div class="grid md:grid-cols-3 gap-6">
+        <div class="card-theme p-6 rounded-xl border space-y-3 relative overflow-hidden">
+          <div class="text-xs font-mono-code accent-color font-bold">2024</div>
+          <h3 class="text-xl font-bold text-white" data-i18n="pathNTitle">Klasse N (Einsteiger)</h3>
+          <p class="text-sm text-slate-300" data-i18n="pathNDesc">Erfolgreiches Ablegen der Prüfung für die Einsteigerlizenz. Ich habe schnell gemerkt, wie faszinierend dieses Hobby ist!</p>
+        </div>
+        <div class="card-theme p-6 rounded-xl border space-y-3 relative overflow-hidden">
+          <div class="text-xs font-mono-code accent-color font-bold">2025</div>
+          <h3 class="text-xl font-bold text-white" data-i18n="pathETitle">Aufstieg zu Klasse E</h3>
+          <p class="text-sm text-slate-300" data-i18n="pathEDesc">Erweiterung der Lizenzberechtigungen und Ausbau des Stationsbetriebs auf KW und UKW.</p>
+        </div>
+        <div class="card-theme p-6 rounded-xl border space-y-3 relative overflow-hidden opacity-90 border-dashed">
+          <div class="text-xs font-mono-code text-amber-400 font-bold" data-i18n="pathInProgress">IN ARBEIT</div>
+          <h3 class="text-xl font-bold text-white" data-i18n="pathATitle">Ziel: Klasse A</h3>
+          <p class="text-sm text-slate-300" data-i18n="pathADesc">Ich lerne fleißig für die große Amateurfunklizenz (Klasse A).</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Projects -->
+    <section id="projects" class="space-y-6 scroll-mt-20">
+      <div class="flex items-center gap-3">
+        <i class="fa-solid fa-microchip accent-color text-2xl"></i>
+        <h2 class="text-2xl sm:text-3xl font-bold font-mono-code" data-i18n="projTitle">Betriebsarten, Aktivitäten & Projekte</h2>
+      </div>
+      <div class="card-theme p-6 sm:p-8 rounded-2xl border space-y-6 text-slate-300 leading-relaxed">
+        <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 border-b gold-border pb-4">
+          <p class="flex-1" data-i18n="projP1">
+            Ich bin sehr aktiv auf den Bändern (QRV) und nutze eine Vielzahl an Betriebsarten. Ob analog oder digital – etwa C4FM, <strong>DMR</strong> oder EchoLink – beide Welten haben ihren Reiz, und ich genieße es, sie für abwechslungsreiche QSOs einzusetzen! Für digitale Sprachübertragung betreibe ich einen MMDVM-Hotspot mit WPSD-Software auf einem Raspberry Pi.
+          </p>
+          <a href="https://ibb.co/93yL0kP8" target="_blank" class="bg-white/10 p-3 rounded-xl border gold-border flex items-center justify-center shrink-0 hover:border-red-500 transition shadow-md">
+            <img src="https://i.ibb.co/h12jNJ07/DMR-C4FM.jpg" alt="DMR-C4FM Logo" class="h-10 object-contain rounded">
+          </a>
+        </div>
+        <p data-i18n="projP2">
+          Zu meinen aktuellen Projekten gehören der Aufbau eines eigenen WebSDR für VHF/UHF sowie die Entwicklung einer Steuerung für meinen Antennenrotor, die auf einem Magnetkompass basiert. Außerdem speise ich Flugverfolgungsdaten in Plattformen wie FlightAware und Flightradar24 ein – mithilfe von selbstgebauten Antennen, die eine hervorragende Leistung liefern!
+        </p>
+      </div>
+    </section>
+
+    <!-- Equipment -->
+    <section id="equipment" class="space-y-6 scroll-mt-20">
+      <div class="flex items-center gap-3">
+        <i class="fa-solid fa-tower-cell accent-color text-2xl"></i>
+        <h2 class="text-2xl sm:text-3xl font-bold font-mono-code" data-i18n="eqTitle">Stationsausrüstung & Antennen</h2>
+      </div>
+
+      <!-- Highlight FT-DX10 -->
+      <div class="card-theme rounded-2xl border p-6 flex flex-col md:flex-row items-center gap-6 overflow-hidden">
+        <div class="w-full md:w-1/2 flex justify-center">
+          <img src="https://i.ibb.co/s9zQvLhx/DX10.jpg" alt="DX10" class="rounded-xl max-h-56 object-contain border gold-border shadow-2xl">
+        </div>
+        <div class="w-full md:w-1/2 space-y-3">
+          <div class="inline-block px-3 py-1 rounded accent-bg font-bold font-mono-code text-xs border border-amber-400/50" data-i18n="eqHighlightBadge">HF / 50 MHz SHACK HIGHLIGHT</div>
+          <h3 class="text-2xl font-bold font-mono-code text-white">Yaesu FT-DX10</h3>
+          <p class="text-sm text-slate-300 leading-relaxed" data-i18n="eqHighlightDesc">
+            Kompakter High-End SDR-Transceiver für die Kurzwellenbänder und 50 MHz mit hervorragender Großsignalfestigkeit und brillanter 3DSS-Spektrum-Wasserfalldarstellung.
+          </p>
+        </div>
+      </div>
+
+      <div class="grid md:grid-cols-2 gap-8">
+        <div class="card-theme p-6 rounded-2xl border space-y-4">
+          <h3 class="text-xl font-bold font-mono-code border-b gold-border pb-3 flex items-center justify-between">
+            <span><i class="fa-solid fa-radio accent-color mr-2"></i> <span data-i18n="transceiverTitle">Transceiver</span></span>
+            <span class="text-xs text-slate-400">HF / VHF / UHF</span>
+          </h3>
+          <ul class="space-y-3 font-mono-code text-sm">
+            
+            <!-- FT-DX10 Listeneintrag -->
+            <li>
+              <a href="ftdx10.html" class="p-3 card-theme rounded-lg border flex justify-between items-center block hover:border-red-500 transition group">
+                <div class="flex items-center gap-3">
+                  <span onclick="event.preventDefault(); window.open('https://ibb.co/RT7gZMMh', '_blank');" title="Großansicht öffnen">
+                    <img src="https://i.ibb.co/RT7gZMMh/ftdx10.jpg" alt="Yaesu FT-DX10" class="h-12 w-16 object-cover rounded border gold-border hover:scale-105 transition shadow-md">
+                  </span>
+                  <div>
+                    <strong class="text-white block group-hover:text-amber-400 transition">Yaesu FT-DX10</strong>
+                    <span class="text-xs text-slate-400" data-i18n="tr1Sub">HF Transceiver</span>
+                  </div>
+                </div>
+                <span class="text-xs px-3 py-1.5 accent-bg font-bold rounded border border-amber-400/50 shadow">
+                  KW
+                </span>
+              </a>
+            </li>
+            
+            <!-- Yaesu FTM-500DE -->
+            <li>
+              <a href="ftm500.html" class="p-3 card-theme rounded-lg border flex justify-between items-center block hover:border-red-500 transition group">
+                <div class="flex items-center gap-3">
+                  <span onclick="event.preventDefault(); window.open('https://ibb.co/k2TVqtVJ', '_blank');" title="Großansicht öffnen">
+                    <img src="https://i.ibb.co/k2TVqtVJ/Yaesu-Funkger-t-auf-dunklem-Funkertisch.png" alt="Yaesu FTM-500DE" class="h-12 w-16 object-cover rounded border gold-border hover:scale-105 transition shadow-md">
+                  </span>
+                  <div>
+                    <strong class="text-white block group-hover:text-amber-400 transition">Yaesu FTM-500DE</strong>
+                    <span class="text-xs text-slate-400" data-i18n="tr2Sub">VHF/UHF Mobile (C4FM)</span>
+                  </div>
+                </div>
+                <span class="text-xs px-3 py-1.5 accent-bg font-bold rounded border border-amber-400/50 shadow">
+                  2m/70cm
+                </span>
+              </a>
+            </li>
+
+            <!-- Yaesu FT-2980E (Mit Radiowerkstatt-Bild) -->
+            <li>
+              <a href="ft2980.html" class="p-3 card-theme rounded-lg border flex justify-between items-center block hover:border-red-500 transition group">
+                <div class="flex items-center gap-3">
+                  <span onclick="event.preventDefault(); window.open('https://i.ibb.co/hx5wWDhS/Funkle-Radiowerkstatt-mit-Yaesu-Funkger-t.png', '_blank');" title="Großansicht öffnen">
+                    <img src="https://i.ibb.co/hx5wWDhS/Funkle-Radiowerkstatt-mit-Yaesu-Funkger-t.png" alt="Yaesu FT-2980E" class="h-12 w-16 object-cover rounded border gold-border hover:scale-105 transition shadow-md">
+                  </span>
+                  <div>
+                    <strong class="text-white block group-hover:text-amber-400 transition">Yaesu FT-2980E</strong>
+                    <span class="text-xs text-slate-400" data-i18n="tr3Sub">2m Monoband Transceiver</span>
+                  </div>
+                </div>
+                <span class="text-xs px-3 py-1.5 accent-bg font-bold rounded border border-amber-400/50 shadow">
+                  2m
+                </span>
+              </a>
+            </li>
+
+            <!-- Radioddity DB-25D (Mit Radiowerkstatt-Bild) -->
+            <li>
+              <a href="db25.html" class="p-3 card-theme rounded-lg border flex justify-between items-center block hover:border-red-500 transition group">
+                <div class="flex items-center gap-3">
+                  <span onclick="event.preventDefault(); window.open('https://i.ibb.co/cKN6x1mC/Radioddity-Funkger-t-im-Radiowerkstatt-Look-1.png', '_blank');" title="Großansicht öffnen">
+                    <img src="https://i.ibb.co/cKN6x1mC/Radioddity-Funkger-t-im-Radiowerkstatt-Look-1.png" alt="Radioddity DB-25D" class="h-12 w-16 object-cover rounded border gold-border hover:scale-105 transition shadow-md">
+                  </span>
+                  <div>
+                    <strong class="text-white block group-hover:text-amber-400 transition">Radioddity DB-25D</strong>
+                    <span class="text-xs text-slate-400" data-i18n="tr4Sub">DMR / Analog Dualband</span>
+                  </div>
+                </div>
+                <span class="text-xs px-3 py-1.5 accent-bg font-bold rounded border border-amber-400/50 shadow">
+                  DMR
+                </span>
+              </a>
+            </li>
+
+            <!-- Yaesu FT-5D -->
+            <li>
+              <a href="ft5d.html" class="p-3 card-theme rounded-lg border flex justify-between items-center block hover:border-red-500 transition group">
+                <div class="flex items-center gap-3">
+                  <span onclick="event.preventDefault(); window.open('https://i.ibb.co/358CRwh1/Yaesu-FT5-D-im-Funkger-te-Studio-1.png', '_blank');" title="Großansicht öffnen">
+                    <img src="https://i.ibb.co/358CRwh1/Yaesu-FT5-D-im-Funkger-te-Studio-1.png" alt="Yaesu FT-5D" class="h-12 w-16 object-cover rounded border gold-border hover:scale-105 transition shadow-md">
+                  </span>
+                  <div>
+                    <strong class="text-white block group-hover:text-amber-400 transition">Yaesu FT-5D</strong>
+                    <span class="text-xs text-slate-400" data-i18n="tr5Sub">Handfunkgerät</span>
+                  </div>
+                </div>
+                <span class="text-xs px-3 py-1.5 accent-bg font-bold rounded border border-amber-400/50 shadow" data-i18n="badgeHandheld">
+                  C4FM
+                </span>
+              </a>
+            </li>
+          </ul>
+        </div>
+
+        <div class="card-theme p-6 rounded-2xl border space-y-4">
+          <h3 class="text-xl font-bold font-mono-code border-b gold-border pb-3 flex items-center justify-between">
+            <span><i class="fa-solid fa-diagram-project accent-color mr-2"></i> <span data-i18n="antennasTitle">Antennensysteme</span></span>
+            <span class="text-xs text-slate-400" data-i18n="antennasSub">Draht & Yagis</span>
+          </h3>
+          <ul class="space-y-3 font-mono-code text-sm">
+            <li class="p-3 card-theme rounded-lg border"><strong class="text-white block">Hari-Dipol</strong><span class="text-xs text-slate-400" data-i18n="ant1Sub">KW Drahtantenne</span></li>
+            <li class="p-3 card-theme rounded-lg border"><strong class="text-white block">Diamond X510N</strong><span class="text-xs text-slate-400" data-i18n="ant2Sub">Vertikalantenne (Stationär)</span></li>
+            <li class="p-3 card-theme rounded-lg border"><strong class="text-white block">Diamond 6-Element Yagi</strong><span class="text-xs text-slate-400" data-i18n="ant3Sub">Fest installierte Richtantenne</span></li>
+            <li class="p-3 card-theme rounded-lg border"><strong class="text-white block">Flexa Monoband Yagis (Rotor)</strong><span class="text-xs text-slate-400" data-i18n="ant4Sub">Über Rotor steuerbar für 2m, 70cm & 23cm</span></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- Contact Form -->
+    <section id="contact" class="space-y-6 scroll-mt-20">
+      <div class="flex items-center gap-3">
+        <i class="fa-solid fa-paper-plane accent-color text-2xl"></i>
+        <h2 class="text-2xl sm:text-3xl font-bold font-mono-code" data-i18n="contactTitle">Nachricht senden</h2>
+      </div>
+      <div class="card-theme p-6 sm:p-10 rounded-2xl border max-w-2xl mx-auto space-y-6">
+        <p class="text-sm text-slate-300" data-i18n="contactDesc">Vielen Dank für deinen Besuch auf meiner Seite – ich hoffe, wir hören uns bald auf den Bändern! Bei Fragen oder für ein QSO kannst du mir hier direkt eine Nachricht schreiben:</p>
+        <form id="contactForm" onsubmit="handleFormSubmit(event)" class="space-y-4 font-mono-code text-sm">
+          <div>
+            <label class="block text-xs text-slate-400 mb-1" data-i18n="formName">DEIN NAME / CALLSIGN</label>
+            <input type="text" id="senderName" required placeholder="z.B. DL1ABC / Max" class="w-full card-theme border gold-border p-3 rounded-lg focus:outline-none focus:border-red-500 text-white shadow-inner">
+          </div>
+          <div>
+            <label class="block text-xs text-slate-400 mb-1" data-i18n="formEmail">DEINE E-MAIL ADRESSE</label>
+            <input type="email" id="senderEmail" required placeholder="name@beispiel.de" class="w-full card-theme border gold-border p-3 rounded-lg focus:outline-none focus:border-red-500 text-white shadow-inner">
+          </div>
+          <div>
+            <label class="block text-xs text-slate-400 mb-1" data-i18n="formMsg">NACHRICHT</label>
+            <textarea id="senderMsg" rows="5" required placeholder="Vy 73..." class="w-full card-theme border gold-border p-3 rounded-lg focus:outline-none focus:border-red-500 text-white shadow-inner"></textarea>
+          </div>
+          <button type="submit" class="w-full accent-bg font-bold p-3 rounded-lg transition flex items-center justify-center gap-2 text-base border border-amber-400/50">
+            <i class="fa-solid fa-paper-plane"></i> <span data-i18n="formSubmit">Nachricht Absenden</span>
+          </button>
+        </form>
+        <div id="formSuccess" class="hidden p-4 rounded-lg bg-red-500/20 border border-red-500 text-red-300 text-center font-mono-code text-sm" data-i18n="formSuccessText">
+          ✓ E-Mail-Programm wurde geöffnet / Nachricht wird gesendet!
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="card-theme border-t py-8 mt-12 font-mono-code text-xs text-slate-400 shadow-2xl">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col items-center justify-center gap-4 text-center">
+      
+      <div class="flex flex-col sm:flex-row items-center justify-between w-full gap-4 pb-4 border-b gold-border">
+        <div class="flex items-center gap-2">
+          <span class="accent-color font-bold">YAESU STATION</span> • © <span id="year"></span> DO4LC • Carsten
+        </div>
+        
+        <!-- Visitor Counter -->
+        <div class="flex items-center gap-3 card-theme px-4 py-2 rounded-lg border gold-border shadow-inner">
+          <span class="text-slate-400" data-i18n="visitorCounter">VISITOR COUNTER:</span>
+          <div id="visitorCountDisplay" class="flex gap-1 text-base font-bold font-mono-code text-amber-400 bg-black/80 px-2.5 py-0.5 rounded border gold-border tracking-widest shadow-inner">
+            <span>0</span><span>0</span><span>4</span><span>8</span><span>2</span>
+          </div>
+        </div>
+
+        <div>Vy 73 de DO4LC</div>
+      </div>
+
+      <!-- Rechtlicher Hinweis -->
+      <div class="text-slate-500 text-[11px] leading-relaxed max-w-2xl">
+        Alle Angaben ohne Gewähr. Verwendete Bilder unterliegen dem Copyright des jeweiligen Besitzers.
+      </div>
+
+    </div>
+  </footer>
+
+  <script>
+    document.getElementById('year').innerText = new Date().getFullYear();
+
+    let visits = localStorage.getItem('do4lc_visitor_count');
+    if (!visits) { visits = 482; } else { visits = parseInt(visits) + 1; }
+    localStorage.setItem('do4lc_visitor_count', visits);
+    
+    const paddedVisits = String(visits).padStart(6, '0');
+    document.getElementById('visitorCountDisplay').innerHTML = paddedVisits.split('').map(digit => `<span>${digit}</span>`).join('');
+
+    function handleFormSubmit(e) {
+      e.preventDefault();
+      const name = document.getElementById('senderName').value;
+      const email = document.getElementById('senderEmail').value;
+      const msg = document.getElementById('senderMsg').value;
+
+      const subject = encodeURIComponent(`Anfrage über Homepage von ${name}`);
+      const body = encodeURIComponent(`Name/Callsign: ${name}\nE-Mail: ${email}\n\nNachricht:\n${msg}`);
+
+      window.location.href = `mailto:do4lc@o2mail.de?subject=${subject}&body=${body}`;
+      document.getElementById('formSuccess').classList.remove('hidden');
+    }
+
+    const canvas = document.getElementById('waterfallCanvas');
+    const ctx = canvas.getContext('2d');
+
+    function resizeCanvas() {
+      if(canvas) { canvas.width = canvas.offsetWidth; canvas.height = canvas.offsetHeight; }
+    }
+    window.addEventListener('resize', resizeCanvas);
+    resizeCanvas();
+
+    function drawWaterfall() {
+      if(!canvas) return;
+      ctx.fillStyle = 'rgba(11, 12, 16, 0.2)';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      ctx.strokeStyle = '#d4af37';
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      for(let x = 0; x < canvas.width; x += 5) {
+        const y = canvas.height/2 + Math.sin(x * 0.02 + Date.now() * 0.003) * 20 + Math.random() * 10;
+        if(x === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+      }
+      ctx.stroke();
+      requestAnimationFrame(drawWaterfall);
+    }
+    drawWaterfall();
+
+    const translations = {
+      de: {
+        subTitle: "Amateurfunk Station", navAbout: "Über mich", navPath: "Mein Weg", navProjects: "Projekte", navEquipment: "Ausrüstung", navLinks: "Links", navContact: "Kontakt",
+        statusOnAir: "QRV / ON AIR", heroWelcome: "Willkommen auf der Station", heroText: "Faszination Funktechnik, digitale Betriebsarten, SDR-Experimente und Leidenschaft für Wellenausbreitung von Kurzwelle bis Mikrowelle.",
+        btnMessage: "Nachricht Senden", btnSetup: "Shack Setup", labelOp: "OP Name", labelLicense: "Lizenzklasse", labelClub: "Förderverein", labelQth: "LOC / QTH",
+        dxWeatherTitle: "Solar & DX Data",
+        aboutTitle: "Über mich", aboutP1: "Mein Name ist <strong>Carsten</strong>, Jahrgang 1980...", clubTitle: "Vereinsanbindung & Unterstützung:", clubText: "Ich unterstütze den Ortsverband Pfaffenhofen...",
+        pathTitle: "Mein Weg im Amateurfunk", pathNTitle: "Klasse N (Einsteiger)", pathNDesc: "Erfolgreiches Ablegen...", pathETitle: "Aufstieg zu Klasse E", pathEDesc: "Erweiterung...", pathInProgress: "IN ARBEIT", pathATitle: "Ziel: Klasse A", pathADesc: "Ich lerne fleißig...",
+        projTitle: "Betriebsarten, Aktivitäten & Projekte", projP1: "Ich bin sehr aktiv auf den Bändern...", projP2: "Zu meinen aktuellen Projekten...",
+        eqTitle: "Stationsausrüstung & Antennen", eqHighlightBadge: "HF / 50 MHz SHACK HIGHLIGHT", eqHighlightDesc: "Kompakter High-End SDR-Transceiver...",
+        transceiverTitle: "Transceiver", tr1Sub: "HF Transceiver", tr2Sub: "VHF/UHF Mobile (C4FM)", tr3Sub: "2m Monoband Transceiver", tr4Sub: "DMR / Analog Dualband", tr5Sub: "Handfunkgerät", badgeHandheld: "C4FM",
+        antennasTitle: "Antennensysteme", antennasSub: "Draht & Yagis", ant1Sub: "KW Drahtantenne", ant2Sub: "Vertikalantenne (Stationär)", ant3Sub: "Fest installierte Richtantenne", ant4Sub: "Über Rotor steuerbar...",
+        contactTitle: "Nachricht senden", contactDesc: "Vielen Dank für deinen Besuch...", formName: "DEIN NAME / CALLSIGN", formEmail: "DEINE E-MAIL ADRESSE", formMsg: "NACHRICHT", formSubmit: "Nachricht Absenden", formSuccessText: "✓ E-Mail-Programm wurde geöffnet...", visitorCounter: "VISITOR COUNTER:"
+      },
+      en: {
+        subTitle: "Amateur Radio Station", navAbout: "About Me", navPath: "My Path", navProjects: "Projects", navEquipment: "Equipment", navLinks: "Links", navContact: "Contact",
+        statusOnAir: "QRV / ON AIR", heroWelcome: "Welcome to Station", heroText: "Fascinated by radio technology...",
+        btnMessage: "Send Message", btnSetup: "Shack Setup", labelOp: "OP Name", labelLicense: "License Class", labelClub: "Radio Club", labelQth: "LOC / QTH",
+        dxWeatherTitle: "Solar & DX Data",
+        aboutTitle: "About Me", aboutP1: "My name is <strong>Carsten</strong>...", clubTitle: "Club Affiliation & Support:", clubText: "I support the Pfaffenhofen local chapter...",
+        pathTitle: "My Path in Amateur Radio", pathNTitle: "Class N (Beginner)", pathNDesc: "Successfully passed...", pathETitle: "Upgrade to Class E", pathEDesc: "Expansion...", pathInProgress: "IN PROGRESS", pathATitle: "Goal: Class A", pathADesc: "Studying diligently...",
+        projTitle: "Modes, Activities & Projects", projP1: "I am very active...", projP2: "My current projects...",
+        eqTitle: "Station Equipment & Antennas", eqHighlightBadge: "HF / 50 MHz SHACK HIGHLIGHT", eqHighlightDesc: "Compact high-end SDR transceiver...",
+        transceiverTitle: "Transceivers", tr1Sub: "HF Transceiver", tr2Sub: "VHF/UHF Mobile (C4FM)", tr3Sub: "2m Monoband Transceiver", tr4Sub: "DMR / Analog Dualband", tr5Sub: "Handheld Transceiver", badgeHandheld: "C4FM",
+        antennasTitle: "Antenna Systems", antennasSub: "Wire & Yagis", ant1Sub: "HF Wire Antenna", ant2Sub: "Vertical Antenna...", ant3Sub: "Fixed Directional Yagi", ant4Sub: "Rotor-controlled...",
+        contactTitle: "Send Message", contactDesc: "Thank you for visiting...", formName: "YOUR NAME / CALLSIGN", formEmail: "YOUR E-MAIL ADDRESS", formMsg: "MESSAGE", formSubmit: "Send Message", formSuccessText: "✓ Email client opened...", visitorCounter: "VISITOR COUNTER:"
+      }
+    };
+
+    function changeLanguage(lang) {
+      document.getElementById('htmlRoot').setAttribute('lang', lang);
+      document.querySelectorAll('[data-i18n]').forEach(el => {
+        const key = el.getAttribute('data-i18n');
+        if (translations[lang] && translations[lang][key]) {
+          el.innerHTML = translations[lang][key];
+        }
+      });
+    }
+  </script>
+</body>
+</html>

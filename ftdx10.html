@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="de" id="htmlRoot">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DO4LC - Yaesu FT-DX10 Technische Daten</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;700&family=Inter:wght@300;400;600;700&display=swap');
+    
+    body { 
+      font-family: 'Inter', sans-serif; 
+      background-color: #0b0c10; 
+      color: #ffffff;
+      background-image: linear-gradient(rgba(11, 12, 16, 0.92), rgba(11, 12, 16, 0.92)), url('https://i.ibb.co/fYZ4n53r/jaesu.jpg');
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      background-attachment: fixed;
+    }
+    
+    .font-mono-code { font-family: 'Fira Code', monospace; }
+    
+    .card-theme { 
+      background: linear-gradient(145deg, #161a24, #0f121a); 
+      border: 1px solid #d4af37;
+      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.7), 0 8px 10px -6px rgba(0, 0, 0, 0.5), inset 0 1px 1px rgba(212, 175, 55, 0.2);
+    }
+    
+    .gold-border { border-color: #d4af37 !important; }
+    .accent-color { color: #ff3b30; }
+    
+    .accent-bg { 
+      background: linear-gradient(135deg, #ff4d4d, #cc1100); 
+      color: #ffffff;
+      box-shadow: 0 4px 15px rgba(255, 59, 48, 0.4), inset 0 1px 1px rgba(255, 255, 255, 0.3);
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between selection:bg-red-600 selection:text-white">
+
+  <!-- Header -->
+  <header class="sticky top-0 z-50 card-theme border-b backdrop-blur-md bg-opacity-90 shadow-2xl">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-16">
+        <div class="flex items-center gap-3">
+          <a href="index.html" class="h-10 px-3 rounded-lg card-theme border gold-border flex items-center justify-center shadow-lg bg-black/50 hover:border-red-500 transition">
+            <i class="fa-solid fa-arrow-left text-amber-400 mr-2"></i> <span class="font-mono-code text-xs text-white">Zurück zur Station</span>
+          </a>
+        </div>
+
+        <nav class="flex items-center gap-4">
+          <span class="font-mono-code accent-color font-bold text-lg">DO4LC • FT-DX10</span>
+          <select id="langSelect" onchange="changeLanguage(this.value)" class="card-theme border gold-border text-xs font-mono-code rounded px-2 py-1 text-red-500 focus:outline-none cursor-pointer shadow-inner">
+            <option value="de">🇩🇪 DE</option>
+            <option value="en">🇬🇧 EN</option>
+          </select>
+        </nav>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-12">
+    
+    <!-- Title Section -->
+    <div class="text-center space-y-3">
+      <div class="inline-block px-3 py-1 rounded accent-bg font-bold font-mono-code text-xs border border-amber-400/50">
+        YAESU FLAGSHIP SDR SPECIFICATIONS
+      </div>
+      <h1 class="text-4xl sm:text-5xl font-extrabold tracking-tight font-mono-code text-white">
+        Yaesu FT-DX10 <span class="accent-color">Technische Daten</span>
+      </h1>
+      <p class="text-slate-300 max-w-2xl mx-auto font-light">
+        Umfassende technische Spezifikationen, Schaltkreise, Empfänger-/Sender-Details und Zubehör.
+      </p>
+    </div>
+
+    <!-- Images Section (Vorder- und Rückseite) -->
+    <div class="grid md:grid-cols-2 gap-6">
+      <div class="card-theme rounded-2xl border p-4 text-center space-y-2">
+        <img src="https://i.ibb.co/RT7gZMMh/ftdx10.jpg" alt="ftdx10" class="rounded-xl object-contain border gold-border shadow-xl mx-auto max-h-64">
+        <span class="text-xs font-mono-code text-slate-400 block">Frontansicht (5" Touch-Display & Controls)</span>
+      </div>
+      <div class="card-theme rounded-2xl border p-4 text-center space-y-2">
+        <img src="https://i.ibb.co/Xx64Bc73/ftdx10-back.jpg" alt="ftdx10 back" class="rounded-xl object-contain border gold-border shadow-xl mx-auto max-h-64">
+        <span class="text-xs font-mono-code text-slate-400 block">Rückansicht (Anschlüsse, Antennen, SO-239, USB)</span>
+      </div>
+    </div>
+
+    <!-- SPECIFICATIONS: GENERAL -->
+    <div class="card-theme rounded-2xl border p-6 sm:p-8 space-y-4">
+      <h2 class="text-xl font-bold font-mono-code text-amber-400 border-b gold-border pb-2 flex items-center gap-2">
+        <i class="fa-solid fa-sliders accent-color"></i> GENERAL / ALLGEMEIN
+      </h2>
+      <div class="grid sm:grid-cols-2 gap-4 text-sm font-mono-code text-slate-300">
+        <div class="p-3 card-theme rounded border gold-border">
+          <strong class="text-white block mb-1">Typ / Frequenzbereich:</strong>
+          TX: 10-160 m + WARC und 60 m / 6 m (sowie 4 m für Europa)<br>
+          RX: 0.03-75 MHz
+        </div>
+        <div class="p-3 card-theme rounded border gold-border">
+          <strong class="text-white block mb-1">Abstimmschritte:</strong>
+          1 / 10 Hz (SSB/CW)<br>10 / 100 Hz (AM/FM)
+        </div>
+        <div class="p-3 card-theme rounded border gold-border">
+          <strong class="text-white block mb-1">Frequenzstabilität:</strong>
+          ±0.5 ppm @ 0 bis 50°C (nach 1 Minute Aufwärmzeit)
+        </div>
+        <div class="p-3 card-theme rounded border gold-border">
+          <strong class="text-white block mb-1">Betriebsarten:</strong>
+          AM / FM / SSB / CW / RTTY / PSK
+        </div>
+        <div class="p-3 card-theme rounded border gold-border">
+          <strong class="text-white block mb-1">Speicherverwaltung:</strong>
+          99 regulär mit Alpha-Tags (12 Zeichen), 5 QMB (erweiterbar auf 10), 9 Scan Edge Paire (PMS), nichtflüchtiger EEPROM-Speicher.
+        </div>
+        <div class="p-3 card-theme rounded border gold-border">
+          <strong class="text-white block mb-1">Stromversorgung & Verbrauch:</strong>
+          13.8 VDC ±15% (4-polig)<br>RX: 3 A | TX: Max 23 A
+        </div>
+        <div class="p-3 card-theme rounded border gold-border">
+          <strong class="text-white block mb-1">Antennenimpedanz / Anschlüsse:</strong>
+          50 Ohm / SO-239 (16.7-150 Ohm HF und 25-100 Ohm 6m mit ATU aktiv)
+        </div>
+        <div class="p-3 card-theme rounded border gold-border">
+          <strong class="text-white block mb-1">Abmessungen & Gewicht:</strong>
+          266 x 91 x 263 mm | Gewicht: 5.9 Kg (13 lb)
+        </div>
+      </div>
+      <div class="p-4 card-theme rounded border gold-border text-sm font-mono-code text-slate-300">
+        <strong class="text-white block mb-1">Besondere Merkmale:</strong>
+        Hybrid SDR, 5" Farb-Touch-TFT, 12 kHz, 3 kHz und 500 Hz Roofing-Filter, RMDR über 116 dB, 3rd IMDR besser als 109 dB, 250 MHz HRDDS, 3D Spectrum Stream, High-Speed ATU mit 100 Speichern, SD-Kartensteckplatz, CAT-Steuerung, RS-232C, USB A/B, DVI, CTCSS/PL.
+      </div>
+    </div>
+
+    <!-- RECEIVER SECTION -->
+    <div class="card-theme rounded-2xl border p-6 sm:p-8 space-y-4">
+      <h2 class="text-xl font-bold font-mono-code text-amber-400 border-b gold-border pb-2 flex items-center gap-2">
+        <i class="fa-solid fa-ear-listen accent-color"></i> RECEIVER SECTION / EMPFÄNGER
+      </h2>
+      <div class="grid sm:grid-cols-2 gap-4 text-sm font-mono-code text-slate-300">
+        <div class="p-3 card-theme rounded border gold-border">
+          <strong class="text-white block mb-1">Empfängersystem:</strong>
+          Double Conversion Superheterodyne<br>1. ZF: 9.005 MHz | 2. ZF: 24 KHz
+        </div>
+        <div class="p-3 card-theme rounded border gold-border">
+          <strong class="text-white block mb-1">Empfindlichkeit (Sensitivität):</strong>
+          AM (10 dB S/N, 6 kHz BW): 0.5-1.8 MHz: 7.9 µV / 1.8-30 MHz: 2 µV<br>
+          SSB/CW (10 dB S/N, 2.4 kHz BW): 1.8-30 MHz: 0.16 µV / 50-54 MHz: 0.125 µV
+        </div>
+        <div class="p-3 card-theme rounded border gold-border">
+          <strong class="text-white block mb-1">Selektivität (-6 dB / -60 dB):</strong>
+          AM: 6 kHz / 15 kHz<br>
+          FM: 12 kHz / 25 kHz<br>
+          SSB: 2.4 kHz / 3.6 kHz<br>
+          CW: 500 Hz / 750 Hz
+        </div>
+        <div class="p-3 card-theme rounded border gold-border">
+          <strong class="text-white block mb-1">NF-Ausgangsleistung & Audio:</strong>
+          2.5 W an 10% Klirrfaktor / 4 Ohm. Externer Lautsprecheranschluss: 3.5 mm Miniklinke (4-16 Ohm).
+        </div>
+      </div>
+    </div>
+
+    <!-- TRANSMITTER SECTION -->
+    <div class="card-theme rounded-2xl border p-6 sm:p-8 space-y-4">
+      <h2 class="text-xl font-bold font-mono-code text-amber-400 border-b gold-border pb-2 flex items-center gap-2">
+        <i class="fa-solid fa-tower-broadcast accent-color"></i> TRANSMITTER SECTION / SENDER
+      </h2>
+      <div class="grid sm:grid-cols-2 gap-4 text-sm font-mono-code text-slate-300">
+        <div class="p-3 card-theme rounded border gold-border">
+          <strong class="text-white block mb-1">HF Ausgangsleistung (HF / 6m):</strong>
+          AM: 5-25 W<br>
+          FM / SSB (PEP) / CW: 5-100 W
+        </div>
+        <div class="p-3 card-theme rounded border gold-border">
+          <strong class="text-white block mb-1">Modulationssystem:</strong>
+          AM: Low-level (frühe Stufe) | FM: Variable Reaktanz | SSB: Balanciert
+        </div>
+        <div class="p-3 card-theme rounded border gold-border">
+          <strong class="text-white block mb-1">Max. FM Hub (Werkseinstellung):</strong>
+          Normal: ±5 kHz | Schmal: ±2.5 kHz
+        </div>
+        <div class="p-3 card-theme rounded border gold-border">
+          <strong class="text-white block mb-1">Nebenwellenunterdrückung (Spurious):</strong>
+          Besser als -50 dB (HF) | Besser als -63 dB (6 m) | Besser als -60 dB (4 m)
+        </div>
+      </div>
+    </div>
+
+    <!-- MISCELLANEOUS & ACCESSORIES -->
+    <div class="card-theme rounded-2xl border p-6 sm:p-8 space-y-4">
+      <h2 class="text-xl font-bold font-mono-code text-amber-400 border-b gold-border pb-2 flex items-center gap-2">
+        <i class="fa-solid fa-circle-info accent-color"></i> MISCELLANEOUS / ZUBEHÖR & INFO
+      </h2>
+      <div class="grid sm:grid-cols-2 gap-4 text-sm font-mono-code text-slate-300">
+        <div class="p-3 card-theme rounded border gold-border">
+          <strong class="text-white block mb-1">Produktionszeitraum:</strong>
+          2020 – heute (202x)
+        </div>
+        <div class="p-3 card-theme rounded border gold-border">
+          <strong class="text-white block mb-1">Testberichte:</strong>
+          QST: Juni 2021, Seite 39
+        </div>
+      </div>
+
+      <div class="p-4 card-theme rounded border gold-border text-sm font-mono-code text-slate-300">
+        <strong class="text-white block mb-2">Optionen / Zubehör (Options / Accessories):</strong>
+        <div class="flex flex-wrap gap-2">
+          <span class="px-2 py-1 bg-black/50 border gold-border rounded text-xs">ATAS-25 / ATAS-120A (Aktive Antennen)</span>
+          <span class="px-2 py-1 bg-black/50 border gold-border rounded text-xs">ATBK-100</span>
+          <span class="px-2 py-1 bg-black/50 border gold-border rounded text-xs">FC-40 (Ext. Tuner)</span>
+          <span class="px-2 py-1 bg-black/50 border gold-border rounded text-xs">FH-2 (Keypad)</span>
+          <span class="px-2 py-1 bg-black/50 border gold-border rounded text-xs">M-1 / M-70 / M-90 / M-100 (Mikrofone)</span>
+          <span class="px-2 py-1 bg-black/50 border gold-border rounded text-xs">SCU-LAN10</span>
+          <span class="px-2 py-1 bg-black/50 border gold-border rounded text-xs">SP-30 (Lautsprecher)</span>
+          <span class="px-2 py-1 bg-black/50 border gold-border rounded text-xs">XF-130CN (300 Hz Roofing Filter)</span>
+          <span class="px-2 py-1 bg-black/50 border gold-border rounded text-xs">YH-77STA (Kopfhörer)</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Back Button -->
+    <div class="text-center pt-4">
+      <a href="index.html" class="inline-flex items-center gap-2 accent-bg px-6 py-3 rounded-lg font-mono-code font-bold text-sm transition border border-amber-400/50 shadow-lg">
+        <i class="fa-solid fa-arrow-left"></i> <span>Zurück zur Stationsübersicht</span>
+      </a>
+    </div>
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="card-theme border-t py-8 mt-12 font-mono-code text-xs text-slate-400 shadow-2xl">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      <span class="accent-color font-bold">DO4LC STATION</span> • Yaesu FT-DX10 Technische Daten • Vy 73!
+    </div>
+  </footer>
+
+</body>
+</html>

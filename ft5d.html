@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="de" id="htmlRoot">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DO4LC - Yaesu FT-5D Technische Daten</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;700&family=Inter:wght@300;400;600;700&display=swap');
+    
+    body { 
+      font-family: 'Inter', sans-serif; 
+      background-color: #0b0c10; 
+      color: #ffffff;
+      background-image: linear-gradient(rgba(11, 12, 16, 0.92), rgba(11, 12, 16, 0.92)), url('https://i.ibb.co/fYZ4n53r/jaesu.jpg');
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      background-attachment: fixed;
+    }
+    
+    .font-mono-code { font-family: 'Fira Code', monospace; }
+    
+    .card-theme { 
+      background: linear-gradient(145deg, #161a24, #0f121a); 
+      border: 1px solid #d4af37;
+      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.7), 0 8px 10px -6px rgba(0, 0, 0, 0.5), inset 0 1px 1px rgba(212, 175, 55, 0.2);
+    }
+    
+    .gold-border { border-color: #d4af37 !important; }
+    .accent-color { color: #ff3b30; }
+    
+    .accent-bg { 
+      background: linear-gradient(135deg, #ff4d4d, #cc1100); 
+      color: #ffffff;
+      box-shadow: 0 4px 15px rgba(255, 59, 48, 0.4), inset 0 1px 1px rgba(255, 255, 255, 0.3);
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between selection:bg-red-600 selection:text-white">
+
+  <!-- Header -->
+  <header class="sticky top-0 z-50 card-theme border-b backdrop-blur-md bg-opacity-90 shadow-2xl">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-16">
+        <div class="flex items-center gap-3">
+          <a href="do4lc_amateurfunk_station.html" class="h-10 px-3 rounded-lg card-theme border gold-border flex items-center justify-center shadow-lg bg-black/50 hover:border-red-500 transition">
+            <i class="fa-solid fa-arrow-left text-amber-400 mr-2"></i> <span class="font-mono-code text-xs text-white">Zurück zur Station</span>
+          </a>
+        </div>
+
+        <nav class="flex items-center gap-4">
+          <span class="font-mono-code accent-color font-bold text-lg">DO4LC • FT-5D</span>
+          <select id="langSelect" onchange="changeLanguage(this.value)" class="card-theme border gold-border text-xs font-mono-code rounded px-2 py-1 text-red-500 focus:outline-none cursor-pointer shadow-inner">
+            <option value="de">🇩🇪 DE</option>
+            <option value="en">🇬🇧 EN</option>
+          </select>
+        </nav>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-12">
+    
+    <!-- Title Section -->
+    <div class="text-center space-y-3">
+      <div class="inline-block px-3 py-1 rounded accent-bg font-bold font-mono-code text-xs border border-amber-400/50">
+        DIGITAL C4FM / ANALOG HANDHELD TRANSCEIVER
+      </div>
+      <h1 class="text-4xl sm:text-5xl font-extrabold tracking-tight font-mono-code text-white">
+        Yaesu FT-5D <span class="accent-color">Technische Daten</span>
+      </h1>
+      <p class="text-slate-300 max-w-2xl mx-auto font-light">
+        High-End C4FM/APRS Handfunkgerät mit Touch-Display, Dual-Watch (Dual DV) und integriertem GPS.
+      </p>
+    </div>
+
+    <!-- Image Section -->
+    <div class="card-theme rounded-2xl border p-6 text-center space-y-3 max-w-xl mx-auto">
+      <img src="https://i.ibb.co/zWL461fs/Yaesu-FT5-D-im-Funkger-te-Studio-1.png" alt="Yaesu FT-5D" class="rounded-xl object-contain border gold-border shadow-2xl mx-auto max-h-72">
+      <span class="text-xs font-mono-code text-slate-400 block">Yaesu FT-5D Handfunkgerät</span>
+    </div>
+
+    <!-- SPECIFICATIONS: GENERAL -->
+    <div class="card-theme rounded-2xl border p-6 sm:p-8 space-y-4">
+      <h2 class="text-xl font-bold font-mono-code text-amber-400 border-b gold-border pb-2 flex items-center gap-2">
+        <i class="fa-solid fa-sliders accent-color"></i> GENERAL / ALLGEMEIN
+      </h2>
+      <div class="grid sm:grid-cols-2 gap-4 text-sm font-mono-code text-slate-300">
+        <div class="p-3 card-theme rounded border gold-border">
+          <strong class="text-white block mb-1">Typ / Frequenzbereich (Europa):</strong>
+          TX: 144–146 / 430–440 MHz<br>
+          RX: 0.5–1000 MHz
+        </div>
+        <div class="p-3 card-theme rounded border gold-border">
+          <strong class="text-white block mb-1">Abstimmschritte:</strong>
+          5 / 6.25 / 8.33 / 9 / 10 / 12.5 / 15 / 20 / 25 / 50 / 100 kHz
+        </div>
+        <div class="p-3 card-theme rounded border gold-border">
+          <strong class="text-white block mb-1">Frequenzstabilität:</strong>
+          ±2.5 ppm @ -20 bis +60°C (-4 bis +140°F)
+        </div>
+        <div class="p-3 card-theme rounded border gold-border">
+          <strong class="text-white block mb-1">Betriebsarten:</strong>
+          TX: FM / NFM / DV (Fusion/C4FM)<br>
+          RX: AM / FM / NFM / WFM / DV (Fusion/C4FM)
+        </div>
+        <div class="p-3 card-theme rounded border gold-border">
+          <strong class="text-white block mb-1">Speicherverwaltung:</strong>
+          900 Speicher in bis zu 24 Bänken, 50 PMS-Känale, 156 Voreinstellungen (WX/Marine/BC), Alpha-Tags bis 16 Zeichen, Prioritätsfunktion, EEPROM.
+        </div>
+        <div class="p-3 card-theme rounded border gold-border">
+          <strong class="text-white block mb-1">Stromversorgung & Verbrauch:</strong>
+          3.6–7.4 VDC (Akku) oder 4–16 VDC extern<br>RX: 74–240 mA | TX: Max 1.9 A
+        </div>
+        <div class="p-3 card-theme rounded border gold-border">
+          <strong class="text-white block mb-1">Antennenimpedanz / Anschlüsse:</strong>
+          50 Ohm / SMA
+        </div>
+        <div class="p-3 card-theme rounded border gold-border">
+          <strong class="text-white block mb-1">Abmessungen & Gewicht:</strong>
+          65 x 100 x 34 mm (mit SBR-14Li)<br>Gewicht: 282 g (mit Akku & Antenne)
+        </div>
+      </div>
+      <div class="p-4 card-theme rounded border gold-border text-sm font-mono-code text-slate-300">
+        <strong class="text-white block mb-1">Besondere Merkmale:</strong>
+        CTCSS/PL mit Tonsuchlauf, DCS, DTMF, AMS, Audiorecorder, Micro-SD-Kartensteckplatz, Bluetooth, APRS (1200/9600 Bd), eingebautes GPS, Bandscope, VOX, Wires-X, Voltmeter, 10 dB Attenuator, IPX7 wasserdicht, Uhr/Timer, Twin RX (sogar Dual DV!).
+      </div>
+    </div>
+
+    <!-- RECEIVER SECTION -->
+    <div class="card-theme rounded-2xl border p-6 sm:p-8 space-y-4">
+      <h2 class="text-xl font-bold font-mono-code text-amber-400 border-b gold-border pb-2 flex items-center gap-2">
+        <i class="fa-solid fa-ear-listen accent-color"></i> RECEIVER SECTION / EMPFÄNGER
+      </h2>
+      <div class="grid sm:grid-cols-2 gap-4 text-sm font-mono-code text-slate-300">
+        <div class="p-3 card-theme rounded border gold-border">
+          <strong class="text-white block mb-1">Empfängersystem:</strong>
+          Direktmischung (AM/WFM) & Doppelumsetzer-Superhet (FM/NFM)<br>
+          1. ZF: 58.05 MHz (A-Band) / 57.15 MHz (B-Band)<br>
+          2. ZF: 450 kHz
+        </div>
+        <div class="p-3 card-theme rounded border gold-border">
+          <strong class="text-white block mb-1">Selektivität & Audio:</strong>
+          AM/FM: 12 kHz (-6 dB) / 35 kHz (-60 dB)<br>
+          NF-Leistung: 1 W bei 10% Klirrfaktor an 8 Ohm.
+        </div>
+      </div>
+    </div>
+
+    <!-- TRANSMITTER SECTION -->
+    <div class="card-theme rounded-2xl border p-6 sm:p-8 space-y-4">
+      <h2 class="text-xl font-bold font-mono-code text-amber-400 border-b gold-border pb-2 flex items-center gap-2">
+        <i class="fa-solid fa-tower-broadcast accent-color"></i> TRANSMITTER SECTION / SENDER
+      </h2>
+      <div class="grid sm:grid-cols-2 gap-4 text-sm font-mono-code text-slate-300">
+        <div class="p-3 card-theme rounded border gold-border">
+          <strong class="text-white block mb-1">HF Ausgangsleistung (2m / 70cm):</strong>
+          High: 5 W<br>
+          Low 3: 2.5 W<br>
+          Low 2: 1 W<br>
+          Low 1: 300 mW<br>
+          <em>(Hinweis: Mit FBA-39 Mignon-Batteriefach unter 1 W)</em>
+        </div>
+        <div class="p-3 card-theme rounded border gold-border">
+          <strong class="text-white block mb-1">Modulation & Hub:</strong>
+          FM: Variable Reaktanz | DV: 4FSK/C4FM<br>
+          Max. FM Hub: FM ±5 kHz / NFM ±2.5 kHz<br>
+          Nebenwellenunterdrückung: Besser als -60 dB (Hi & Low 3)
+        </div>
+      </div>
+    </div>
+
+    <!-- MISCELLANEOUS & ACCESSORIES -->
+    <div class="card-theme rounded-2xl border p-6 sm:p-8 space-y-4">
+      <h2 class="text-xl font-bold font-mono-code text-amber-400 border-b gold-border pb-2 flex items-center gap-2">
+        <i class="fa-solid fa-circle-info accent-color"></i> MISCELLANEOUS / ZUBEHÖR & INFO
+      </h2>
+      <div class="grid sm:grid-cols-2 gap-4 text-sm font-mono-code text-slate-300">
+        <div class="p-3 card-theme rounded border gold-border">
+          <strong class="text-white block mb-1">Produktionszeitraum:</strong>
+          2021 – heute (202x)
+        </div>
+        <div class="p-3 card-theme rounded border gold-border">
+          <strong class="text-white block mb-1">Neupreis (Schweden 2021):</strong>
+          SEK 4995:-
+        </div>
+      </div>
+
+      <div class="p-4 card-theme rounded border gold-border text-sm font-mono-code text-slate-300">
+        <strong class="text-white block mb-2">Optionen / Zubehör (Options / Accessories):</strong>
+        <div class="flex flex-wrap gap-2">
+          <span class="px-2 py-1 bg-black/50 border gold-border rounded text-xs">CN-3 (SMA-BNC Adapter)</span>
+          <span class="px-2 py-1 bg-black/50 border gold-border rounded text-xs">CT-44 (Mic-Adapter)</span>
+          <span class="px-2 py-1 bg-black/50 border gold-border rounded text-xs">FBA-39 (Batteriefach AA)</span>
+          <span class="px-2 py-1 bg-black/50 border gold-border rounded text-xs">SBR-14LI (Li-Ion Akku 2200 mAh)</span>
+          <span class="px-2 py-1 bg-black/50 border gold-border rounded text-xs">MH-85A11U (Mic mit Kamera)</span>
+          <span class="px-2 py-1 bg-black/50 border gold-border rounded text-xs">SCU-39 (Wires-X Kabelset)</span>
+          <span class="px-2 py-1 bg-black/50 border gold-border rounded text-xs">SSM-BT10 (Bluetooth Headset)</span>
+          <span class="px-2 py-1 bg-black/50 border gold-border rounded text-xs">SHC-40 (Softcase)</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Back Button -->
+    <div class="text-center pt-4">
+      <a href="index.html" class="inline-flex items-center gap-2 accent-bg px-6 py-3 rounded-lg font-mono-code font-bold text-sm transition border border-amber-400/50 shadow-lg">
+        <i class="fa-solid fa-arrow-left"></i> <span>Zurück zur Stationsübersicht</span>
+      </a>
+    </div>
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="card-theme border-t py-8 mt-12 font-mono-code text-xs text-slate-400 shadow-2xl">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      <span class="accent-color font-bold">DO4LC STATION</span> • Yaesu FT-5D Technische Daten • Vy 73!
+    </div>
+  </footer>
+
+</body>
+</html>
