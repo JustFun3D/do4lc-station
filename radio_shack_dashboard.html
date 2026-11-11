@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Radio Shack Dashboard - DO4LC</title>
+    <style>
+        :root {
+            --bg-dark: #0b0f19;
+            --panel-bg: #131b2e;
+            --border-color: #1e293b;
+            --accent-cyan: #00f2fe;
+            --accent-gold: #ffb703;
+            --accent-green: #00e676;
+            --text-main: #e2e8f0;
+            --text-muted: #94a3b8;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            padding: 15px;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: var(--panel-bg);
+            padding: 12px 20px;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            margin-bottom: 15px;
+        }
+
+        .logo-title { display: flex; align-items: center; gap: 12px; }
+        .logo-title h1 { font-size: 1.3rem; color: #fff; letter-spacing: 1px; display: flex; align-items: center; gap: 10px; }
+        .callsign { color: var(--accent-cyan); font-weight: bold; }
+        
+        .tower-icon { width: 24px; height: 24px; fill: var(--accent-cyan); vertical-align: middle; }
+        .tower-icon-sm { width: 16px; height: 16px; fill: var(--accent-cyan); vertical-align: middle; }
+
+        .config-inputs { display: flex; gap: 10px; align-items: center; }
+        .config-inputs input {
+            background: #090d16;
+            border: 1px solid var(--border-color);
+            color: var(--accent-cyan);
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            width: 240px;
+        }
+
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            height: calc(100vh - 100px);
+        }
+
+        @media (max-width: 1024px) {
+            .dashboard-grid { grid-template-columns: 1fr; height: auto; }
+        }
+
+        .panel {
+            background: var(--panel-bg);
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .panel-header {
+            padding: 10px 16px;
+            background: rgba(255,255,255,0.02);
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .panel-header-title { display: flex; align-items: center; gap: 8px; }
+
+        .panel-body { 
+            flex: 1; 
+            position: relative; 
+            background: #0b0f19; 
+            overflow: hidden;
+            display: none;
+        }
+
+        .panel-body.active {
+            display: block;
+        }
+        
+        #wpsd-frame {
+            width: 100%;
+            height: 100%;
+            border: none;
+            display: block;
+            background: #fff;
+        }
+
+        /* YCS Skalierungs-Wrapper (Stauchung aktiv) */
+        .scaled-iframe-wrapper {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            position: relative;
+            background: #fff;
+        }
+
+        #c4fm-frame {
+            width: 125%;
+            height: 125%;
+            border: none;
+            transform: scale(0.8);
+            transform-origin: 0 0;
+            display: block;
+        }
+
+        /* Hoseline & WebSDR iFrames */
+        #hose262-frame, #websdr-frame {
+            width: 100%;
+            height: 100%;
+            border: none;
+            display: block;
+            background: #fff;
+        }
+
+        .dmr-container {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            overflow: hidden;
+        }
+
+        .tg-card {
+            background: var(--panel-bg);
+            border-bottom: 1px solid var(--border-color);
+            padding: 10px 15px;
+        }
+
+        .tg-header-line {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 6px;
+        }
+
+        .tg-title { 
+            font-size: 0.8rem; 
+            color: var(--accent-gold); 
+            font-weight: bold; 
+            letter-spacing: 0.5px;
+        }
+
+        .tg-grid { 
+            display: grid; 
+            grid-template-columns: repeat(3, 1fr); 
+            gap: 8px; 
+        }
+
+        .tg-btn {
+            background: #090d16;
+            border: 1px solid var(--border-color);
+            color: #fff;
+            padding: 8px 6px;
+            border-radius: 6px;
+            text-align: center;
+            text-decoration: none;
+            transition: all 0.2s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 2px;
+            cursor: pointer;
+        }
+
+        .tg-btn:hover, .tg-btn.active { 
+            border-color: var(--accent-cyan); 
+            background: rgba(0, 242, 254, 0.12);
+            transform: translateY(-1px);
+        }
+
+        .tg-number { 
+            font-weight: bold; 
+            font-size: 0.9rem; 
+            color: var(--accent-cyan);
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .tg-label { font-size: 0.75rem; color: var(--text-muted); }
+
+        .tg-badge {
+            font-size: 0.6rem;
+            background: rgba(0, 230, 118, 0.15);
+            color: var(--accent-green);
+            padding: 1px 6px;
+            border-radius: 3px;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+
+    <svg style="display: none;">
+        <symbol id="icon-antenna-tower" viewBox="0 0 100 100">
+            <path d="M 50,22 L 25,88 L 33,88 L 41,68 L 59,68 L 67,88 L 75,88 Z" fill="none" stroke="currentColor" stroke-width="5" stroke-linejoin="round"/>
+            <line x1="43" y1="40" x2="57" y2="40" stroke="currentColor" stroke-width="4"/>
+            <line x1="38" y1="54" x2="62" y2="54" stroke="currentColor" stroke-width="4"/>
+            <line x1="33" y1="68" x2="67" y2="68" stroke="currentColor" stroke-width="4"/>
+            <line x1="46" y1="26" x2="54" y2="40" stroke="currentColor" stroke-width="3"/>
+            <line x1="54" y1="26" x2="46" y2="40" stroke="currentColor" stroke-width="3"/>
+            <line x1="43" y1="40" x2="57" y2="54" stroke="currentColor" stroke-width="3"/>
+            <line x1="57" y1="40" x2="43" y2="54" stroke="currentColor" stroke-width="3"/>
+            <line x1="38" y1="54" x2="62" y2="68" stroke="currentColor" stroke-width="3"/>
+            <line x1="62" y1="54" x2="38" y2="68" stroke="currentColor" stroke-width="3"/>
+            <circle cx="50" cy="22" r="5" fill="currentColor"/>
+            <path d="M 36,20 A 18,18 0 0,1 64,20" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round"/>
+            <path d="M 28,14 A 26,26 0 0,1 72,14" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round"/>
+            <path d="M 20,8 A 34,34 0 0,1 80,8" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round"/>
+        </symbol>
+    </svg>
+
+    <header>
+        <div class="logo-title">
+            <h1>
+                <svg class="tower-icon"><use href="#icon-antenna-tower"/></svg>
+                SHACK DASHBOARD <span class="callsign">DO4LC</span>
+            </h1>
+        </div>
+        <div class="config-inputs">
+            <input type="text" id="wpsd-url" value="http://192.168.178.133/live/">
+            <button style="background: var(--accent-cyan); color: #000; border:none; padding:6px 14px; border-radius:6px; font-weight:bold; cursor:pointer;" onclick="updateUrls()">Übernehmen</button>
+        </div>
+    </header>
+
+    <div class="dashboard-grid">
+        <!-- WPSD PANEL -->
+        <div class="panel">
+            <div class="panel-header">
+                <span class="panel-header-title">
+                    <svg class="tower-icon-sm"><use href="#icon-antenna-tower"/></svg>
+                    WPSD HOTSPOT LIVE
+                </span>
+                <a id="wpsd-link" href="http://192.168.178.133/live/" target="_blank" style="color:var(--accent-cyan); text-decoration:none;">↗ Im neuen Tab öffnen</a>
+            </div>
+            <div class="panel-body active">
+                <iframe id="wpsd-frame" src="http://192.168.178.133/live/"></iframe>
+            </div>
+        </div>
+
+        <!-- C4FM (YCS262), HOSELINE & WEB SDR PANEL -->
+        <div class="panel">
+            <div class="panel-header">
+                <span class="panel-header-title" id="panel-title-text">
+                    <svg class="tower-icon-sm"><use href="#icon-antenna-tower"/></svg>
+                    YCS262 C4FM BAYERN (DG 62)
+                </span>
+                <a id="external-link" href="http://ycs262.xreflector.net/" target="_blank" style="font-size: 0.75rem; color: var(--accent-green); text-decoration:none;">↗ Extern öffnen</a>
+            </div>
+            
+            <div class="dmr-container">
+                <!-- AUSWAHL-BUTTONS -->
+                <div class="tg-card">
+                    <div class="tg-header-line">
+                        <span class="tg-title">FAVORITEN GROUPS / ANSICHTEN</span>
+                        <span style="font-size: 0.75rem; color: var(--text-muted);">DB0POB / BM / SDR</span>
+                    </div>
+                    <div class="tg-grid">
+                        <div class="tg-btn active" id="btn-ycs" onclick="switchView('ycs')">
+                            <div class="tg-number">
+                                <svg class="tower-icon-sm" style="fill:var(--accent-gold);"><use href="#icon-antenna-tower"/></svg>
+                                DG 62
+                            </div>
+                            <div class="tg-label">YCS262 Bayern</div>
+                            <div class="tg-badge">C4FM</div>
+                        </div>
+                        <div class="tg-btn" id="btn-hose262" onclick="switchView('hose262')">
+                            <div class="tg-number">
+                                <svg class="tower-icon-sm" style="fill:var(--accent-cyan);"><use href="#icon-antenna-tower"/></svg>
+                                TG 262
+                            </div>
+                            <div class="tg-label">Hoseline DE</div>
+                            <div class="tg-badge">DMR Live</div>
+                        </div>
+                        <div class="tg-btn" id="btn-websdr" onclick="switchView('websdr')">
+                            <div class="tg-number">
+                                <svg class="tower-icon-sm" style="fill:var(--accent-green);"><use href="#icon-antenna-tower"/></svg>
+                                DKØOD
+                            </div>
+                            <div class="tg-label">WEB SDR</div>
+                            <div class="tg-badge">145.600 MHz</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ANSICHT 1: YCS262 C4FM DASHBOARD -->
+                <div class="panel-body active" id="view-ycs">
+                    <div class="scaled-iframe-wrapper">
+                        <iframe id="c4fm-frame" src="http://ycs262.xreflector.net/"></iframe>
+                    </div>
+                </div>
+
+                <!-- ANSICHT 2: BRANDMEISTER HOSELINE TG 262 (DEUTSCHLAND) -->
+                <div class="panel-body" id="view-hose262">
+                    <iframe id="hose262-frame" src="https://hose.brandmeister.network/?subscribe=262"></iframe>
+                </div>
+
+                <!-- ANSICHT 3: WEB SDR DKØOD -->
+                <div class="panel-body" id="view-websdr">
+                    <iframe id="websdr-frame" src="http://websdr.dk0od.de:8073/#freq=145600000,mod=nfm,sql=-50"></iframe>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function updateUrls() {
+            const wpsdUrl = document.getElementById('wpsd-url').value;
+            document.getElementById('wpsd-frame').src = wpsdUrl;
+            document.getElementById('wpsd-link').href = wpsdUrl;
+        }
+
+        function switchView(view) {
+            const btnYcs = document.getElementById('btn-ycs');
+            const btnHose262 = document.getElementById('btn-hose262');
+            const btnWebsdr = document.getElementById('btn-websdr');
+            
+            const viewYcs = document.getElementById('view-ycs');
+            const viewHose262 = document.getElementById('view-hose262');
+            const viewWebsdr = document.getElementById('view-websdr');
+            
+            const titleText = document.getElementById('panel-title-text');
+            const extLink = document.getElementById('external-link');
+
+            // Alle Inaktiv schalten
+            [btnYcs, btnHose262, btnWebsdr].forEach(b => b.classList.remove('active'));
+            [viewYcs, viewHose262, viewWebsdr].forEach(v => v.classList.remove('active'));
+
+            if (view === 'ycs') {
+                btnYcs.classList.add('active');
+                viewYcs.classList.add('active');
+                titleText.innerHTML = '<svg class="tower-icon-sm"><use href="#icon-antenna-tower"/></svg> YCS262 C4FM BAYERN (DG 62)';
+                extLink.href = 'http://ycs262.xreflector.net/';
+                extLink.innerText = '↗ YCS262 Extern öffnen';
+            } else if (view === 'hose262') {
+                btnHose262.classList.add('active');
+                viewHose262.classList.add('active');
+                titleText.innerHTML = '<svg class="tower-icon-sm"><use href="#icon-antenna-tower"/></svg> BRANDMEISTER HOSELINE (TG 262 DEUTSCHLAND)';
+                extLink.href = 'https://hose.brandmeister.network/?subscribe=262';
+                extLink.innerText = '↗ Hoseline Extern öffnen';
+            } else if (view === 'websdr') {
+                btnWebsdr.classList.add('active');
+                viewWebsdr.classList.add('active');
+                titleText.innerHTML = '<svg class="tower-icon-sm"><use href="#icon-antenna-tower"/></svg> WEB SDR DKØOD (145.600 MHz)';
+                extLink.href = 'http://websdr.dk0od.de:8073/#freq=145600000,mod=nfm,sql=-50';
+                extLink.innerText = '↗ WebSDR Extern öffnen';
+            }
+        }
+    </script>
+</body>
+</html>
