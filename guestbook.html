@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="de" id="htmlRoot">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gästebuch - DO4LC Stations-Log</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;700&family=Inter:wght@300;400;600;700&display=swap');
+    
+    body { 
+      font-family: 'Inter', sans-serif; 
+      background-color: #0b0c10; 
+      color: #ffffff;
+      background-image: linear-gradient(rgba(11, 12, 16, 0.92), rgba(11, 12, 16, 0.92)), url('https://i.ibb.co/fYZ4n53r/jaesu.jpg');
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      background-attachment: fixed;
+    }
+    
+    .font-mono-code { font-family: 'Fira Code', monospace; }
+    
+    .card-theme { 
+      background: linear-gradient(145deg, #161a24, #0f121a); 
+      border: 1px solid #d4af37;
+      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.7), 0 8px 10px -6px rgba(0, 0, 0, 0.5), inset 0 1px 1px rgba(212, 175, 55, 0.2);
+    }
+    
+    .gold-border { border-color: #d4af37 !important; }
+    .accent-color { color: #ff3b30; }
+
+    .accent-bg { 
+      background: linear-gradient(135deg, #ff4d4d, #cc1100); 
+      color: #ffffff;
+      box-shadow: 0 4px 15px rgba(255, 59, 48, 0.4), inset 0 1px 1px rgba(255, 255, 255, 0.3);
+      transition: all 0.2s ease;
+    }
+    .accent-bg:hover {
+      background: linear-gradient(135deg, #ff6666, #e61400);
+      transform: translateY(-1px);
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between selection:bg-red-600 selection:text-white">
+
+  <!-- Header -->
+  <header class="sticky top-0 z-50 card-theme border-b backdrop-blur-md bg-opacity-90 shadow-2xl">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-16">
+        <div class="flex items-center gap-3">
+          <a href="index.html" class="h-10 px-3 rounded-lg card-theme border gold-border flex items-center justify-center shadow-lg bg-black/50 hover:border-red-500 transition">
+            <span class="font-mono-code font-bold text-xl tracking-wider accent-color">DO4LC</span>
+          </a>
+          <div class="hidden sm:block">
+            <span class="text-xs text-slate-400 font-mono-code block">Amateurfunk Station</span>
+          </div>
+        </div>
+
+        <nav class="hidden md:flex gap-6 text-sm font-medium items-center">
+          <a href="index.html#about" class="hover:text-red-500 transition">Über mich</a>
+          <a href="index.html#path" class="hover:text-red-500 transition">Mein Weg</a>
+          <a href="index.html#projects" class="hover:text-red-500 transition">Projekte</a>
+          <a href="index.html#equipment" class="hover:text-red-500 transition">Ausrüstung</a>
+          <a href="links.html" class="hover:text-red-500 transition">Links</a>
+          <a href="guestbook.html" class="text-red-500 font-bold transition drop-shadow">Gästebuch</a>
+          <a href="index.html#contact" class="hover:text-red-500 transition">Kontakt</a>
+        </nav>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-10 flex-1 w-full">
+    
+    <div class="flex items-center justify-between">
+      <a href="index.html" class="card-theme border gold-border px-4 py-2 rounded-lg text-xs font-mono-code hover:border-red-500 transition flex items-center gap-2">
+        <i class="fa-solid fa-arrow-left"></i> Zurück zur Startseite
+      </a>
+      <div class="text-xs font-mono-code text-slate-400">STATION DO4LC • LOGBUCH</div>
+    </div>
+
+    <div class="text-center space-y-3">
+      <h1 class="text-3xl sm:text-4xl font-extrabold font-mono-code">
+        <span class="accent-color">Gästebuch</span> / QSO-Grüße
+      </h1>
+      <p class="text-sm text-slate-300 max-w-xl mx-auto font-mono-code">
+        Du warst auf meiner Station zu Besuch oder wir hatten ein nettes QSO auf den Bändern? Hinterlasse mir gerne einen Gruß! Vy 73 de DO4LC.
+      </p>
+    </div>
+
+    <!-- Formular-Box (sendet per Web3Forms an deine E-Mail) -->
+    <div class="card-theme p-6 sm:p-8 rounded-2xl border space-y-6 shadow-2xl">
+      <div class="flex items-center gap-2 border-b border-slate-800 pb-3">
+        <i class="fa-solid fa-pen-to-square accent-color"></i>
+        <h2 class="text-lg font-bold font-mono-code">Neuen Eintrag verfassen</h2>
+      </div>
+
+      <form action="https://api.web3forms.com/submit" method="POST" class="space-y-4">
+        <!-- HIER DEINEN WEB3FORMS ACCESS KEY EINTRAGEN -->
+        <input type="hidden" name="access_key" value="DEIN_WEB3FORMS_KEY">
+        <input type="hidden" name="subject" value="Neuer Gästebuch-Eintrag auf DO4LC">
+        <input type="checkbox" name="botcheck" class="hidden" style="display: none;">
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <label class="block text-xs font-mono-code text-slate-400 mb-1">Name & Rufzeichen *</label>
+            <input type="text" name="name" required placeholder="z.B. Max (DL1ABC)" 
+              class="w-full bg-black/60 border border-slate-700 focus:border-[#d4af37] rounded-lg px-4 py-2.5 text-sm text-white outline-none transition">
+          </div>
+          <div>
+            <label class="block text-xs font-mono-code text-slate-400 mb-1">QTH / Locator (optional)</label>
+            <input type="text" name="qth" placeholder="z.B. München / JN58" 
+              class="w-full bg-black/60 border border-slate-700 focus:border-[#d4af37] rounded-lg px-4 py-2.5 text-sm text-white outline-none transition">
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-xs font-mono-code text-slate-400 mb-1">Band / Betriebsart (optional)</label>
+          <input type="text" name="band" placeholder="z.B. 20m SSB, 2m FM, DMR TG262 oder Web-Besuch" 
+            class="w-full bg-black/60 border border-slate-700 focus:border-[#d4af37] rounded-lg px-4 py-2.5 text-sm text-white outline-none transition">
+        </div>
+
+        <div>
+          <label class="block text-xs font-mono-code text-slate-400 mb-1">Deine Nachricht / Gruß *</label>
+          <textarea name="message" rows="4" required placeholder="Schreibe hier deinen Gästebuch-Gruß..." 
+            class="w-full bg-black/60 border border-slate-700 focus:border-[#d4af37] rounded-lg px-4 py-2.5 text-sm text-white outline-none transition"></textarea>
+        </div>
+
+        <!-- Sichtbares Dark-Mode Captcha gegen Spam -->
+        <div class="pt-1">
+          <div class="h-captcha" data-captcha="true" data-theme="dark"></div>
+        </div>
+
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pt-2">
+          <span class="text-xs text-slate-400 font-mono-code">
+            <i class="fa-solid fa-shield-halved text-[#d4af37] mr-1"></i> Einträge werden nach Prüfung veröffentlicht.
+          </span>
+          <button type="submit" class="accent-bg px-6 py-2.5 rounded-lg font-mono-code font-bold text-sm flex items-center justify-center gap-2 cursor-pointer">
+            <i class="fa-solid fa-paper-plane"></i> Eintrag absenden
+          </button>
+        </div>
+      </form>
+    </div>
+
+    <!-- Veröffentlichte Einträge (Logbuch-Wand) -->
+    <div class="space-y-4">
+      <div class="flex items-center gap-2 px-1">
+        <i class="fa-solid fa-book-open accent-color"></i>
+        <h2 class="text-lg font-bold font-mono-code">Bisherige Einträge</h2>
+      </div>
+
+      <!-- Eintrag 1 (Dein Willkommens-Eintrag) -->
+      <div class="card-theme p-5 rounded-xl border space-y-2">
+        <div class="flex flex-wrap items-center justify-between gap-2 border-b border-slate-800/80 pb-2">
+          <div class="flex items-center gap-2">
+            <span class="font-mono-code font-bold text-[#d4af37]">DO4LC • Carsten</span>
+            <span class="text-xs bg-red-950/80 text-red-400 border border-red-800/50 px-2 py-0.5 rounded font-mono-code">Station Owner</span>
+          </div>
+          <span class="text-xs font-mono-code text-slate-400">Mainburg • 12.11.2026</span>
+        </div>
+        <p class="text-sm text-slate-200 leading-relaxed">
+          Willkommen im neuen Gästebuch meiner Funkstation! Ich freue mich über jeden Gruß, Rapport oder Feedback zu meinen Projekten. Vy 73 und auf ein baldiges QSO!
+        </p>
+      </div>
+
+      <!-- VORLAGE FÜR NEUE EINTRÄGE (Einfach kopieren, ausfüllen und hier einfügen):
+      <div class="card-theme p-5 rounded-xl border space-y-2">
+        <div class="flex flex-wrap items-center justify-between gap-2 border-b border-slate-800/80 pb-2">
+          <div class="flex items-center gap-2">
+            <span class="font-mono-code font-bold text-[#d4af37]">RUFZEICHEN • Name</span>
+            <span class="text-xs bg-slate-800 text-slate-300 px-2 py-0.5 rounded font-mono-code">BAND / MODE</span>
+          </div>
+          <span class="text-xs font-mono-code text-slate-400">QTH • DATUM</span>
+        </div>
+        <p class="text-sm text-slate-200 leading-relaxed">
+          HIER DEN TEXT DES BESUCHERS EINFÜGEN.
+        </p>
+      </div>
+      -->
+
+    </div>
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="card-theme border-t py-6 mt-12 font-mono-code text-xs text-slate-400 text-center shadow-2xl">
+    <div class="max-w-7xl mx-auto px-4">
+      <span>YAESU STATION • © <span id="year"></span> DO4LC • Carsten • Vy 73 de DO4LC</span>
+    </div>
+  </footer>
+
+  <!-- Web3Forms Captcha Script -->
+  <script src="https://web3forms.com/client/script.js" async defer></script>
+
+  <script>
+    document.getElementById('year').innerText = new Date().getFullYear();
+  </script>
+</body>
+</html>
