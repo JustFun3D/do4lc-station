@@ -97,7 +97,6 @@
         <h2 class="text-lg font-bold font-mono-code">Neuen Eintrag verfassen</h2>
       </div>
 
-      <!-- Formular speichert lokal ab und sendet an Web3Forms -->
       <form id="guestbookForm" onsubmit="handleFormSubmit(event)" class="space-y-4">
         <input type="hidden" name="access_key" value="a72f5b00-d520-4394-9cd2-42d0272f616d">
         <input type="hidden" name="subject" value="Neuer Gästebuch-Eintrag auf DO4LC">
@@ -116,14 +115,39 @@
           </div>
         </div>
 
-        <div>
-          <label class="block text-xs font-mono-code text-slate-400 mb-1">Band / Betriebsart (optional)</label>
-          <input type="text" id="fieldBand" placeholder="z.B. 20m SSB, 2m FM, DMR TG262" 
-            class="w-full bg-black/60 border border-slate-700 focus:border-[#d4af37] rounded-lg px-4 py-2.5 text-sm text-white outline-none transition">
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <label class="block text-xs font-mono-code text-slate-400 mb-1">Band / Betriebsart (optional)</label>
+            <input type="text" id="fieldBand" placeholder="z.B. 20m SSB, 2m FM, DMR" 
+              class="w-full bg-black/60 border border-slate-700 focus:border-[#d4af37] rounded-lg px-4 py-2.5 text-sm text-white outline-none transition">
+          </div>
+          <div>
+            <label class="block text-xs font-mono-code text-slate-400 mb-1">Schriftfarbe des Textes</label>
+            <select id="fieldColor" class="w-full bg-black/60 border border-slate-700 focus:border-[#d4af37] rounded-lg px-4 py-2.5 text-sm text-white outline-none transition font-mono-code">
+              <option value="#e2e8f0">Standard (Hellgrau/Weiß)</option>
+              <option value="#d4af37">Stations-Gold (#d4af37)</option>
+              <option value="#ff4d4d">Funk-Rot (#ff4d4d)</option>
+              <option value="#4ade80">QSO-Grün (#4ade80)</option>
+              <option value="#60a5fa">Antennen-Blau (#60a5fa)</option>
+              <option value="#facc15">Sonne-Gelb (#facc15)</option>
+            </select>
+          </div>
         </div>
 
         <div>
-          <label class="block text-xs font-mono-code text-slate-400 mb-1">Deine Nachricht / Gruß *</label>
+          <div class="flex items-center justify-between mb-1">
+            <label class="block text-xs font-mono-code text-slate-400">Deine Nachricht / Gruß *</label>
+            <!-- Smiley-Auswahlleiste -->
+            <div class="flex gap-1.5 text-base">
+              <button type="button" onclick="addEmoji('😊')" class="hover:scale-125 transition" title="Lächeln">😊</button>
+              <button type="button" onclick="addEmoji('👍')" class="hover:scale-125 transition" title="Daumen hoch">👍</button>
+              <button type="button" onclick="addEmoji('📻')" class="hover:scale-125 transition" title="Funkgerät">📻</button>
+              <button type="button" onclick="addEmoji('⚡')" class="hover:scale-125 transition" title="Antenne/Strom">⚡</button>
+              <button type="button" onclick="addEmoji('⭐')" class="hover:scale-125 transition" title="Stern">⭐</button>
+              <button type="button" onclick="addEmoji('☕')" class="hover:scale-125 transition" title="Kaffee">☕</button>
+              <button type="button" onclick="addEmoji('73! 👋')" class="hover:scale-125 transition text-xs font-mono-code bg-slate-800 px-1 rounded text-amber-400" title="73 Gruß">73!</button>
+            </div>
+          </div>
           <textarea id="fieldMessage" rows="4" required placeholder="Schreibe hier deinen Gästebuch-Gruß..." 
             class="w-full bg-black/60 border border-slate-700 focus:border-[#d4af37] rounded-lg px-4 py-2.5 text-sm text-white outline-none transition"></textarea>
         </div>
@@ -150,7 +174,7 @@
       </form>
     </div>
 
-    <!-- Veröffentlichte Einträge (Logbuch-Wand) -->
+    <!-- Veröffentlichte Einträge -->
     <div class="space-y-4">
       <div class="flex items-center justify-between px-1">
         <div class="flex items-center gap-2">
@@ -162,9 +186,8 @@
         </a>
       </div>
 
-      <!-- Container für feste und dynamische Einträge -->
       <div id="entriesContainer" class="space-y-4">
-        <!-- Eintrag 1 (Dein fester Willkommens-Eintrag) -->
+        <!-- Fester Willkommens-Eintrag -->
         <div class="card-theme p-5 rounded-xl border space-y-2">
           <div class="flex flex-wrap items-center justify-between gap-2 border-b border-slate-800/80 pb-2">
             <div class="flex items-center gap-2">
@@ -178,7 +201,6 @@
           </p>
         </div>
       </div>
-
     </div>
 
   </main>
@@ -190,31 +212,35 @@
     </div>
   </footer>
 
-  <!-- Skript für Captcha & Live-Speicherung -->
+  <!-- Skript -->
   <script>
     document.getElementById('year').innerText = new Date().getFullYear();
 
-    // Mathe-Captcha Logik
     let num1 = Math.floor(Math.random() * 8) + 2;
     let num2 = Math.floor(Math.random() * 8) + 2;
     let correctResult = num1 + num2;
     document.getElementById('captchaText').innerText = `${num1} + ${num2} = ?`;
 
-    // Einträge beim Laden anzeigen
     loadEntries();
+
+    function addEmoji(emoji) {
+      const textarea = document.getElementById('fieldMessage');
+      textarea.value += emoji;
+      textarea.focus();
+    }
 
     function loadEntries() {
       const container = document.getElementById('entriesContainer');
       const savedEntries = JSON.parse(localStorage.getItem('do4lc_guestbook') || '[]');
 
-      // HTML für dynamische Einträge generieren
       let dynamicHtml = '';
       savedEntries.forEach(entry => {
         const badge = entry.band ? `<span class="text-xs bg-slate-800 text-slate-300 px-2 py-0.5 rounded font-mono-code">${escapeHtml(entry.band)}</span>` : '';
         const qthInfo = entry.qth ? `${escapeHtml(entry.qth)} • ` : '';
+        const textColor = entry.color || '#e2e8f0';
         
         dynamicHtml += `
-          <div class="card-theme p-5 rounded-xl border space-y-2 animate-fade-in">
+          <div class="card-theme p-5 rounded-xl border space-y-2">
             <div class="flex flex-wrap items-center justify-between gap-2 border-b border-slate-800/80 pb-2">
               <div class="flex items-center gap-2">
                 <span class="font-mono-code font-bold text-[#d4af37]">${escapeHtml(entry.name)}</span>
@@ -222,14 +248,13 @@
               </div>
               <span class="text-xs font-mono-code text-slate-400">${qthInfo}${escapeHtml(entry.date)}</span>
             </div>
-            <p class="text-sm text-slate-200 leading-relaxed">
+            <p class="text-sm leading-relaxed" style="color: ${textColor};">
               ${escapeHtml(entry.message)}
             </p>
           </div>
         `;
       });
 
-      // Bestehenden festen Willkommens-Eintrag behalten und neue oben/unten anhängen
       const welcomeHtml = `
         <div class="card-theme p-5 rounded-xl border space-y-2">
           <div class="flex flex-wrap items-center justify-between gap-2 border-b border-slate-800/80 pb-2">
@@ -251,7 +276,6 @@
     async function handleFormSubmit(event) {
       event.preventDefault();
 
-      // Captcha prüfen
       const userAnswer = parseInt(document.getElementById('captchaAnswer').value);
       if (userAnswer !== correctResult) {
         document.getElementById('captchaError').classList.remove('hidden');
@@ -262,12 +286,13 @@
       const name = document.getElementById('fieldName').value;
       const qth = document.getElementById('fieldQth').value;
       const band = document.getElementById('fieldBand').value;
+      const color = document.getElementById('fieldColor').value;
       const message = document.getElementById('fieldMessage').value;
       
       const options = { day: '2-digit', month: '2-digit', year: 'numeric' };
       const date = new Date().toLocaleDateString('de-DE', options);
 
-      // 1. An Web3Forms senden (für deine E-Mail im Hintergrund)
+      // An Web3Forms senden (für deine E-Mail)
       const formData = new FormData();
       formData.append("access_key", "a72f5b00-d520-4394-9cd2-42d0272f616d");
       formData.append("name", name);
@@ -284,13 +309,12 @@
           body: formData
         });
 
-        // 2. Lokal speichern, damit es sofort auf der Seite erscheint
-        const newEntry = { name, qth, band, message, date };
+        // Lokal speichern
+        const newEntry = { name, qth, band, color, message, date };
         const savedEntries = JSON.parse(localStorage.getItem('do4lc_guestbook') || '[]');
-        savedEntries.unshift(newEntry); // Oben hinzufügen
+        savedEntries.unshift(newEntry);
         localStorage.setItem('do4lc_guestbook', JSON.stringify(savedEntries));
 
-        // Formular zurücksetzen und neu laden
         document.getElementById('guestbookForm').reset();
         loadEntries();
         
@@ -306,8 +330,4 @@
 
     function escapeHtml(text) {
       if (!text) return '';
-      return text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
-    }
-  </script>
-</body>
-</html>
+      return text.replace(/&/g, "&amp;").replace(/</g, "&lt;
