@@ -99,6 +99,7 @@
           <a href="#projects" class="hover:text-red-500 transition drop-shadow" data-i18n="navProjects">Projekte</a>
           <a href="#equipment" class="hover:text-red-500 transition drop-shadow" data-i18n="navEquipment">Ausrüstung</a>
           <a href="links.html" class="hover:text-red-500 transition drop-shadow" data-i18n="navLinks">Links</a>
+          <a href="guestbook.html" class="text-amber-400 font-bold hover:text-red-500 transition drop-shadow" data-i18n="navGuestbook">Gästebuch</a>
           <a href="#contact" class="hover:text-red-500 transition drop-shadow" data-i18n="navContact">Kontakt</a>
           
           <select id="langSelect" onchange="changeLanguage(this.value)" class="card-theme border gold-border text-xs font-mono-code rounded px-2 py-1 text-red-500 focus:outline-none cursor-pointer ml-4 shadow-inner">
@@ -190,7 +191,8 @@
         </div>
       </div>
     </section>
-<!-- Path / Timeline -->
+
+    <!-- Path / Timeline -->
     <section id="path" class="space-y-6 scroll-mt-20">
       <div class="flex items-center gap-3">
         <i class="fa-solid fa-graduation-cap accent-color text-2xl"></i>
@@ -301,7 +303,7 @@
               </a>
             </li>
 
-            <!-- Yaesu FT-2980E (Mit Radiowerkstatt-Bild) -->
+            <!-- Yaesu FT-2980E -->
             <li>
               <a href="ft2980.html" class="p-3 card-theme rounded-lg border flex justify-between items-center block hover:border-red-500 transition group">
                 <div class="flex items-center gap-3">
@@ -319,7 +321,7 @@
               </a>
             </li>
 
-            <!-- Radioddity DB-25D (Mit Radiowerkstatt-Bild) -->
+            <!-- Radioddity DB-25D -->
             <li>
               <a href="db25.html" class="p-3 card-theme rounded-lg border flex justify-between items-center block hover:border-red-500 transition group">
                 <div class="flex items-center gap-3">
@@ -483,7 +485,7 @@
 
     const translations = {
       de: {
-        subTitle: "Amateurfunk Station", navAbout: "Über mich", navPath: "Mein Weg", navProjects: "Projekte", navEquipment: "Ausrüstung", navLinks: "Links", navContact: "Kontakt",
+        subTitle: "Amateurfunk Station", navAbout: "Über mich", navPath: "Mein Weg", navProjects: "Projekte", navEquipment: "Ausrüstung", navLinks: "Links", navGuestbook: "Gästebuch", navContact: "Kontakt",
         statusOnAir: "QRV / ON AIR", heroWelcome: "Willkommen auf der Station", heroText: "Faszination Funktechnik, digitale Betriebsarten, SDR-Experimente und Leidenschaft für Wellenausbreitung von Kurzwelle bis Mikrowelle.",
         btnMessage: "Nachricht Senden", btnSetup: "Shack Setup", labelOp: "OP Name", labelLicense: "Lizenzklasse", labelClub: "Förderverein", labelQth: "LOC / QTH",
         dxWeatherTitle: "Solar & DX Data",
@@ -496,7 +498,7 @@
         contactTitle: "Nachricht senden", contactDesc: "Vielen Dank für deinen Besuch...", formName: "DEIN NAME / CALLSIGN", formEmail: "DEINE E-MAIL ADRESSE", formMsg: "NACHRICHT", formSubmit: "Nachricht Absenden", formSuccessText: "✓ E-Mail-Programm wurde geöffnet...", visitorCounter: "VISITOR COUNTER:"
       },
       en: {
-        subTitle: "Amateur Radio Station", navAbout: "About Me", navPath: "My Path", navProjects: "Projects", navEquipment: "Equipment", navLinks: "Links", navContact: "Contact",
+        subTitle: "Amateur Radio Station", navAbout: "About Me", navPath: "My Path", navProjects: "Projects", navEquipment: "Equipment", navLinks: "Links", navGuestbook: "Guestbook", navContact: "Contact",
         statusOnAir: "QRV / ON AIR", heroWelcome: "Welcome to Station", heroText: "Fascinated by radio technology...",
         btnMessage: "Send Message", btnSetup: "Shack Setup", labelOp: "OP Name", labelLicense: "License Class", labelClub: "Radio Club", labelQth: "LOC / QTH",
         dxWeatherTitle: "Solar & DX Data",
