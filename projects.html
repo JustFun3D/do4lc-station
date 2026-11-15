@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="de" id="htmlRoot">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>In Arbeit - DO4LC Stations-Log</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;700&family=Inter:wght@300;400;600;700&display=swap');
+    
+    body { 
+      font-family: 'Inter', sans-serif; 
+      background-color: #0b0c10; 
+      color: #ffffff;
+      background-image: linear-gradient(rgba(11, 12, 16, 0.92), rgba(11, 12, 16, 0.92)), url('https://i.ibb.co/fYZ4n53r/jaesu.jpg');
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      background-attachment: fixed;
+    }
+    
+    .font-mono-code { font-family: 'Fira Code', monospace; }
+    
+    .card-theme { 
+      background: linear-gradient(145deg, #161a24, #0f121a); 
+      border: 1px solid #d4af37;
+      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.7), 0 8px 10px -6px rgba(0, 0, 0, 0.5), inset 0 1px 1px rgba(212, 175, 55, 0.2);
+    }
+    
+    .gold-border { border-color: #d4af37 !important; }
+    .accent-color { color: #ff3b30; }
+
+    .accent-bg { 
+      background: linear-gradient(135deg, #ff4d4d, #cc1100); 
+      color: #ffffff;
+      box-shadow: 0 4px 15px rgba(255, 59, 48, 0.4), inset 0 1px 1px rgba(255, 255, 255, 0.3);
+      transition: all 0.2s ease;
+    }
+    .accent-bg:hover {
+      background: linear-gradient(135deg, #ff6666, #e61400);
+      transform: translateY(-1px);
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between selection:bg-red-600 selection:text-white">
+
+  <!-- Header -->
+  <header class="sticky top-0 z-50 card-theme border-b backdrop-blur-md bg-opacity-90 shadow-2xl">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-16">
+        <div class="flex items-center gap-3">
+          <a href="index.html" class="h-10 px-3 rounded-lg card-theme border gold-border flex items-center justify-center shadow-lg bg-black/50 hover:border-red-500 transition">
+            <span class="font-mono-code font-bold text-xl tracking-wider accent-color">DO4LC</span>
+          </a>
+          <div class="hidden sm:block">
+            <span class="text-xs text-slate-400 font-mono-code block">Amateurfunk Station</span>
+          </div>
+        </div>
+
+        <nav class="hidden md:flex gap-6 text-sm font-medium items-center">
+          <a href="index.html" class="hover:text-red-500 transition">Startseite</a>
+          <a href="links.html" class="hover:text-red-500 transition">Links</a>
+          <a href="guestbook.html" class="hover:text-red-500 transition">Gästebuch</a>
+        </nav>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 py-16 space-y-8 flex-1 w-full flex flex-col items-center justify-center text-center">
+    
+    <div class="card-theme p-8 rounded-2xl border space-y-6 shadow-2xl w-full">
+      <div class="space-y-2">
+        <div class="inline-block px-3 py-1 rounded bg-amber-500/10 border border-amber-500/30 text-amber-400 font-mono-code text-xs mb-2">
+          <i class="fa-solid fa-triangle-exclamation mr-1"></i> Wartungsarbeiten / In Aufbau
+        </div>
+        <h1 class="text-2xl sm:text-3xl font-extrabold font-mono-code">
+          Bereich <span class="accent-color">in Arbeit</span>
+        </h1>
+        <p class="text-sm text-slate-300 font-mono-code">
+          Dieser Teil der Station wird gerade aufgebaut oder optimiert. Bitte habe noch ein wenig Geduld!
+        </p>
+      </div>
+
+      <!-- Eingebundenes Bild -->
+      <div class="rounded-xl overflow-hidden border gold-border/40 shadow-lg bg-black/40 p-2">
+        <img src="https://i.ibb.co/QqXLsRc/undercon.jpg" alt="Under Construction" class="w-full h-auto rounded-lg object-cover">
+      </div>
+
+      <div class="pt-2">
+        <a href="index.html" class="accent-bg px-6 py-3 rounded-lg font-mono-code font-bold text-sm inline-flex items-center gap-2">
+          <i class="fa-solid fa-arrow-left"></i> Zurück zur Startseite
+        </a>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="card-theme border-t py-6 font-mono-code text-xs text-slate-400 text-center shadow-2xl">
+    <div class="max-w-7xl mx-auto px-4">
+      <span>YAESU STATION • © <span id="year"></span> DO4LC • Carsten • Vy 73 de DO4LC</span>
+    </div>
+  </footer>
+
+  <script>
+    document.getElementById('year').innerText = new Date().getFullYear();
+  </script>
+</body>
+</html>
