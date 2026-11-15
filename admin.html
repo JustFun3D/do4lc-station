@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin - Gästebuch Verwaltung</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;700&family=Inter:wght@300;400;600;700&display=swap');
+    body { font-family: 'Inter', sans-serif; background-color: #0b0c10; color: #ffffff; }
+    .font-mono-code { font-family: 'Fira Code', monospace; }
+    .card-theme { background: linear-gradient(145deg, #161a24, #0f121a); border: 1px solid #d4af37; }
+    .gold-border { border-color: #d4af37 !important; }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between p-6">
+  <main class="max-w-3xl mx-auto w-full space-y-6">
+    <div class="flex items-center justify-between border-b border-slate-800 pb-4">
+      <h1 class="text-xl font-bold font-mono-code text-amber-400">Gästebuch Verwaltung (Admin)</h1>
+      <a href="guestbook.html" class="text-xs font-mono-code text-slate-400 hover:text-white transition">
+        <i class="fa-solid fa-arrow-left"></i> Zum Gästebuch
+      </a>
+    </div>
+
+    <div id="adminEntries" class="space-y-4">
+      <!-- Wird per Script gefüllt -->
+    </div>
+  </main>
+
+  <script>
+    renderAdminEntries();
+
+    function renderAdminEntries() {
+      const container = document.getElementById('adminEntries');
+      const savedEntries = JSON.parse(localStorage.getItem('do4lc_guestbook') || '[]');
+
+      if (savedEntries.length === 0) {
+        container.innerHTML = '<p class="text-sm text-slate-500 font-mono-code">Keine dynamischen Einträge vorhanden.</p>';
+        return;
+      }
+
+      let html = '';
+      savedEntries.forEach((entry, index) => {
+        html += `
+          <div class="card-theme p-4 rounded-xl border flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+            <div class="space-y-1">
+              <div class="flex items-center gap-2 font-mono-code text-sm">
+                <span class="font-bold text-amber-400">${escapeHtml(entry.name)}</span>
+                <span class="text-xs text-slate-400">(${escapeHtml(entry.date)})</span>
+              </div>
+              <p class="text-xs text-slate-300">${escapeHtml(entry.message)}</p>
+            </div>
+            <button onclick="deleteEntry(${index})" class="bg-red-950/80 border border-red-800 text-red-400 px-3 py-1.5 rounded text-xs font-mono-code hover:bg-red-900 transition flex items-center gap-1 shrink-0">
+              <i class="fa-solid fa-trash"></i> Löschen
+            </button>
+          </div>
+        `;
+      });
+      container.innerHTML = html;
+    }
+
+    function deleteEntry(index) {
+      if (confirm('Diesen Eintrag wirklich löschen?')) {
+        let savedEntries = JSON.parse(localStorage.getItem('do4lc_guestbook') || '[]');
+        savedEntries.splice(index, 1);
+        localStorage.setItem('do4lc_guestbook', JSON.stringify(savedEntries));
+        renderAdminEntries();
+      }
+    }
+
+    function escapeHtml(text) {
+      if (!text) return '';
+      return text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
+    }
+  </script>
+</body>
+</html>

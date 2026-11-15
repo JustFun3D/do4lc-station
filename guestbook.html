@@ -97,8 +97,8 @@
         <h2 class="text-lg font-bold font-mono-code">Neuen Eintrag verfassen</h2>
       </div>
 
-      <form action="https://api.web3forms.com/submit" method="POST" onsubmit="return checkCaptcha(event)" class="space-y-4">
-        <!-- Dein neuer Web3Forms Access Key -->
+      <!-- Formular speichert lokal ab und sendet an Web3Forms -->
+      <form id="guestbookForm" onsubmit="handleFormSubmit(event)" class="space-y-4">
         <input type="hidden" name="access_key" value="a72f5b00-d520-4394-9cd2-42d0272f616d">
         <input type="hidden" name="subject" value="Neuer Gästebuch-Eintrag auf DO4LC">
         <input type="checkbox" name="botcheck" class="hidden" style="display: none;">
@@ -106,31 +106,31 @@
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div>
             <label class="block text-xs font-mono-code text-slate-400 mb-1">Name & Rufzeichen *</label>
-            <input type="text" name="name" required placeholder="z.B. Max (DL1ABC)" 
+            <input type="text" id="fieldName" required placeholder="z.B. Max (DL1ABC)" 
               class="w-full bg-black/60 border border-slate-700 focus:border-[#d4af37] rounded-lg px-4 py-2.5 text-sm text-white outline-none transition">
           </div>
           <div>
             <label class="block text-xs font-mono-code text-slate-400 mb-1">QTH / Locator (optional)</label>
-            <input type="text" name="qth" placeholder="z.B. München / JN58" 
+            <input type="text" id="fieldQth" placeholder="z.B. München / JN58" 
               class="w-full bg-black/60 border border-slate-700 focus:border-[#d4af37] rounded-lg px-4 py-2.5 text-sm text-white outline-none transition">
           </div>
         </div>
 
         <div>
           <label class="block text-xs font-mono-code text-slate-400 mb-1">Band / Betriebsart (optional)</label>
-          <input type="text" name="band" placeholder="z.B. 20m SSB, 2m FM, DMR TG262 oder Web-Besuch" 
+          <input type="text" id="fieldBand" placeholder="z.B. 20m SSB, 2m FM, DMR TG262" 
             class="w-full bg-black/60 border border-slate-700 focus:border-[#d4af37] rounded-lg px-4 py-2.5 text-sm text-white outline-none transition">
         </div>
 
         <div>
           <label class="block text-xs font-mono-code text-slate-400 mb-1">Deine Nachricht / Gruß *</label>
-          <textarea name="message" rows="4" required placeholder="Schreibe hier deinen Gästebuch-Gruß..." 
+          <textarea id="fieldMessage" rows="4" required placeholder="Schreibe hier deinen Gästebuch-Gruß..." 
             class="w-full bg-black/60 border border-slate-700 focus:border-[#d4af37] rounded-lg px-4 py-2.5 text-sm text-white outline-none transition"></textarea>
         </div>
 
-        <!-- Einfaches Rechen-Captcha statt Bilder anklicken -->
+        <!-- Mathe-Captcha -->
         <div class="p-4 rounded-xl card-theme border gold-border/50 space-y-2">
-          <label class="block text-xs font-mono-code text-amber-400 font-bold" id="captchaQuestion">Spamschutz: Bitte rechne folgende Aufgabe</label>
+          <label class="block text-xs font-mono-code text-amber-400 font-bold">Spamschutz: Bitte rechne folgende Aufgabe</label>
           <div class="flex items-center gap-3">
             <span id="captchaText" class="font-mono-code text-base font-bold text-white bg-black/60 px-3 py-2 rounded border border-slate-700"></span>
             <input type="number" id="captchaAnswer" required placeholder="Ergebnis" 
@@ -140,8 +140,8 @@
         </div>
 
         <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pt-2">
-          <span class="text-xs text-slate-400 font-mono-code">
-            <i class="fa-solid fa-shield-halved text-[#d4af37] mr-1"></i> Einträge werden nach Prüfung veröffentlicht.
+          <span class="text-xs text-slate-400 font-mono-code" id="formStatus">
+            <i class="fa-solid fa-shield-halved text-[#d4af37] mr-1"></i> Einträge werden sofort veröffentlicht.
           </span>
           <button type="submit" class="accent-bg px-6 py-2.5 rounded-lg font-mono-code font-bold text-sm flex items-center justify-center gap-2 cursor-pointer">
             <i class="fa-solid fa-paper-plane"></i> Eintrag absenden
@@ -152,23 +152,31 @@
 
     <!-- Veröffentlichte Einträge (Logbuch-Wand) -->
     <div class="space-y-4">
-      <div class="flex items-center gap-2 px-1">
-        <i class="fa-solid fa-book-open accent-color"></i>
-        <h2 class="text-lg font-bold font-mono-code">Bisherige Einträge</h2>
+      <div class="flex items-center justify-between px-1">
+        <div class="flex items-center gap-2">
+          <i class="fa-solid fa-book-open accent-color"></i>
+          <h2 class="text-lg font-bold font-mono-code">Bisherige Einträge</h2>
+        </div>
+        <a href="admin.html" class="text-xs font-mono-code text-slate-500 hover:text-slate-300 transition">
+          <i class="fa-solid fa-gear"></i> Admin
+        </a>
       </div>
 
-      <!-- Eintrag 1 -->
-      <div class="card-theme p-5 rounded-xl border space-y-2">
-        <div class="flex flex-wrap items-center justify-between gap-2 border-b border-slate-800/80 pb-2">
-          <div class="flex items-center gap-2">
-            <span class="font-mono-code font-bold text-[#d4af37]">DO4LC • Carsten</span>
-            <span class="text-xs bg-red-950/80 text-red-400 border border-red-800/50 px-2 py-0.5 rounded font-mono-code">Station Owner</span>
+      <!-- Container für feste und dynamische Einträge -->
+      <div id="entriesContainer" class="space-y-4">
+        <!-- Eintrag 1 (Dein fester Willkommens-Eintrag) -->
+        <div class="card-theme p-5 rounded-xl border space-y-2">
+          <div class="flex flex-wrap items-center justify-between gap-2 border-b border-slate-800/80 pb-2">
+            <div class="flex items-center gap-2">
+              <span class="font-mono-code font-bold text-[#d4af37]">DO4LC • Carsten</span>
+              <span class="text-xs bg-red-950/80 text-red-400 border border-red-800/50 px-2 py-0.5 rounded font-mono-code">Station Owner</span>
+            </div>
+            <span class="text-xs font-mono-code text-slate-400">Mainburg • 12.11.2026</span>
           </div>
-          <span class="text-xs font-mono-code text-slate-400">Mainburg • 12.11.2026</span>
+          <p class="text-sm text-slate-200 leading-relaxed">
+            Willkommen im neuen Gästebuch meiner Funkstation! Ich freue mich über jeden Gruß, Rapport oder Feedback zu meinen Projekten. Vy 73 und auf ein baldiges QSO!
+          </p>
         </div>
-        <p class="text-sm text-slate-200 leading-relaxed">
-          Willkommen im neuen Gästebuch meiner Funkstation! Ich freue mich über jeden Gruß, Rapport oder Feedback zu meinen Projekten. Vy 73 und auf ein baldiges QSO!
-        </p>
       </div>
 
     </div>
@@ -182,25 +190,123 @@
     </div>
   </footer>
 
-  <!-- Kleine Logik für das Mathe-Captcha -->
+  <!-- Skript für Captcha & Live-Speicherung -->
   <script>
     document.getElementById('year').innerText = new Date().getFullYear();
 
+    // Mathe-Captcha Logik
     let num1 = Math.floor(Math.random() * 8) + 2;
     let num2 = Math.floor(Math.random() * 8) + 2;
     let correctResult = num1 + num2;
-
     document.getElementById('captchaText').innerText = `${num1} + ${num2} = ?`;
 
-    function checkCaptcha(event) {
+    // Einträge beim Laden anzeigen
+    loadEntries();
+
+    function loadEntries() {
+      const container = document.getElementById('entriesContainer');
+      const savedEntries = JSON.parse(localStorage.getItem('do4lc_guestbook') || '[]');
+
+      // HTML für dynamische Einträge generieren
+      let dynamicHtml = '';
+      savedEntries.forEach(entry => {
+        const badge = entry.band ? `<span class="text-xs bg-slate-800 text-slate-300 px-2 py-0.5 rounded font-mono-code">${escapeHtml(entry.band)}</span>` : '';
+        const qthInfo = entry.qth ? `${escapeHtml(entry.qth)} • ` : '';
+        
+        dynamicHtml += `
+          <div class="card-theme p-5 rounded-xl border space-y-2 animate-fade-in">
+            <div class="flex flex-wrap items-center justify-between gap-2 border-b border-slate-800/80 pb-2">
+              <div class="flex items-center gap-2">
+                <span class="font-mono-code font-bold text-[#d4af37]">${escapeHtml(entry.name)}</span>
+                ${badge}
+              </div>
+              <span class="text-xs font-mono-code text-slate-400">${qthInfo}${escapeHtml(entry.date)}</span>
+            </div>
+            <p class="text-sm text-slate-200 leading-relaxed">
+              ${escapeHtml(entry.message)}
+            </p>
+          </div>
+        `;
+      });
+
+      // Bestehenden festen Willkommens-Eintrag behalten und neue oben/unten anhängen
+      const welcomeHtml = `
+        <div class="card-theme p-5 rounded-xl border space-y-2">
+          <div class="flex flex-wrap items-center justify-between gap-2 border-b border-slate-800/80 pb-2">
+            <div class="flex items-center gap-2">
+              <span class="font-mono-code font-bold text-[#d4af37]">DO4LC • Carsten</span>
+              <span class="text-xs bg-red-950/80 text-red-400 border border-red-800/50 px-2 py-0.5 rounded font-mono-code">Station Owner</span>
+            </div>
+            <span class="text-xs font-mono-code text-slate-400">Mainburg • 12.11.2026</span>
+          </div>
+          <p class="text-sm text-slate-200 leading-relaxed">
+            Willkommen im neuen Gästebuch meiner Funkstation! Ich freue mich über jeden Gruß, Rapport oder Feedback zu meinen Projekten. Vy 73 und auf ein baldiges QSO!
+          </p>
+        </div>
+      `;
+
+      container.innerHTML = welcomeHtml + dynamicHtml;
+    }
+
+    async function handleFormSubmit(event) {
+      event.preventDefault();
+
+      // Captcha prüfen
       const userAnswer = parseInt(document.getElementById('captchaAnswer').value);
       if (userAnswer !== correctResult) {
-        event.preventDefault();
         document.getElementById('captchaError').classList.remove('hidden');
         document.getElementById('captchaAnswer').focus();
-        return false;
+        return;
       }
-      return true;
+
+      const name = document.getElementById('fieldName').value;
+      const qth = document.getElementById('fieldQth').value;
+      const band = document.getElementById('fieldBand').value;
+      const message = document.getElementById('fieldMessage').value;
+      
+      const options = { day: '2-digit', month: '2-digit', year: 'numeric' };
+      const date = new Date().toLocaleDateString('de-DE', options);
+
+      // 1. An Web3Forms senden (für deine E-Mail im Hintergrund)
+      const formData = new FormData();
+      formData.append("access_key", "a72f5b00-d520-4394-9cd2-42d0272f616d");
+      formData.append("name", name);
+      formData.append("qth", qth);
+      formData.append("band", band);
+      formData.append("message", message);
+      formData.append("subject", "Neuer Gästebuch-Eintrag auf DO4LC");
+
+      document.getElementById('formStatus').innerHTML = '<i class="fa-solid fa-spinner fa-spin text-amber-400 mr-1"></i> Wird gesendet...';
+
+      try {
+        await fetch("https://api.web3forms.com/submit", {
+          method: "POST",
+          body: formData
+        });
+
+        // 2. Lokal speichern, damit es sofort auf der Seite erscheint
+        const newEntry = { name, qth, band, message, date };
+        const savedEntries = JSON.parse(localStorage.getItem('do4lc_guestbook') || '[]');
+        savedEntries.unshift(newEntry); // Oben hinzufügen
+        localStorage.setItem('do4lc_guestbook', JSON.stringify(savedEntries));
+
+        // Formular zurücksetzen und neu laden
+        document.getElementById('guestbookForm').reset();
+        loadEntries();
+        
+        document.getElementById('formStatus').innerHTML = '<i class="fa-solid fa-check text-green-400 mr-1"></i> Erfolgreich eingetragen!';
+        setTimeout(() => {
+          document.getElementById('formStatus').innerHTML = '<i class="fa-solid fa-shield-halved text-[#d4af37] mr-1"></i> Einträge werden sofort veröffentlicht.';
+        }, 4000);
+
+      } catch (error) {
+        alert('Fehler beim Senden. Bitte versuche es noch einmal.');
+      }
+    }
+
+    function escapeHtml(text) {
+      if (!text) return '';
+      return text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
     }
   </script>
 </body>
