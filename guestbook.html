@@ -1,337 +1,356 @@
 <!DOCTYPE html>
-<html lang="de" id="htmlRoot">
+<html lang="de" class="dark">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Gästebuch - DO4LC Stations-Log</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DO4LC • Gästebuch</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;700&family=Inter:wght@300;400;600;700&display=swap');
-    
-    body { 
-      font-family: 'Inter', sans-serif; 
-      background-color: #0b0c10; 
-      color: #ffffff;
-      background-image: linear-gradient(rgba(11, 12, 16, 0.92), rgba(11, 12, 16, 0.92)), url('https://i.ibb.co/fYZ4n53r/jaesu.jpg');
-      background-size: cover;
-      background-position: center;
-      background-repeat: no-repeat;
-      background-attachment: fixed;
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: #0b0d10;
+      color: #e2e8f0;
+      background-image: radial-gradient(circle at 50% 0%, #1a1f29 0%, #0b0d10 75%);
+      min-height: 100vh;
     }
-    
-    .font-mono-code { font-family: 'Fira Code', monospace; }
-    
-    .card-theme { 
-      background: linear-gradient(145deg, #161a24, #0f121a); 
-      border: 1px solid #d4af37;
-      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.7), 0 8px 10px -6px rgba(0, 0, 0, 0.5), inset 0 1px 1px rgba(212, 175, 55, 0.2);
+    .font-mono-code {
+      font-family: 'JetBrains Mono', monospace;
     }
-    
-    .gold-border { border-color: #d4af37 !important; }
-    .accent-color { color: #ff3b30; }
-
-    .accent-bg { 
-      background: linear-gradient(135deg, #ff4d4d, #cc1100); 
-      color: #ffffff;
-      box-shadow: 0 4px 15px rgba(255, 59, 48, 0.4), inset 0 1px 1px rgba(255, 255, 255, 0.3);
-      transition: all 0.2s ease;
+    .card-theme {
+      background: rgba(17, 21, 28, 0.85);
+      border-color: rgba(212, 175, 55, 0.25);
+      backdrop-filter: blur(8px);
     }
-    .accent-bg:hover {
-      background: linear-gradient(135deg, #ff6666, #e61400);
-      transform: translateY(-1px);
+    .watermark {
+      position: fixed;
+      top: 52%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: clamp(6rem, 22vw, 18rem);
+      font-weight: 900;
+      letter-spacing: 0.15em;
+      color: rgba(255, 255, 255, 0.025);
+      pointer-events: none;
+      user-select: none;
+      z-index: 0;
     }
   </style>
 </head>
-<body class="min-h-screen flex flex-col justify-between selection:bg-red-600 selection:text-white">
+<body class="relative antialiased selection:bg-amber-500/30 selection:text-amber-200">
 
-  <!-- Header -->
-  <header class="sticky top-0 z-50 card-theme border-b backdrop-blur-md bg-opacity-90 shadow-2xl">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="flex items-center justify-between h-16">
-        <div class="flex items-center gap-3">
-          <a href="index.html" class="h-10 px-3 rounded-lg card-theme border gold-border flex items-center justify-center shadow-lg bg-black/50 hover:border-red-500 transition">
-            <span class="font-mono-code font-bold text-xl tracking-wider accent-color">DO4LC</span>
-          </a>
-          <div class="hidden sm:block">
-            <span class="text-xs text-slate-400 font-mono-code block">Amateurfunk Station</span>
-          </div>
-        </div>
+  <!-- Yaesu-Style Hintergrund-Wasserzeichen -->
+  <div class="watermark">YAESU</div>
 
-        <nav class="hidden md:flex gap-6 text-sm font-medium items-center">
-          <a href="index.html#about" class="hover:text-red-500 transition">Über mich</a>
-          <a href="index.html#path" class="hover:text-red-500 transition">Mein Weg</a>
-          <a href="index.html#projects" class="hover:text-red-500 transition">Projekte</a>
-          <a href="index.html#equipment" class="hover:text-red-500 transition">Ausrüstung</a>
-          <a href="links.html" class="hover:text-red-500 transition">Links</a>
-          <a href="guestbook.html" class="text-red-500 font-bold transition drop-shadow">Gästebuch</a>
-          <a href="index.html#contact" class="hover:text-red-500 transition">Kontakt</a>
-        </nav>
-      </div>
+  <!-- Navigation -->
+  <header class="relative z-10 border-b border-slate-800/80 bg-[#0b0d10]/90 backdrop-blur-md sticky top-0">
+    <div class="max-w-5xl mx-auto px-4 py-3.5 flex flex-wrap items-center justify-between gap-4">
+      <a href="index.html" class="flex items-center gap-3 group">
+        <span class="font-mono-code font-bold text-[#d4af37] border border-[#d4af37]/60 px-2.5 py-1 rounded bg-[#d4af37]/10 group-hover:bg-[#d4af37]/20 transition">
+          DO4LC
+        </span>
+        <span class="text-xs font-mono-code text-slate-400">Amateurfunk Station</span>
+      </a>
+      <nav class="flex flex-wrap items-center gap-5 text-sm font-medium text-slate-300">
+        <a href="index.html" class="hover:text-[#d4af37] transition">Über mich</a>
+        <a href="way.html" class="hover:text-[#d4af37] transition">Mein Weg</a>
+        <a href="projects.html" class="hover:text-[#d4af37] transition">Projekte</a>
+        <a href="equipment.html" class="hover:text-[#d4af37] transition">Ausrüstung</a>
+        <a href="links.html" class="hover:text-[#d4af37] transition">Links</a>
+        <a href="guestbook.html" class="text-[#d4af37] font-semibold">Gästebuch</a>
+        <a href="contact.html" class="hover:text-[#d4af37] transition">Kontakt</a>
+      </nav>
     </div>
   </header>
 
-  <!-- Main Content -->
-  <main class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-10 flex-1 w-full">
-    
-    <div class="flex items-center justify-between">
-      <a href="index.html" class="card-theme border gold-border px-4 py-2 rounded-lg text-xs font-mono-code hover:border-red-500 transition flex items-center gap-2">
-        <i class="fa-solid fa-arrow-left"></i> Zurück zur Startseite
-      </a>
-      <div class="text-xs font-mono-code text-slate-400">STATION DO4LC • LOGBUCH</div>
-    </div>
+  <!-- Hauptbereich -->
+  <main class="relative z-10 max-w-4xl mx-auto px-4 py-10 space-y-10">
 
-    <div class="text-center space-y-3">
-      <h1 class="text-3xl sm:text-4xl font-extrabold font-mono-code">
-        <span class="accent-color">Gästebuch</span> / QSO-Grüße
-      </h1>
-      <p class="text-sm text-slate-300 max-w-xl mx-auto font-mono-code">
-        Du warst auf meiner Station zu Besuch oder wir hatten ein nettes QSO auf den Bändern? Hinterlasse mir gerne einen Gruß! Vy 73 de DO4LC.
-      </p>
-    </div>
-
-    <!-- Formular-Box -->
-    <div class="card-theme p-6 sm:p-8 rounded-2xl border space-y-6 shadow-2xl">
-      <div class="flex items-center gap-2 border-b border-slate-800 pb-3">
-        <i class="fa-solid fa-pen-to-square accent-color"></i>
-        <h2 class="text-lg font-bold font-mono-code">Neuen Eintrag verfassen</h2>
+    <!-- Kopfbereich -->
+    <div class="space-y-2">
+      <div class="inline-flex items-center gap-2 text-xs font-mono-code text-amber-400 bg-amber-500/10 border border-amber-500/20 px-3 py-1 rounded-full">
+        <span>📻</span> QSL &amp; Funker-Gästebuch
       </div>
+      <h1 class="text-3xl font-bold text-white tracking-tight">Gästebuch von <span class="text-[#d4af37]">DO4LC</span></h1>
+      <p class="text-sm text-slate-400">Hinterlasse gerne einen Gruß, deinen QTH-Locator oder einen Rapport nach einem gemeinsamen QSO.</p>
+    </div>
 
-      <form id="guestbookForm" onsubmit="handleFormSubmit(event)" class="space-y-4">
-        <input type="hidden" name="access_key" value="a72f5b00-d520-4394-9cd2-42d0272f616d">
-        <input type="hidden" name="subject" value="Neuer Gästebuch-Eintrag auf DO4LC">
-        <input type="checkbox" name="botcheck" class="hidden" style="display: none;">
-
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+    <!-- Formular-Karte -->
+    <section class="card-theme p-6 sm:p-8 rounded-2xl border shadow-2xl">
+      <form id="guestbook-form" class="space-y-5">
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
           <div>
-            <label class="block text-xs font-mono-code text-slate-400 mb-1">Name & Rufzeichen *</label>
-            <input type="text" id="fieldName" required placeholder="z.B. Max (DL1ABC)" 
-              class="w-full bg-black/60 border border-slate-700 focus:border-[#d4af37] rounded-lg px-4 py-2.5 text-sm text-white outline-none transition">
+            <label for="gb-name" class="block text-xs font-mono-code text-slate-300 mb-1.5">Rufzeichen / Name *</label>
+            <input type="text" id="gb-name" required placeholder="z.B. DL1ABC • Max"
+              class="w-full bg-[#0b0d10] border border-slate-700/80 rounded-lg px-3.5 py-2.5 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-[#d4af37] transition" />
           </div>
           <div>
-            <label class="block text-xs font-mono-code text-slate-400 mb-1">QTH / Locator (optional)</label>
-            <input type="text" id="fieldQth" placeholder="z.B. München / JN58" 
-              class="w-full bg-black/60 border border-slate-700 focus:border-[#d4af37] rounded-lg px-4 py-2.5 text-sm text-white outline-none transition">
+            <label for="gb-qth" class="block text-xs font-mono-code text-slate-300 mb-1.5">QTH / Locator (optional)</label>
+            <input type="text" id="gb-qth" placeholder="z.B. JN58QX oder München"
+              class="w-full bg-[#0b0d10] border border-slate-700/80 rounded-lg px-3.5 py-2.5 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-[#d4af37] transition" />
           </div>
         </div>
 
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
           <div>
-            <label class="block text-xs font-mono-code text-slate-400 mb-1">Band / Betriebsart (optional)</label>
-            <input type="text" id="fieldBand" placeholder="z.B. 20m SSB, 2m FM, DMR" 
-              class="w-full bg-black/60 border border-slate-700 focus:border-[#d4af37] rounded-lg px-4 py-2.5 text-sm text-white outline-none transition">
+            <label for="gb-band" class="block text-xs font-mono-code text-slate-300 mb-1.5">Band / Betriebsart (optional)</label>
+            <input type="text" id="gb-band" placeholder="z.B. 20m SSB, 2m FM, DMR"
+              class="w-full bg-[#0b0d10] border border-slate-700/80 rounded-lg px-3.5 py-2.5 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-[#d4af37] transition" />
           </div>
           <div>
-            <label class="block text-xs font-mono-code text-slate-400 mb-1">Schriftfarbe des Textes</label>
-            <select id="fieldColor" class="w-full bg-black/60 border border-slate-700 focus:border-[#d4af37] rounded-lg px-4 py-2.5 text-sm text-white outline-none transition font-mono-code">
+            <label for="gb-color" class="block text-xs font-mono-code text-slate-300 mb-1.5">Schriftfarbe des Textes</label>
+            <select id="gb-color"
+              class="w-full bg-[#0b0d10] border border-slate-700/80 rounded-lg px-3.5 py-2.5 text-sm text-white focus:outline-none focus:border-[#d4af37] transition">
               <option value="#e2e8f0">Standard (Hellgrau/Weiß)</option>
-              <option value="#d4af37">Stations-Gold (#d4af37)</option>
-              <option value="#ff4d4d">Funk-Rot (#ff4d4d)</option>
-              <option value="#4ade80">QSO-Grün (#4ade80)</option>
-              <option value="#60a5fa">Antennen-Blau (#60a5fa)</option>
-              <option value="#facc15">Sonne-Gelb (#facc15)</option>
+              <option value="#fbbf24">Yaesu Gold / Bernstein</option>
+              <option value="#38bdf8">Funkwellen-Blau</option>
+              <option value="#4ade80">S-Meter Grün</option>
             </select>
           </div>
         </div>
 
         <div>
-          <div class="flex items-center justify-between mb-1">
-            <label class="block text-xs font-mono-code text-slate-400">Deine Nachricht / Gruß *</label>
-            <!-- Smiley-Auswahlleiste -->
-            <div class="flex gap-1.5 text-base">
-              <button type="button" onclick="addEmoji('😊')" class="hover:scale-125 transition" title="Lächeln">😊</button>
-              <button type="button" onclick="addEmoji('👍')" class="hover:scale-125 transition" title="Daumen hoch">👍</button>
-              <button type="button" onclick="addEmoji('📻')" class="hover:scale-125 transition" title="Funkgerät">📻</button>
-              <button type="button" onclick="addEmoji('⚡')" class="hover:scale-125 transition" title="Antenne/Strom">⚡</button>
-              <button type="button" onclick="addEmoji('⭐')" class="hover:scale-125 transition" title="Stern">⭐</button>
-              <button type="button" onclick="addEmoji('☕')" class="hover:scale-125 transition" title="Kaffee">☕</button>
-              <button type="button" onclick="addEmoji('73! 👋')" class="hover:scale-125 transition text-xs font-mono-code bg-slate-800 px-1 rounded text-amber-400" title="73 Gruß">73!</button>
+          <div class="flex items-center justify-between mb-1.5">
+            <label for="gb-message" class="block text-xs font-mono-code text-slate-300">Deine Nachricht / Gruß *</label>
+            <div class="flex items-center gap-1.5 text-xs">
+              <button type="button" onclick="addEmoji('📻')" class="hover:scale-125 transition">📻</button>
+              <button type="button" onclick="addEmoji('👍')" class="hover:scale-125 transition">👍</button>
+              <button type="button" onclick="addEmoji('⚡')" class="hover:scale-125 transition">⚡</button>
+              <button type="button" onclick="addEmoji('⭐')" class="hover:scale-125 transition">⭐</button>
+              <button type="button" onclick="addEmoji('vy 73!')" class="font-mono-code bg-slate-800 hover:bg-slate-700 text-amber-400 px-2 py-0.5 rounded transition">73!</button>
             </div>
           </div>
-          <textarea id="fieldMessage" rows="4" required placeholder="Schreibe hier deinen Gästebuch-Gruß..." 
-            class="w-full bg-black/60 border border-slate-700 focus:border-[#d4af37] rounded-lg px-4 py-2.5 text-sm text-white outline-none transition"></textarea>
+          <textarea id="gb-message" rows="4" required placeholder="Schreibe hier deinen Gästebuch-Gruß..."
+            class="w-full bg-[#0b0d10] border border-slate-700/80 rounded-lg px-3.5 py-2.5 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-[#d4af37] transition"></textarea>
         </div>
 
-        <!-- Mathe-Captcha (vollständig) -->
-        <div class="p-4 rounded-xl card-theme border gold-border/50 space-y-2">
-          <label class="block text-xs font-mono-code text-amber-400 font-bold">Spamschutz: Bitte rechne folgende Aufgabe</label>
+        <!-- Spamschutz Rechenaufgabe -->
+        <div class="bg-[#0b0d10]/90 border border-[#d4af37]/30 rounded-xl p-4">
+          <label for="captcha-answer" class="block text-xs font-mono-code text-[#d4af37] mb-2">
+            Spamschutz: Bitte rechne folgende Aufgabe
+          </label>
           <div class="flex items-center gap-3">
-            <span id="captchaText" class="font-mono-code text-base font-bold text-white bg-black/60 px-3 py-2 rounded border border-slate-700"></span>
-            <input type="number" id="captchaAnswer" required placeholder="Ergebnis" 
-              class="w-32 bg-black/60 border border-slate-700 focus:border-[#d4af37] rounded-lg px-4 py-2 text-sm text-white outline-none transition font-mono-code">
+            <span id="captcha-question" class="font-mono-code font-bold text-sm bg-slate-900 border border-slate-700 px-3.5 py-2 rounded-lg text-white">
+              8 + 2 = ?
+            </span>
+            <input type="number" id="captcha-answer" required placeholder="Ergebnis"
+              class="w-28 bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-[#d4af37] transition" />
           </div>
-          <p id="captchaError" class="text-xs text-red-500 hidden font-mono-code">Falsches Ergebnis! Bitte versuche es noch einmal.</p>
         </div>
 
-        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pt-2">
-          <span class="text-xs text-slate-400 font-mono-code" id="formStatus">
-            <i class="fa-solid fa-shield-halved text-[#d4af37] mr-1"></i> Einträge werden sofort veröffentlicht.
-          </span>
-          <button type="submit" class="accent-bg px-6 py-2.5 rounded-lg font-mono-code font-bold text-sm flex items-center justify-center gap-2 cursor-pointer">
-            <i class="fa-solid fa-paper-plane"></i> Eintrag absenden
+        <div class="flex flex-wrap items-center justify-between gap-4 pt-2">
+          <p class="text-xs text-slate-400 flex items-center gap-1.5">
+            <span class="text-amber-400">📡</span> Einträge werden sofort live für alle veröffentlicht.
+          </p>
+          <button type="submit" id="submit-btn"
+            class="bg-red-600 hover:bg-red-700 text-white font-semibold text-sm px-6 py-2.5 rounded-lg shadow-lg shadow-red-900/30 transition flex items-center gap-2">
+            <span>🚀</span> Eintrag absenden
           </button>
         </div>
       </form>
-    </div>
+    </section>
 
-    <!-- Veröffentlichte Einträge -->
-    <div class="space-y-4">
-      <div class="flex items-center justify-between px-1">
-        <div class="flex items-center gap-2">
-          <i class="fa-solid fa-book-open accent-color"></i>
-          <h2 class="text-lg font-bold font-mono-code">Bisherige Einträge</h2>
-        </div>
-        <a href="admin.html" class="text-xs font-mono-code text-slate-500 hover:text-slate-300 transition">
-          <i class="fa-solid fa-gear"></i> Admin
+    <!-- Bisherige Einträge -->
+    <section class="space-y-4">
+      <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+        <h2 class="text-lg font-bold text-white flex items-center gap-2">
+          <span>📖</span> Bisherige Einträge
+        </h2>
+        <a href="admin.html" class="text-xs font-mono-code text-slate-500 hover:text-[#d4af37] transition flex items-center gap-1">
+          <span>⚙️</span> Admin
         </a>
       </div>
 
-      <div id="entriesContainer" class="space-y-4">
-        <!-- Fester Willkommens-Eintrag -->
-        <div class="card-theme p-5 rounded-xl border space-y-2">
-          <div class="flex flex-wrap items-center justify-between gap-2 border-b border-slate-800/80 pb-2">
-            <div class="flex items-center gap-2">
-              <span class="font-mono-code font-bold text-[#d4af37]">DO4LC • Carsten</span>
-              <span class="text-xs bg-red-950/80 text-red-400 border border-red-800/50 px-2 py-0.5 rounded font-mono-code">Station Owner</span>
-            </div>
-            <span class="text-xs font-mono-code text-slate-400">Mainburg • 12.11.2026</span>
-          </div>
-          <p class="text-sm text-slate-200 leading-relaxed">
-            Willkommen im neuen Gästebuch meiner Funkstation! Ich freue mich über jeden Gruß, Rapport oder Feedback zu meinen Projekten. Vy 73 und auf ein baldiges QSO!
-          </p>
-        </div>
+      <!-- Dynamische Liste aus der Supabase Datenbank -->
+      <div id="guestbook-entries" class="space-y-4">
+        <p class="text-xs font-mono-code text-slate-400">Lade Einträge aus dem Logbuch...</p>
       </div>
-    </div>
+    </section>
 
   </main>
 
-  <!-- Footer -->
-  <footer class="card-theme border-t py-6 mt-12 font-mono-code text-xs text-slate-400 text-center shadow-2xl">
-    <div class="max-w-7xl mx-auto px-4">
-      <span>YAESU STATION • © <span id="year"></span> DO4LC • Carsten • Vy 73 de DO4LC</span>
-    </div>
+  <footer class="relative z-10 border-t border-slate-800/80 mt-16 py-6 text-center text-xs font-mono-code text-slate-500">
+    vy 73 de DO4LC • Carsten • Mainburg (DOK C22)
   </footer>
 
-  <!-- Skript -->
+  <!-- Hilfsfunktion für Emojis -->
   <script>
-    document.getElementById('year').innerText = new Date().getFullYear();
-
-    let num1 = Math.floor(Math.random() * 8) + 2;
-    let num2 = Math.floor(Math.random() * 8) + 2;
-    let correctResult = num1 + num2;
-    document.getElementById('captchaText').innerText = `${num1} + ${num2} = ?`;
-
-    loadEntries();
-
-    function addEmoji(emoji) {
-      const textarea = document.getElementById('fieldMessage');
-      textarea.value += emoji;
+    function addEmoji(text) {
+      const textarea = document.getElementById('gb-message');
+      textarea.value += (textarea.value.length > 0 && !textarea.value.endsWith(' ') ? ' ' : '') + text + ' ';
       textarea.focus();
     }
+  </script>
 
-    function loadEntries() {
-      const container = document.getElementById('entriesContainer');
-      const savedEntries = JSON.parse(localStorage.getItem('do4lc_guestbook') || '[]');
+  <!-- Supabase Live-Datenbank Anbindung -->
+  <script type="module">
+    import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
 
-      let dynamicHtml = '';
-      savedEntries.forEach(entry => {
-        const badge = entry.band ? `<span class="text-xs bg-slate-800 text-slate-300 px-2 py-0.5 rounded font-mono-code">${escapeHtml(entry.band)}</span>` : '';
-        const qthInfo = entry.qth ? `${escapeHtml(entry.qth)} • ` : '';
-        const textColor = entry.color || '#e2e8f0';
-        
-        dynamicHtml += `
+    // 1. HIER DEINEN SUPABASE PUBLISHABLE KEY EINTRAGEN:
+    const SUPABASE_URL = 'https://wiufsfqywigzyqdzoqdc.supabase.co';
+    const SUPABASE_ANON_KEY = 'DEIN_PUBLISHABLE_KEY_HIER_EINFUEGEN';
+
+    // 2. OPTIONAL: Dein Web3Forms Key für zusätzliche E-Mail-Benachrichtigungen (leer lassen, falls nicht gewünscht)
+    const WEB3FORMS_KEY = '';
+
+    const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+    const container = document.getElementById('guestbook-entries');
+    const form = document.getElementById('guestbook-form');
+    const submitBtn = document.getElementById('submit-btn');
+
+    // Zufällige Rechenaufgabe für den Spamschutz generieren
+    let num1 = Math.floor(Math.random() * 9) + 1;
+    let num2 = Math.floor(Math.random() * 9) + 1;
+    let expectedAnswer = num1 + num2;
+    document.getElementById('captcha-question').textContent = `${num1} + ${num2} = ?`;
+
+    function refreshCaptcha() {
+      num1 = Math.floor(Math.random() * 9) + 1;
+      num2 = Math.floor(Math.random() * 9) + 1;
+      expectedAnswer = num1 + num2;
+      document.getElementById('captcha-question').textContent = `${num1} + ${num2} = ?`;
+      document.getElementById('captcha-answer').value = '';
+    }
+
+    // Fester Willkommensgruß von DO4LC (steht immer ganz unten als erster Beitrag)
+    const welcomeHtml = `
+      <div class="card-theme p-5 rounded-xl border space-y-2">
+        <div class="flex flex-wrap items-center justify-between gap-2 border-b border-slate-800/80 pb-2">
+          <div class="flex items-center gap-2">
+            <span class="font-mono-code font-bold text-[#d4af37]">DO4LC • Carsten</span>
+            <span class="text-xs bg-red-950/80 text-red-400 border border-red-800/50 px-2 py-0.5 rounded font-mono-code">Station Owner</span>
+          </div>
+          <span class="text-xs font-mono-code text-slate-400">Mainburg • 12.11.2026</span>
+        </div>
+        <p class="text-sm text-slate-200 leading-relaxed">
+          Willkommen im neuen Gästebuch meiner Funkstation! Ich freue mich über jeden Gruß, Rapport oder Feedback zu meinen Projekten. Vy 73 und auf ein baldiges QSO!
+        </p>
+      </div>
+    `;
+
+    // Einträge aus Supabase laden
+    async function loadEntries() {
+      const { data, error } = await supabase
+        .from('guestbook')
+        .select('*')
+        .order('created_at', { ascending: false });
+
+      if (error) {
+        console.error('Fehler beim Laden:', error);
+        container.innerHTML = `<p class="text-xs text-red-400">Fehler beim Laden der Einträge. Bitte Key prüfen.</p>` + welcomeHtml;
+        return;
+      }
+
+      let entriesHtml = '';
+
+      data.forEach(entry => {
+        const dateObj = new Date(entry.created_at);
+        const dateStr = dateObj.toLocaleDateString('de-DE', {
+          day: '2-digit',
+          month: '2-digit',
+          year: 'numeric'
+        });
+
+        let badgeHtml = '';
+        if (entry.name.includes('DO4LC') || entry.name.includes('Carsten')) {
+          badgeHtml = '<span class="text-xs bg-red-950/80 text-red-400 border border-red-800/50 px-2 py-0.5 rounded font-mono-code">Station Owner</span>';
+        }
+
+        let metaParts = [];
+        if (entry.qth) metaParts.push(escapeHtml(entry.qth));
+        if (entry.band) metaParts.push(escapeHtml(entry.band));
+        metaParts.push(dateStr);
+
+        entriesHtml += `
           <div class="card-theme p-5 rounded-xl border space-y-2">
             <div class="flex flex-wrap items-center justify-between gap-2 border-b border-slate-800/80 pb-2">
               <div class="flex items-center gap-2">
                 <span class="font-mono-code font-bold text-[#d4af37]">${escapeHtml(entry.name)}</span>
-                ${badge}
+                ${badgeHtml}
               </div>
-              <span class="text-xs font-mono-code text-slate-400">${qthInfo}${escapeHtml(entry.date)}</span>
+              <span class="text-xs font-mono-code text-slate-400">${metaParts.join(' • ')}</span>
             </div>
-            <p class="text-sm leading-relaxed" style="color: ${textColor};">
+            <p class="text-sm leading-relaxed" style="color: ${escapeHtml(entry.color || '#e2e8f0')}">
               ${escapeHtml(entry.message)}
             </p>
           </div>
         `;
       });
 
-      const welcomeHtml = `
-        <div class="card-theme p-5 rounded-xl border space-y-2">
-          <div class="flex flex-wrap items-center justify-between gap-2 border-b border-slate-800/80 pb-2">
-            <div class="flex items-center gap-2">
-              <span class="font-mono-code font-bold text-[#d4af37]">DO4LC • Carsten</span>
-              <span class="text-xs bg-red-950/80 text-red-400 border border-red-800/50 px-2 py-0.5 rounded font-mono-code">Station Owner</span>
-            </div>
-            <span class="text-xs font-mono-code text-slate-400">Mainburg • 12.11.2026</span>
-          </div>
-          <p class="text-sm text-slate-200 leading-relaxed">
-            Willkommen im neuen Gästebuch meiner Funkstation! Ich freue mich über jeden Gruß, Rapport oder Feedback zu meinen Projekten. Vy 73 und auf ein baldiges QSO!
-          </p>
-        </div>
-      `;
-
-      container.innerHTML = welcomeHtml + dynamicHtml;
+      container.innerHTML = entriesHtml + welcomeHtml;
     }
 
-    async function handleFormSubmit(event) {
-      event.preventDefault();
+    // Neuen Eintrag absenden
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
 
-      const userAnswer = parseInt(document.getElementById('captchaAnswer').value);
-      if (userAnswer !== correctResult) {
-        document.getElementById('captchaError').classList.remove('hidden');
-        document.getElementById('captchaAnswer').focus();
+      const userAnswer = parseInt(document.getElementById('captcha-answer').value, 10);
+      if (userAnswer !== expectedAnswer) {
+        alert('Die Rechenaufgabe wurde leider falsch gelöst. Bitte versuche es noch einmal!');
+        refreshCaptcha();
         return;
       }
 
-      const name = document.getElementById('fieldName').value;
-      const qth = document.getElementById('fieldQth').value;
-      const band = document.getElementById('fieldBand').value;
-      const color = document.getElementById('fieldColor').value;
-      const message = document.getElementById('fieldMessage').value;
-      
-      const options = { day: '2-digit', month: '2-digit', year: 'numeric' };
-      const date = new Date().toLocaleDateString('de-DE', options);
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = '<span>⏳</span> Speichere...';
 
-      // An Web3Forms senden (für deine E-Mail im Postfach)
-      const formData = new FormData();
-      formData.append("access_key", "a72f5b00-d520-4394-9cd2-42d0272f616d");
-      formData.append("name", name);
-      formData.append("qth", qth);
-      formData.append("band", band);
-      formData.append("message", message);
-      formData.append("subject", "Neuer Gästebuch-Eintrag auf DO4LC");
+      const name = document.getElementById('gb-name').value.trim();
+      const qth = document.getElementById('gb-qth').value.trim();
+      const band = document.getElementById('gb-band').value.trim();
+      const color = document.getElementById('gb-color').value;
+      const message = document.getElementById('gb-message').value.trim();
 
-      document.getElementById('formStatus').innerHTML = '<i class="fa-solid fa-spinner fa-spin text-amber-400 mr-1"></i> Wird gesendet...';
+      // In Supabase speichern
+      const { error } = await supabase
+        .from('guestbook')
+        .insert([{ name, qth, band, color, message }]);
 
-      try {
-        await fetch("https://api.web3forms.com/submit", {
-          method: "POST",
-          body: formData
-        });
-
-        // Lokal speichern für sofortige Sichtbarkeit
-        const newEntry = { name, qth, band, color, message, date };
-        const savedEntries = JSON.parse(localStorage.getItem('do4lc_guestbook') || '[]');
-        savedEntries.unshift(newEntry);
-        localStorage.setItem('do4lc_guestbook', JSON.stringify(savedEntries));
-
-        document.getElementById('guestbookForm').reset();
-        loadEntries();
-        
-        document.getElementById('formStatus').innerHTML = '<i class="fa-solid fa-check text-green-400 mr-1"></i> Erfolgreich eingetragen!';
-        setTimeout(() => {
-          document.getElementById('formStatus').innerHTML = '<i class="fa-solid fa-shield-halved text-[#d4af37] mr-1"></i> Einträge werden sofort veröffentlicht.';
-        }, 4000);
-
-      } catch (error) {
-        alert('Fehler beim Senden. Bitte versuche es noch einmal.');
+      if (error) {
+        alert('Fehler beim Speichern in der Datenbank: ' + error.message);
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = '<span>🚀</span> Eintrag absenden';
+        return;
       }
+
+      // Optional: E-Mail über Web3Forms senden, falls Key eingetragen ist
+      if (WEB3FORMS_KEY) {
+        try {
+          await fetch('https://api.web3forms.com/submit', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              access_key: WEB3FORMS_KEY,
+              subject: 'Neuer Gästebuch-Eintrag auf DO4LC',
+              Name: name,
+              Qth: qth || '-',
+              Band: band || '-',
+              Message: message
+            })
+          });
+        } catch (err) {
+          console.warn('Web3Forms Benachrichtigung konnte nicht gesendet werden:', err);
+        }
+      }
+
+      form.reset();
+      refreshCaptcha();
+      submitBtn.disabled = false;
+      submitBtn.innerHTML = '<span>🚀</span> Eintrag absenden';
+      await loadEntries();
+    });
+
+    function escapeHtml(str) {
+      if (!str) return '';
+      return str
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
     }
 
-    function escapeHtml(text) {
-      if (!text) return '';
-      return text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
-    }
+    loadEntries();
   </script>
 </body>
 </html>
