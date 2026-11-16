@@ -48,7 +48,7 @@
     }
   </style>
 </head>
-<body class="min-h-screen flex flex-col justify-between selection:bg-red-600 selection:text-white">
+<body class="min-h-screen flex flex-col bg-[#0b0c10] text-white selection:bg-red-600 selection:text-white">
 
   <!-- Header -->
   <header class="sticky top-0 z-50 card-theme border-b backdrop-blur-md bg-opacity-90 shadow-2xl">
@@ -82,7 +82,7 @@
   </header>
 
   <!-- Main Content -->
-  <main class="max-w-6xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-8">
+  <main class="max-w-6xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-8 flex-grow">
 
     <!-- Titel & Status -->
     <div class="text-center space-y-3">
@@ -116,3 +116,172 @@
         <strong id="pwsHumidity" class="text-2xl sm:text-3xl text-white block">-- %</strong>
         <span id="pwsDewpt" class="text-[11px] text-slate-400 block">Taupunkt: -- °C</span>
       </div>
+
+      <!-- 3. Luftdruck -->
+      <div class="card-theme p-5 rounded-2xl border text-center space-y-2">
+        <i class="fa-solid fa-gauge-high text-2xl text-amber-400"></i>
+        <span class="text-xs text-slate-400 block uppercase">Luftdruck</span>
+        <strong id="pwsPressure" class="text-2xl sm:text-3xl text-white block">-- hPa</strong>
+        <span class="text-[11px] text-slate-400 block">Relativer Luftdruck</span>
+      </div>
+
+      <!-- 4. UV-Belastung -->
+      <div class="card-theme p-5 rounded-2xl border text-center space-y-2">
+        <i class="fa-solid fa-sun text-2xl text-yellow-400"></i>
+        <span class="text-xs text-slate-400 block uppercase">UV-Belastung</span>
+        <strong id="pwsUv" class="text-2xl sm:text-3xl text-white block">--</strong>
+        <span id="pwsUvBadge" class="inline-block text-[10px] px-2 py-0.5 rounded bg-slate-800 text-slate-300">Wird ermittelt</span>
+      </div>
+
+      <!-- 5. Wind & Böen -->
+      <div class="card-theme p-5 rounded-2xl border text-center space-y-2">
+        <i class="fa-solid fa-wind text-2xl text-emerald-400"></i>
+        <span class="text-xs text-slate-400 block uppercase">Wind & Böen</span>
+        <strong id="pwsWind" class="text-2xl sm:text-3xl text-white block">-- km/h</strong>
+        <span id="pwsGust" class="text-[11px] text-slate-400 block">Böen: -- km/h</span>
+      </div>
+
+      <!-- 6. Windrichtung -->
+      <div class="card-theme p-5 rounded-2xl border text-center space-y-2">
+        <i id="windArrow" class="fa-solid fa-location-arrow text-2xl text-amber-400 transition-transform duration-500"></i>
+        <span class="text-xs text-slate-400 block uppercase">Windrichtung</span>
+        <strong id="pwsWindText" class="text-2xl sm:text-3xl text-white block">--</strong>
+        <span id="pwsWindDir" class="text-[11px] text-slate-400 block">Azimut: -- °</span>
+      </div>
+
+      <!-- 7. Niederschlag -->
+      <div class="card-theme p-5 rounded-2xl border text-center space-y-2">
+        <i class="fa-solid fa-cloud-rain text-2xl text-blue-400"></i>
+        <span class="text-xs text-slate-400 block uppercase">Niederschlag</span>
+        <strong id="pwsPrecip" class="text-2xl sm:text-3xl text-white block">-- mm</strong>
+        <span id="pwsPrecipRate" class="text-[11px] text-slate-400 block">Aktuell: -- mm/h</span>
+      </div>
+
+      <!-- 8. Solarstrahlung -->
+      <div class="card-theme p-5 rounded-2xl border text-center space-y-2">
+        <i class="fa-solid fa-solar-panel text-2xl text-orange-400"></i>
+        <span class="text-xs text-slate-400 block uppercase">Solarstrahlung</span>
+        <strong id="pwsSolar" class="text-2xl sm:text-3xl text-white block">-- W/m²</strong>
+        <span class="text-[11px] text-slate-400 block">Globalstrahlung</span>
+      </div>
+
+    </div>
+
+    <!-- Status-Leiste & Direktlink -->
+    <div class="card-theme p-6 rounded-2xl border flex flex-col sm:flex-row items-center justify-between gap-4 font-mono-code text-xs">
+      <div class="space-y-1 text-center sm:text-left">
+        <div class="text-slate-300">
+          Letzte Messung: <strong id="pwsObsTime" class="text-amber-400">Wird geladen...</strong>
+        </div>
+        <div id="pwsStatusMsg" class="text-slate-400">Verbinde mit Wetterstation IMAINB38...</div>
+      </div>
+
+      <div class="flex flex-wrap justify-center gap-3">
+        <button onclick="fetchPWSData()" class="card-theme border gold-border px-4 py-2.5 rounded-lg hover:border-red-500 transition flex items-center gap-2 text-white">
+          <i class="fa-solid fa-rotate"></i> Aktualisieren
+        </button>
+        <a href="https://www.wunderground.com/dashboard/pws/IMAINB38" target="_blank" rel="noopener noreferrer" class="accent-bg px-5 py-2.5 rounded-lg font-bold transition flex items-center gap-2 border border-amber-400/50">
+          <span>Diagramme & Verlauf (WU)</span> <i class="fa-solid fa-arrow-up-right-from-square"></i>
+        </a>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="card-theme border-t py-6 mt-12 font-mono-code text-xs text-slate-400 shadow-2xl">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-center">
+      <div><span class="accent-color font-bold">YAESU STATION</span> • © <span id="year"></span> DO4LC • Carsten</div>
+      <div>Vy 73 de DO4LC</div>
+    </div>
+  </footer>
+
+  <script>
+    document.getElementById('year').innerText = new Date().getFullYear();
+
+    function degToCompass(num) {
+      if (num === null || num === undefined) return '--';
+      const val = Math.floor((num / 22.5) + 0.5);
+      const arr = ["N", "NNO", "NO", "ONO", "O", "OSO", "SO", "SSO", "S", "SSW", "SW", "WSW", "W", "WNW", "NW", "NNW"];
+      return arr[(val % 16)];
+    }
+
+    function getUvInfo(uv) {
+      if (uv === null || uv === undefined) return { text: 'Keine Daten', color: 'bg-slate-800 text-slate-300' };
+      if (uv <= 2) return { text: 'Niedrig', color: 'bg-emerald-900/60 text-emerald-300 border border-emerald-500/50' };
+      if (uv <= 5) return { text: 'Mäßig', color: 'bg-yellow-900/60 text-yellow-300 border border-yellow-500/50' };
+      if (uv <= 7) return { text: 'Hoch', color: 'bg-orange-900/60 text-orange-300 border border-orange-500/50' };
+      if (uv <= 10) return { text: 'Sehr hoch', color: 'bg-red-900/60 text-red-300 border border-red-500/50' };
+      return { text: 'Extrem', color: 'bg-purple-900/60 text-purple-300 border border-purple-500/50' };
+    }
+
+    async function fetchPWSData() {
+      const apiKey = 'd3face96b217434bbace96b217734b30';
+      const stationId = 'IMAINB38';
+      const targetUrl = `https://api.weather.com/v2/pws/observations/current?stationId=${stationId}&format=json&units=m&apiKey=${apiKey}`;
+      const proxyUrl = `https://corsproxy.io/?${encodeURIComponent(targetUrl)}`;
+
+      const statusMsg = document.getElementById('pwsStatusMsg');
+      const statusDot = document.getElementById('statusDot');
+
+      try {
+        statusMsg.innerText = 'Rufe Live-Daten ab...';
+        const response = await fetch(proxyUrl);
+        
+        if (!response.ok) throw new Error(`HTTP Status ${response.status}`);
+
+        const data = await response.json();
+        
+        if (data && data.observations && data.observations.length > 0) {
+          const obsGeneral = data.observations[0];
+          const obs = obsGeneral.metric;
+
+          document.getElementById('pwsTemp').innerText = `${obs.temp} °C`;
+          const feelsLike = obs.temp <= 10 ? obs.windChill : obs.heatIndex;
+          document.getElementById('pwsFeelsLike').innerText = `Gefühlt: ${feelsLike} °C`;
+
+          document.getElementById('pwsHumidity').innerText = `${obsGeneral.humidity} %`;
+          document.getElementById('pwsDewpt').innerText = `Taupunkt: ${obs.dewpt} °C`;
+
+          document.getElementById('pwsPressure').innerText = `${obs.pressure} hPa`;
+
+          const uvVal = obsGeneral.uv ?? 0;
+          const uvInfo = getUvInfo(uvVal);
+          document.getElementById('pwsUv').innerText = uvVal;
+          const badge = document.getElementById('pwsUvBadge');
+          badge.innerText = uvInfo.text;
+          badge.className = `inline-block text-[10px] px-2.5 py-0.5 rounded font-bold ${uvInfo.color}`;
+
+          document.getElementById('pwsWind').innerText = `${obs.windSpeed} km/h`;
+          document.getElementById('pwsGust').innerText = `Böen: ${obs.windGust} km/h`;
+
+          const dir = obsGeneral.winddir;
+          document.getElementById('pwsWindText').innerText = degToCompass(dir);
+          document.getElementById('pwsWindDir').innerText = `Azimut: ${dir ?? '--'} °`;
+          if (dir !== null && dir !== undefined) {
+            document.getElementById('windArrow').style.transform = `rotate(${dir + 135}deg)`;
+          }
+
+          document.getElementById('pwsPrecip').innerText = `${obs.precipTotal} mm`;
+          document.getElementById('pwsPrecipRate').innerText = `Aktuell: ${obs.precipRate} mm/h`;
+
+          document.getElementById('pwsSolar').innerText = `${obsGeneral.solarRadiation ?? 0} W/m²`;
+
+          document.getElementById('pwsObsTime').innerText = obsGeneral.obsTimeLocal || 'Aktuell';
+          statusMsg.innerText = 'Status: Online • Live-Daten aktiv';
+          statusDot.className = 'w-2 h-2 rounded-full bg-emerald-400 animate-ping';
+        } else {
+          statusMsg.innerText = 'Keine Messwerte verfügbar.';
+        }
+      } catch (error) {
+        console.error('Fehler:', error);
+        statusMsg.innerText = 'Verbindungsfehler beim Abruf.';
+        statusDot.className = 'w-2 h-2 rounded-full bg-red-500';
+      }
+    }
+
+    fetchPWSData();
+    setInterval(fetchPWSData, 300000);
+  </script>
+</body>
+</html>
