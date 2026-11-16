@@ -1,77 +1,199 @@
 <!DOCTYPE html>
-<html lang="de">
+<html lang="de" class="dark">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Admin - Gästebuch Verwaltung</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DO4LC • Gästebuch Verwaltung (Admin)</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;700&family=Inter:wght@300;400;600;700&display=swap');
-    body { font-family: 'Inter', sans-serif; background-color: #0b0c10; color: #ffffff; }
-    .font-mono-code { font-family: 'Fira Code', monospace; }
-    .card-theme { background: linear-gradient(145deg, #161a24, #0f121a); border: 1px solid #d4af37; }
-    .gold-border { border-color: #d4af37 !important; }
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: #0b0d10;
+      color: #e2e8f0;
+      background-image: radial-gradient(circle at 50% 0%, #1a1f29 0%, #0b0d10 75%);
+      min-height: 100vh;
+    }
+    .font-mono-code {
+      font-family: 'JetBrains Mono', monospace;
+    }
+    .card-theme {
+      background: rgba(17, 21, 28, 0.85);
+      border-color: rgba(212, 175, 55, 0.25);
+      backdrop-filter: blur(8px);
+    }
   </style>
 </head>
-<body class="min-h-screen flex flex-col justify-between p-6">
-  <main class="max-w-3xl mx-auto w-full space-y-6">
-    <div class="flex items-center justify-between border-b border-slate-800 pb-4">
-      <h1 class="text-xl font-bold font-mono-code text-amber-400">Gästebuch Verwaltung (Admin)</h1>
-      <a href="guestbook.html" class="text-xs font-mono-code text-slate-400 hover:text-white transition">
-        <i class="fa-solid fa-arrow-left"></i> Zum Gästebuch
+<body class="antialiased selection:bg-amber-500/30 selection:text-amber-200">
+
+  <main class="max-w-4xl mx-auto px-4 py-12 space-y-8">
+    
+    <!-- Kopfbereich -->
+    <div class="flex flex-wrap items-center justify-between gap-4 border-b border-slate-800 pb-5">
+      <div>
+        <h1 class="text-2xl font-mono-code font-bold text-[#d4af37]">Gästebuch Verwaltung (Admin)</h1>
+        <p class="text-xs font-mono-code text-slate-400 mt-1">Datenbank-Moderation für www.do4lc.de</p>
+      </div>
+      <a href="guestbook.html" class="text-sm font-mono-code text-slate-300 hover:text-[#d4af37] border border-slate-700 hover:border-[#d4af37]/60 px-3.5 py-2 rounded-lg transition">
+        ← Zum Gästebuch
       </a>
     </div>
 
-    <div id="adminEntries" class="space-y-4">
-      <!-- Wird per Script gefüllt -->
-    </div>
+    <!-- Login-Bereich -->
+    <section id="login-section" class="card-theme p-6 sm:p-8 rounded-2xl border max-w-md mx-auto space-y-4 shadow-2xl">
+      <div class="space-y-1">
+        <h2 class="text-lg font-bold text-white flex items-center gap-2">
+          <span>🔒</span> Admin-Zugang
+        </h2>
+        <p class="text-xs text-slate-400">Bitte gib dein Admin-Passwort ein, um Einträge zu verwalten.</p>
+      </div>
+      <form id="login-form" class="space-y-4">
+        <div>
+          <input type="password" id="admin-pw-input" required placeholder="Passwort eingeben..."
+            class="w-full bg-[#0b0d10] border border-slate-700 rounded-lg px-3.5 py-2.5 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-[#d4af37] transition" />
+        </div>
+        <button type="submit"
+          class="w-full bg-[#d4af37] hover:bg-amber-500 text-slate-950 font-bold text-sm py-2.5 rounded-lg transition">
+          Anmelden
+        </button>
+      </form>
+    </section>
+
+    <!-- Admin-Panel -->
+    <section id="admin-panel" class="hidden space-y-6">
+      <div class="flex items-center justify-between">
+        <span class="text-xs font-mono-code text-emerald-400 bg-emerald-950/60 border border-emerald-800/50 px-3 py-1 rounded-full">
+          ● Verbunden mit Supabase (do4lc-guestbook)
+        </span>
+        <button id="logout-btn" class="text-xs font-mono-code text-slate-400 hover:text-red-400 transition">
+          Abmelden
+        </button>
+      </div>
+
+      <div id="admin-entries" class="space-y-4">
+        <p class="text-xs font-mono-code text-slate-400">Lade Datenbank-Einträge...</p>
+      </div>
+    </section>
+
   </main>
 
-  <script>
-    renderAdminEntries();
+  <script type="module">
+    import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
 
-    function renderAdminEntries() {
-      const container = document.getElementById('adminEntries');
-      const savedEntries = JSON.parse(localStorage.getItem('do4lc_guestbook') || '[]');
+    const SUPABASE_URL = 'https://wiufsfqywigzyqdzoqdc.supabase.co';
+    const SUPABASE_ANON_KEY = 'sb_publishable_YGG068DruP00XhwYYChxzQ_nEiokV18';
+    const ADMIN_PASSWORD = 'DO4LC-Admin2026'; // Kannst du hier anpassen
 
-      if (savedEntries.length === 0) {
-        container.innerHTML = '<p class="text-sm text-slate-500 font-mono-code">Keine dynamischen Einträge vorhanden.</p>';
+    const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+    const loginSection = document.getElementById('login-section');
+    const adminPanel = document.getElementById('admin-panel');
+    const loginForm = document.getElementById('login-form');
+    const adminContainer = document.getElementById('admin-entries');
+
+    if (sessionStorage.getItem('do4lc_admin_auth') === 'true') {
+      showAdminPanel();
+    }
+
+    loginForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const enteredPw = document.getElementById('admin-pw-input').value;
+      if (enteredPw === ADMIN_PASSWORD) {
+        sessionStorage.setItem('do4lc_admin_auth', 'true');
+        showAdminPanel();
+      } else {
+        alert('Falsches Passwort!');
+        document.getElementById('admin-pw-input').value = '';
+      }
+    });
+
+    document.getElementById('logout-btn').addEventListener('click', () => {
+      sessionStorage.removeItem('do4lc_admin_auth');
+      adminPanel.classList.add('hidden');
+      loginSection.classList.remove('hidden');
+      document.getElementById('admin-pw-input').value = '';
+    });
+
+    function showAdminPanel() {
+      loginSection.classList.add('hidden');
+      adminPanel.classList.remove('hidden');
+      loadAdminEntries();
+    }
+
+    async function loadAdminEntries() {
+      const { data, error } = await supabase
+        .from('guestbook')
+        .select('*')
+        .order('created_at', { ascending: false });
+
+      if (error) {
+        adminContainer.innerHTML = `<p class="text-xs text-red-400 font-mono-code">Fehler beim Laden: ${error.message}</p>`;
         return;
       }
 
-      let html = '';
-      savedEntries.forEach((entry, index) => {
-        html += `
-          <div class="card-theme p-4 rounded-xl border flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-            <div class="space-y-1">
-              <div class="flex items-center gap-2 font-mono-code text-sm">
-                <span class="font-bold text-amber-400">${escapeHtml(entry.name)}</span>
-                <span class="text-xs text-slate-400">(${escapeHtml(entry.date)})</span>
-              </div>
-              <p class="text-xs text-slate-300">${escapeHtml(entry.message)}</p>
-            </div>
-            <button onclick="deleteEntry(${index})" class="bg-red-950/80 border border-red-800 text-red-400 px-3 py-1.5 rounded text-xs font-mono-code hover:bg-red-900 transition flex items-center gap-1 shrink-0">
-              <i class="fa-solid fa-trash"></i> Löschen
-            </button>
-          </div>
-        `;
-      });
-      container.innerHTML = html;
-    }
-
-    function deleteEntry(index) {
-      if (confirm('Diesen Eintrag wirklich löschen?')) {
-        let savedEntries = JSON.parse(localStorage.getItem('do4lc_guestbook') || '[]');
-        savedEntries.splice(index, 1);
-        localStorage.setItem('do4lc_guestbook', JSON.stringify(savedEntries));
-        renderAdminEntries();
+      if (!data || data.length === 0) {
+        adminContainer.innerHTML = `<p class="text-sm font-mono-code text-slate-400">Keine Einträge vorhanden.</p>`;
+        return;
       }
+
+      adminContainer.innerHTML = '';
+
+      data.forEach(entry => {
+        const dateObj = new Date(entry.created_at);
+        const dateStr = dateObj.toLocaleDateString('de-DE', {
+          day: '2-digit',
+          month: '2-digit',
+          year: 'numeric',
+          hour: '2-digit',
+          minute: '2-digit'
+        });
+
+        let meta = [dateStr];
+        if (entry.qth) meta.push(`QTH: ${escapeHtml(entry.qth)}`);
+        if (entry.band) meta.push(`Band: ${escapeHtml(entry.band)}`);
+
+        const card = document.createElement('div');
+        card.className = 'card-theme p-5 rounded-xl border flex flex-col sm:flex-row sm:items-center justify-between gap-4';
+        card.innerHTML = `
+          <div class="space-y-1.5">
+            <div class="flex flex-wrap items-center gap-2">
+              <span class="font-mono-code font-bold text-[#d4af37]">${escapeHtml(entry.name)}</span>
+              <span class="text-xs font-mono-code text-slate-400">• ${meta.join(' • ')}</span>
+            </div>
+            <p class="text-sm text-slate-200 leading-relaxed">${escapeHtml(entry.message)}</p>
+          </div>
+          <button onclick="deleteEntry(${entry.id})"
+            class="shrink-0 bg-red-600/90 hover:bg-red-600 text-white font-mono-code text-xs px-4 py-2 rounded-lg transition self-start sm:self-center">
+            🗑️ Löschen
+          </button>
+        `;
+        adminContainer.appendChild(card);
+      });
     }
 
-    function escapeHtml(text) {
-      if (!text) return '';
-      return text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
+    window.deleteEntry = async function(id) {
+      if (!confirm('Diesen Gästebuch-Eintrag wirklich dauerhaft aus der Datenbank löschen?')) return;
+
+      const { error } = await supabase
+        .from('guestbook')
+        .delete()
+        .eq('id', id);
+
+      if (error) {
+        alert('Fehler beim Löschen: ' + error.message);
+      } else {
+        loadAdminEntries();
+      }
+    };
+
+    function escapeHtml(str) {
+      if (!str) return '';
+      return str
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
     }
   </script>
 </body>

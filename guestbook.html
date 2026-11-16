@@ -186,12 +186,8 @@
   <script type="module">
     import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
 
-    // 1. HIER DEINEN SUPABASE PUBLISHABLE KEY EINTRAGEN:
     const SUPABASE_URL = 'https://wiufsfqywigzyqdzoqdc.supabase.co';
-    const SUPABASE_ANON_KEY = 'DEIN_PUBLISHABLE_KEY_HIER_EINFUEGEN';
-
-    // 2. OPTIONAL: Dein Web3Forms Key für zusätzliche E-Mail-Benachrichtigungen (leer lassen, falls nicht gewünscht)
-    const WEB3FORMS_KEY = '';
+    const SUPABASE_ANON_KEY = 'sb_publishable_YGG068DruP00XhwYYChxzQ_nEiokV18';
 
     const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
@@ -199,7 +195,6 @@
     const form = document.getElementById('guestbook-form');
     const submitBtn = document.getElementById('submit-btn');
 
-    // Zufällige Rechenaufgabe für den Spamschutz generieren
     let num1 = Math.floor(Math.random() * 9) + 1;
     let num2 = Math.floor(Math.random() * 9) + 1;
     let expectedAnswer = num1 + num2;
@@ -213,7 +208,6 @@
       document.getElementById('captcha-answer').value = '';
     }
 
-    // Fester Willkommensgruß von DO4LC (steht immer ganz unten als erster Beitrag)
     const welcomeHtml = `
       <div class="card-theme p-5 rounded-xl border space-y-2">
         <div class="flex flex-wrap items-center justify-between gap-2 border-b border-slate-800/80 pb-2">
@@ -229,7 +223,6 @@
       </div>
     `;
 
-    // Einträge aus Supabase laden
     async function loadEntries() {
       const { data, error } = await supabase
         .from('guestbook')
@@ -238,7 +231,7 @@
 
       if (error) {
         console.error('Fehler beim Laden:', error);
-        container.innerHTML = `<p class="text-xs text-red-400">Fehler beim Laden der Einträge. Bitte Key prüfen.</p>` + welcomeHtml;
+        container.innerHTML = `<p class="text-xs text-red-400">Fehler beim Laden der Einträge.</p>` + welcomeHtml;
         return;
       }
 
@@ -281,7 +274,6 @@
       container.innerHTML = entriesHtml + welcomeHtml;
     }
 
-    // Neuen Eintrag absenden
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
 
@@ -301,7 +293,6 @@
       const color = document.getElementById('gb-color').value;
       const message = document.getElementById('gb-message').value.trim();
 
-      // In Supabase speichern
       const { error } = await supabase
         .from('guestbook')
         .insert([{ name, qth, band, color, message }]);
@@ -311,26 +302,6 @@
         submitBtn.disabled = false;
         submitBtn.innerHTML = '<span>🚀</span> Eintrag absenden';
         return;
-      }
-
-      // Optional: E-Mail über Web3Forms senden, falls Key eingetragen ist
-      if (WEB3FORMS_KEY) {
-        try {
-          await fetch('https://api.web3forms.com/submit', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              access_key: WEB3FORMS_KEY,
-              subject: 'Neuer Gästebuch-Eintrag auf DO4LC',
-              Name: name,
-              Qth: qth || '-',
-              Band: band || '-',
-              Message: message
-            })
-          });
-        } catch (err) {
-          console.warn('Web3Forms Benachrichtigung konnte nicht gesendet werden:', err);
-        }
       }
 
       form.reset();
