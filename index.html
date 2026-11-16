@@ -409,21 +409,33 @@
 
   </main>
 
-  <!-- Footer -->
+ <!-- Footer -->
   <footer class="card-theme border-t py-8 mt-12 font-mono-code text-xs text-slate-400 shadow-2xl">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col items-center justify-center gap-4 text-center">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col items-center justify-center gap-6 text-center">
       
-      <div class="flex flex-col sm:flex-row items-center justify-between w-full gap-4 pb-4 border-b gold-border">
+      <div class="flex flex-col lg:flex-row items-center justify-between w-full gap-6 pb-6 border-b gold-border">
         <div class="flex items-center gap-2">
           <span class="accent-color font-bold">YAESU STATION</span> • © <span id="year"></span> DO4LC • Carsten
         </div>
         
-        <!-- Visitor Counter -->
-        <div class="flex items-center gap-3 card-theme px-4 py-2 rounded-lg border gold-border shadow-inner">
-          <span class="text-slate-400" data-i18n="visitorCounter">VISITOR COUNTER:</span>
-          <div id="visitorCountDisplay" class="flex gap-1 text-base font-bold font-mono-code text-amber-400 bg-black/80 px-2.5 py-0.5 rounded border gold-border tracking-widest shadow-inner">
-            <span>0</span><span>0</span><span>4</span><span>8</span><span>2</span>
+        <!-- Zähler-Bereich: Besucherzähler + Flag Counter nebeneinander -->
+        <div class="flex flex-wrap items-center justify-center gap-4">
+          
+          <!-- Visitor Counter -->
+          <div class="flex items-center gap-3 card-theme px-4 py-2 rounded-lg border gold-border shadow-inner">
+            <span class="text-slate-400" data-i18n="visitorCounter">VISITOR COUNTER:</span>
+            <div id="visitorCountDisplay" class="flex gap-1 text-base font-bold font-mono-code text-amber-400 bg-black/80 px-2.5 py-0.5 rounded border gold-border tracking-widest shadow-inner">
+              <span>0</span><span>0</span><span>4</span><span>8</span><span>2</span>
+            </div>
           </div>
+
+          <!-- Flag Counter -->
+          <div class="card-theme p-1.5 rounded-lg border gold-border shadow-inner flex items-center justify-center">
+            <a href="https://info.flagcounter.com/YkaW" target="_blank" rel="noopener noreferrer">
+              <img src="https://s05.flagcounter.com/count/YkaW/bg_000000/txt_FFFFFF/border_D4AF37/columns_4/maxflags_12/viewers_0/labels_1/pageviews_0/flags_0/percent_0/" alt="Flag Counter" class="rounded">
+            </a>
+          </div>
+
         </div>
 
         <div>Vy 73 de DO4LC</div>
