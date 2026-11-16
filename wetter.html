@@ -210,7 +210,7 @@
       if (uv === null || uv === undefined) return { text: 'Keine Daten', color: 'bg-slate-800 text-slate-300' };
       if (uv <= 2) return { text: 'Niedrig', color: 'bg-emerald-900/60 text-emerald-300 border border-emerald-500/50' };
       if (uv <= 5) return { text: 'Mäßig', color: 'bg-yellow-900/60 text-yellow-300 border border-yellow-500/50' };
-      if, uv <= 7) return { text: 'Hoch', color: 'bg-orange-900/60 text-orange-300 border border-orange-500/50' };
+      if (uv <= 7) return { text: 'Hoch', color: 'bg-orange-900/60 text-orange-300 border border-orange-500/50' };
       if (uv <= 10) return { text: 'Sehr hoch', color: 'bg-red-900/60 text-red-300 border border-red-500/50' };
       return { text: 'Extrem', color: 'bg-purple-900/60 text-purple-300 border border-purple-500/50' };
     }
@@ -230,7 +230,9 @@
         
         if (!response.ok) throw new Error(`HTTP Status ${response.status}`);
 
-        const data = await response.json();
+        const rawData = await response.json();
+        // allorigins packt den Inhalt manchmal in ein .contents String-Objekt
+        const data = typeof rawData.contents === 'string' ? JSON.parse(rawData.contents) : rawData;
         
         if (data && data.observations && data.observations.length > 0) {
           const obsGeneral = data.observations[0];
