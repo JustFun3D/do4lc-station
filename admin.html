@@ -32,7 +32,7 @@
     <div class="flex flex-wrap items-center justify-between gap-4 border-b border-slate-800 pb-5">
       <div>
         <h1 class="text-2xl font-mono-code font-bold text-[#d4af37]">Gästebuch Verwaltung (Admin)</h1>
-        <p class="text-xs font-mono-code text-slate-400 mt-1">Datenbank-Moderation für www.do4lc.de</p>
+        <p class="text-xs font-mono-code text-slate-400 mt-1">Datenbank-Moderation &amp; Bearbeitung für www.do4lc.de</p>
       </div>
       <a href="guestbook.html" class="text-sm font-mono-code text-slate-300 hover:text-[#d4af37] border border-slate-700 hover:border-[#d4af37]/60 px-3.5 py-2 rounded-lg transition">
         ← Zum Gästebuch
@@ -81,8 +81,8 @@
     import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
 
     const SUPABASE_URL = 'https://wiufsfqywigzyqdzoqdc.supabase.co';
-    const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndpdWZzZnF5d2lnenlxZHpvcWRjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTQ4MjYzMzAsImV4cCI6MjExMDQwMjMzMH0.h0URvObTuwFyyAtkoL7FVl-DB2lQsHOBVjSg33AdTsI';
-    const ADMIN_PASSWORD = 'Cl48421801!'; // Kannst du hier anpassen
+    const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndpdWZzZnF5d2lnenlxZHpvcWRjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTQ4MjYzMzAsImV4cCI6MjExMDQwMjMzMH0.h0URvObTuwFyyAtkoL7FVl-DB2lQsHOBVjSg33AdTsII'; // (Dein vollständiger eyJ Schlüssel hier)
+    const ADMIN_PASSWORD = 'DO4LC-Admin2026'; // Dein Admin-Passwort
 
     const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
@@ -153,22 +153,93 @@
         if (entry.band) meta.push(`Band: ${escapeHtml(entry.band)}`);
 
         const card = document.createElement('div');
-        card.className = 'card-theme p-5 rounded-xl border flex flex-col sm:flex-row sm:items-center justify-between gap-4';
+        card.className = 'card-theme p-5 rounded-xl border space-y-4';
         card.innerHTML = `
-          <div class="space-y-1.5">
-            <div class="flex flex-wrap items-center gap-2">
-              <span class="font-mono-code font-bold text-[#d4af37]">${escapeHtml(entry.name)}</span>
-              <span class="text-xs font-mono-code text-slate-400">• ${meta.join(' • ')}</span>
+          <div id="view-mode-${entry.id}" class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+            <div class="space-y-1.5">
+              <div class="flex flex-wrap items-center gap-2">
+                <span class="font-mono-code font-bold text-[#d4af37]">${escapeHtml(entry.name)}</span>
+                <span class="text-xs font-mono-code text-slate-400">• ${meta.join(' • ')}</span>
+              </div>
+              <p class="text-sm text-slate-200 leading-relaxed">${escapeHtml(entry.message)}</p>
             </div>
-            <p class="text-sm text-slate-200 leading-relaxed">${escapeHtml(entry.message)}</p>
+            <div class="flex items-center gap-2 shrink-0 self-start sm:self-center">
+              <button onclick="enableEdit(${entry.id})"
+                class="bg-slate-800 hover:bg-slate-700 text-amber-400 font-mono-code text-xs px-3.5 py-2 rounded-lg border border-amber-500/30 transition">
+                ✏️ Bearbeiten
+              </button>
+              <button onclick="deleteEntry(${entry.id})"
+                class="bg-red-600/90 hover:bg-red-600 text-white font-mono-code text-xs px-3.5 py-2 rounded-lg transition">
+                🗑️ Löschen
+              </button>
+            </div>
           </div>
-          <button onclick="deleteEntry(${entry.id})"
-            class="shrink-0 bg-red-600/90 hover:bg-red-600 text-white font-mono-code text-xs px-4 py-2 rounded-lg transition self-start sm:self-center">
-            🗑️ Löschen
-          </button>
+
+          <!-- Verstecktes Bearbeitungsformular -->
+          <div id="edit-mode-${entry.id}" class="hidden space-y-3 pt-2 border-t border-slate-800">
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <div>
+                <label class="block text-xs font-mono-code text-slate-400 mb-1">Rufzeichen / Name</label>
+                <input type="text" id="edit-name-${entry.id}" value="${escapeHtml(entry.name)}"
+                  class="w-full bg-[#0b0d10] border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-[#d4af37]" />
+              </div>
+              <div>
+                <label class="block text-xs font-mono-code text-slate-400 mb-1">QTH / Locator</label>
+                <input type="text" id="edit-qth-${entry.id}" value="${escapeHtml(entry.qth || '')}"
+                  class="w-full bg-[#0b0d10] border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-[#d4af37]" />
+              </div>
+            </div>
+            <div>
+              <label class="block text-xs font-mono-code text-slate-400 mb-1">Nachricht</label>
+              <textarea id="edit-msg-${entry.id}" rows="3"
+                class="w-full bg-[#0b0d10] border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-[#d4af37]">${escapeHtml(entry.message)}</textarea>
+            </div>
+            <div class="flex items-center justify-end gap-2">
+              <button onclick="cancelEdit(${entry.id})"
+                class="bg-slate-800 hover:bg-slate-700 text-slate-300 font-mono-code text-xs px-3.5 py-2 rounded-lg transition">
+                Abbrechen
+              </button>
+              <button onclick="saveEdit(${entry.id})"
+                class="bg-emerald-600 hover:bg-emerald-500 text-white font-mono-code text-xs px-4 py-2 rounded-lg transition">
+                💾 Speichern
+              </button>
+            </div>
+          </div>
         `;
         adminContainer.appendChild(card);
       });
+    }
+
+    window.enableEdit = function(id) {
+      document.getElementById(`view-mode-${id}`).classList.add('hidden');
+      document.getElementById(`edit-mode-${id}`).classList.remove('hidden');
+    }
+
+    window.cancelEdit = function(id) {
+      document.getElementById(`edit-mode-${id}`).classList.add('hidden');
+      document.getElementById(`view-mode-${id}`).classList.remove('hidden');
+    }
+
+    window.saveEdit = async function(id) {
+      const newName = document.getElementById(`edit-name-${id}`).value.trim();
+      const newQth = document.getElementById(`edit-qth-${id}`).value.trim();
+      const newMsg = document.getElementById(`edit-msg-${id}`).value.trim();
+
+      if (!newName || !newMsg) {
+        alert('Name und Nachricht dürfen nicht leer sein!');
+        return;
+      }
+
+      const { error } = await supabase
+        .from('guestbook')
+        .update({ name: newName, qth: newQth, message: newMsg })
+        .eq('id', id);
+
+      if (error) {
+        alert('Fehler beim Aktualisieren: ' + error.message);
+      } else {
+        loadAdminEntries();
+      }
     }
 
     window.deleteEntry = async function(id) {
