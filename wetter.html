@@ -94,47 +94,32 @@
         Wetterstation <span class="font-mono-code accent-color">Mainburg</span>
       </h1>
       <p class="text-slate-300 text-sm sm:text-base max-w-xl mx-auto">
-        Direkter Zugriff auf die Live-Messwerte, Diagramme und historischen Daten deiner Wetterstation im Weather Underground Netzwerk.
+        Direkter Zugriff auf das Live-Dashboard deiner Wetterstation im Weather Underground Netzwerk.
       </p>
     </div>
 
-    <!-- Aktions-Karten (Groß & Sauber) -->
-    <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 font-mono-code">
-      
-      <!-- Live Dashboard -->
-      <a href="https://www.wunderground.com/dashboard/pws/IMAINB38" target="_blank" rel="noopener noreferrer" class="card-theme p-6 rounded-2xl border group hover:border-red-500 transition flex flex-col justify-between space-y-4">
-        <div class="flex items-center justify-between">
-          <div class="w-12 h-12 rounded-xl bg-black/50 border gold-border flex items-center justify-center text-amber-400 text-2xl group-hover:scale-110 transition">
-            <i class="fa-solid fa-cloud-sun"></i>
-          </div>
-          <i class="fa-solid fa-arrow-up-right-from-square text-slate-400 group-hover:text-red-500 transition"></i>
+    <!-- Aktions-Karte (Zentraler Button) -->
+    <div class="max-w-xl mx-auto font-mono-code">
+      <a href="https://www.wunderground.com/dashboard/pws/IMAINB38" target="_blank" rel="noopener noreferrer" class="card-theme p-8 rounded-2xl border group hover:border-red-500 transition flex flex-col items-center text-center space-y-4">
+        <div class="w-16 h-16 rounded-2xl bg-black/50 border gold-border flex items-center justify-center text-amber-400 text-3xl group-hover:scale-110 transition shadow-xl">
+          <i class="fa-solid fa-cloud-sun"></i>
         </div>
-        <div>
-          <strong class="text-white text-lg block group-hover:text-amber-400 transition">Live Dashboard</strong>
-          <span class="text-xs text-slate-400 block mt-1">Aktuelle Messwerte, Wind, Temperatur und Barometer im Detail.</span>
+        <div class="space-y-1">
+          <strong class="text-white text-xl block group-hover:text-amber-400 transition">Wetter-Dashboard öffnen</strong>
+          <span class="text-xs text-slate-400 block">Live-Werte, Wind, Temperatur und aktuelle Bedingungen auf Weather Underground</span>
         </div>
-      </a>
-
-      <!-- Diagramme & Verlauf -->
-      <a href="https://www.wunderground.com/dashboard/pws/IMAINB38/graph" target="_blank" rel="noopener noreferrer" class="card-theme p-6 rounded-2xl border group hover:border-red-500 transition flex flex-col justify-between space-y-4">
-        <div class="flex items-center justify-between">
-          <div class="w-12 h-12 rounded-xl bg-black/50 border gold-border flex items-center justify-center text-amber-400 text-2xl group-hover:scale-110 transition">
-            <i class="fa-solid fa-chart-line"></i>
-          </div>
-          <i class="fa-solid fa-arrow-up-right-from-square text-slate-400 group-hover:text-red-500 transition"></i>
-        </div>
-        <div>
-          <strong class="text-white text-lg block group-hover:text-amber-400 transition">Diagramme & Verlauf</strong>
-          <span class="text-xs text-slate-400 block mt-1">Grafische Auswertungen der letzten Tage, Wochen und Monate.</span>
+        <div class="pt-2">
+          <span class="accent-bg px-6 py-3 rounded-xl text-xs font-bold inline-flex items-center gap-2 border border-amber-400/50">
+            <span>Station IMAINB38 aufrufen</span> <i class="fa-solid fa-arrow-up-right-from-square"></i>
+          </span>
         </div>
       </a>
-
     </div>
 
     <!-- Banner / Hinweis -->
-    <div class="card-theme p-6 rounded-2xl border text-center space-y-3 font-mono-code text-xs text-slate-300">
-      <div class="text-amber-400 font-bold text-sm">Station IMAINB38 online</div>
-      <p>Die Station sendet automatisiert im 5-Minuten-Takt die Umweltdaten vom QTH Mainburg an das Netzwerk.</p>
+    <div class="card-theme p-6 rounded-2xl border text-center space-y-3 font-mono-code text-xs text-slate-300 max-w-xl mx-auto">
+      <div class="text-amber-400 font-bold text-sm">Station online</div>
+      <p>Deine Station sendet automatisiert im 5-Minuten-Takt die Umweltdaten vom QTH Mainburg.</p>
     </div>
 
   </main>
