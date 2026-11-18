@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="de" id="htmlRoot">
+<html lang="de">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>In Arbeit - DO4LC Stations-Log</title>
+  <title>DO4LC - Projekte & Eigenbau (QTH JN58)</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
@@ -26,81 +26,192 @@
       background: linear-gradient(145deg, #161a24, #0f121a); 
       border: 1px solid #d4af37;
       box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.7), 0 8px 10px -6px rgba(0, 0, 0, 0.5), inset 0 1px 1px rgba(212, 175, 55, 0.2);
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .card-theme:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 20px 30px -10px rgba(0, 0, 0, 0.8), 0 0 15px rgba(212, 175, 55, 0.3);
     }
     
     .gold-border { border-color: #d4af37 !important; }
     .accent-color { color: #ff3b30; }
-
+    
     .accent-bg { 
       background: linear-gradient(135deg, #ff4d4d, #cc1100); 
       color: #ffffff;
       box-shadow: 0 4px 15px rgba(255, 59, 48, 0.4), inset 0 1px 1px rgba(255, 255, 255, 0.3);
-      transition: all 0.2s ease;
     }
+
     .accent-bg:hover {
-      background: linear-gradient(135deg, #ff6666, #e61400);
-      transform: translateY(-1px);
+      box-shadow: 0 6px 20px rgba(255, 59, 48, 0.6), inset 0 1px 1px rgba(255, 255, 255, 0.4);
     }
   </style>
 </head>
-<body class="min-h-screen flex flex-col justify-between selection:bg-red-600 selection:text-white">
+<body class="min-h-screen flex flex-col bg-[#0b0c10] text-white selection:bg-red-600 selection:text-white">
 
   <!-- Header -->
   <header class="sticky top-0 z-50 card-theme border-b backdrop-blur-md bg-opacity-90 shadow-2xl">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="flex items-center justify-between h-16">
-        <div class="flex items-center gap-3">
-          <a href="index.html" class="h-10 px-3 rounded-lg card-theme border gold-border flex items-center justify-center shadow-lg bg-black/50 hover:border-red-500 transition">
+        <a href="index.html" class="flex items-center gap-3 group">
+          <div class="h-10 px-3 rounded-lg card-theme border gold-border flex items-center justify-center shadow-lg bg-black/50 group-hover:border-red-500 transition">
             <span class="font-mono-code font-bold text-xl tracking-wider accent-color">DO4LC</span>
-          </a>
+          </div>
           <div class="hidden sm:block">
             <span class="text-xs text-slate-400 font-mono-code block">Amateurfunk Station</span>
           </div>
-        </div>
+        </a>
 
+        <!-- Navigation -->
         <nav class="hidden md:flex gap-6 text-sm font-medium items-center">
-          <a href="index.html" class="hover:text-red-500 transition">Startseite</a>
+          <a href="index.html#about" class="hover:text-red-500 transition">Über mich</a>
+          <a href="index.html#path" class="hover:text-red-500 transition">Mein Weg</a>
+          <a href="projects.html" class="text-red-500 font-bold transition drop-shadow">Projekte</a>
+          <a href="index.html#equipment" class="hover:text-red-500 transition">Ausrüstung</a>
+          <a href="wetter.html" class="hover:text-red-500 transition">Wetter</a>
           <a href="links.html" class="hover:text-red-500 transition">Links</a>
           <a href="guestbook.html" class="hover:text-red-500 transition">Gästebuch</a>
+          <a href="index.html#contact" class="hover:text-red-500 transition">Kontakt</a>
         </nav>
+
+        <a href="index.html" class="md:hidden text-xs font-mono-code px-3 py-1.5 rounded card-theme border gold-border text-amber-400">
+          <i class="fa-solid fa-house mr-1"></i> Start
+        </a>
       </div>
     </div>
   </header>
 
   <!-- Main Content -->
-  <main class="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 py-16 space-y-8 flex-1 w-full flex flex-col items-center justify-center text-center">
-    
-    <div class="card-theme p-8 rounded-2xl border space-y-6 shadow-2xl w-full">
-      <div class="space-y-2">
-        <div class="inline-block px-3 py-1 rounded bg-amber-500/10 border border-amber-500/30 text-amber-400 font-mono-code text-xs mb-2">
-          <i class="fa-solid fa-triangle-exclamation mr-1"></i> Wartungsarbeiten / In Aufbau
+  <main class="max-w-6xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-10 flex-grow">
+
+    <!-- Titel & Intro -->
+    <div class="text-center space-y-3">
+      <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full card-theme border text-xs font-mono-code">
+        <span class="w-2 h-2 rounded-full bg-amber-400 animate-ping"></span>
+        <span>EIGENBAU, ANTENNEN & RASPBERRY PI • QTH <strong class="text-amber-400">JN58</strong></span>
+      </div>
+      <h1 class="text-3xl sm:text-5xl font-extrabold tracking-tight">
+        Shack <span class="font-mono-code accent-color">Projekte</span>
+      </h1>
+      <p class="text-slate-300 text-sm sm:text-base max-w-2xl mx-auto">
+        Selbstgebaute Hardware, Antennensysteme, Sensorik und Python-Steuerungen rund um meine Amateurfunkstation in Mainburg.
+      </p>
+    </div>
+
+    <!-- Projekt-Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+
+      <!-- 1. Projekt: 2x Flexa Monoband Yagi & Digitaler Kompass -->
+      <div class="card-theme p-6 sm:p-7 rounded-2xl border flex flex-col justify-between space-y-6">
+        <div class="space-y-4">
+          <div class="flex items-center justify-between">
+            <div class="w-12 h-12 rounded-xl bg-black/50 border gold-border flex items-center justify-center text-red-500 text-2xl">
+              <i class="fa-solid fa-compass"></i>
+            </div>
+            <span class="text-xs font-mono-code px-2.5 py-1 rounded bg-emerald-500/10 text-emerald-400 border border-emerald-500/30">AKTIV • 2m / 70cm</span>
+          </div>
+          <h2 class="text-xl font-bold font-mono-code text-white">
+            2x Flexa Monoband Yagi (2m & 70cm) & Digitaler Kompass
+          </h2>
+          <p class="text-sm text-slate-300 leading-relaxed">
+            Richtantennen-Anlage auf dem Hy-Gain AR-500X Rotor mit selbstgebauter elektronischer Azimut-Auslesung via GY-273 (HMC5883L) Magnetometer und Raspberry Pi Zero 2 W / 3B+.
+          </p>
         </div>
-        <h1 class="text-2xl sm:text-3xl font-extrabold font-mono-code">
-          Bereich <span class="accent-color">in Arbeit</span>
-        </h1>
-        <p class="text-sm text-slate-300 font-mono-code">
-          Dieser Teil der Station wird gerade aufgebaut oder optimiert. Bitte habe noch ein wenig Geduld!
-        </p>
+        <div class="flex flex-wrap gap-3 pt-2 font-mono-code text-xs">
+          <a href="yagi.html" class="accent-bg px-4 py-2.5 rounded-xl font-bold inline-flex items-center gap-2 transition">
+            <span>Projekt & Kompass öffnen</span>
+            <i class="fa-solid fa-arrow-right"></i>
+          </a>
+          <a href="kompass.html" class="card-theme border gold-border px-4 py-2.5 rounded-xl font-bold text-amber-400 hover:border-red-500 inline-flex items-center gap-2 transition">
+            <i class="fa-solid fa-code"></i>
+            <span>Python Code</span>
+          </a>
+        </div>
       </div>
 
-      <!-- Eingebundenes Bild -->
-      <div class="rounded-xl overflow-hidden border gold-border/40 shadow-lg bg-black/40 p-2">
-        <img src="https://i.ibb.co/QqXLsRc/undercon.jpg" alt="Under Construction" class="w-full h-auto rounded-lg object-cover">
+      <!-- 2. Projekt: 23 cm Band Transverter, Endstufe & Yagi -->
+      <div class="card-theme p-6 sm:p-7 rounded-2xl border flex flex-col justify-between space-y-6">
+        <div class="space-y-4">
+          <div class="flex items-center justify-between">
+            <div class="w-12 h-12 rounded-xl bg-black/50 border gold-border flex items-center justify-center text-sky-400 text-2xl">
+              <i class="fa-solid fa-tower-broadcast"></i>
+            </div>
+            <span class="text-xs font-mono-code px-2.5 py-1 rounded bg-amber-400/10 text-amber-400 border border-amber-400/30">MIKROWELLE • 1296 MHz</span>
+          </div>
+          <h2 class="text-xl font-bold font-mono-code text-white">
+            23 cm Band: Yagi, Transverter & PA
+          </h2>
+          <p class="text-sm text-slate-300 leading-relaxed">
+            Aufbau einer 23cm-Mikrowellenstation nach übernahme von <a href="https://fritschet.de/index_DG1TRF.html" target="_blank" rel="noopener noreferrer" class="text-amber-400 hover:underline font-semibold">DG1TRF</a>. Verwendet wird ein von DG1TRF modifiziertes DB6NT Modul mit integriertem Transverter, Leistungsverstärker (PA) und S/E-Relais. Der Aufbau inklusive Yagi erfolg im Frühjahr 2027
+          </p>
+          
+          <!-- Bild-Vorschauen -->
+          <div class="grid grid-cols-2 gap-3 pt-2">
+            <a href="https://ibb.co/GQjwjkbg" target="_blank" rel="noopener noreferrer" class="block border border-slate-800 rounded-lg overflow-hidden hover:border-amber-400 transition">
+              <img src="https://i.ibb.co/r2JPJM1n/Transverter-pa5.jpg" alt="Transverter-pa5" class="w-full h-24 object-cover">
+            </a>
+            <a href="https://ibb.co/fzpRBnN7" target="_blank" rel="noopener noreferrer" class="block border border-slate-800 rounded-lg overflow-hidden hover:border-amber-400 transition">
+              <img src="https://i.ibb.co/XrsBN35T/23cm-Transverter-MK1-blk-diagram-1-02.jpg" alt="Blockschaltbild" class="w-full h-24 object-cover">
+            </a>
+          </div>
+        </div>
+        <div class="pt-2 font-mono-code text-xs text-slate-400">
+          <span>Status: In Realisierung / Hardware-Integration</span>
+        </div>
       </div>
 
-      <div class="pt-2">
-        <a href="index.html" class="accent-bg px-6 py-3 rounded-lg font-mono-code font-bold text-sm inline-flex items-center gap-2">
-          <i class="fa-solid fa-arrow-left"></i> Zurück zur Startseite
-        </a>
+      <!-- 3. Projekt: Moxon Antenne (10m - 40m) -->
+      <div class="card-theme p-6 sm:p-7 rounded-2xl border flex flex-col justify-between space-y-6">
+        <div class="space-y-4">
+          <div class="flex items-center justify-between">
+            <div class="w-12 h-12 rounded-xl bg-black/50 border gold-border flex items-center justify-center text-amber-400 text-2xl">
+              <i class="fa-solid fa-satellite-dish"></i>
+            </div>
+            <span class="text-xs font-mono-code px-2.5 py-1 rounded bg-amber-400/10 text-amber-400 border border-amber-400/30">IN PLANUNG • HF KURZWELLE</span>
+          </div>
+          <h2 class="text-xl font-bold font-mono-code text-white">
+            Moxon Antenne (10m - 40m)
+          </h2>
+          <p class="text-sm text-slate-300 leading-relaxed">
+            Entwurf und Bau einer raumsparenden, direkt strahlenden Moxon-Antenne für den Kurzwellenbereich von 10m bis 40m. Optimiert für exaktes Vor-/Rück-Verhältnis und kompakte Abmessungen im Garten.
+          </p>
+        </div>
+        <div class="pt-2 font-mono-code text-xs text-slate-400">
+          <span>Status: Planung & Dimensionsberechnung</span>
+        </div>
       </div>
+
+      <!-- 4. Projekt: QO-100 Satelliten-Bodenstation (Ausblick) -->
+      <div class="card-theme p-6 sm:p-7 rounded-2xl border flex flex-col justify-between space-y-6">
+        <div class="space-y-4">
+          <div class="flex items-center justify-between">
+            <div class="w-12 h-12 rounded-xl bg-black/50 border gold-border flex items-center justify-center text-sky-400 text-2xl">
+              <i class="fa-solid fa-globe"></i>
+            </div>
+            <span class="text-xs font-mono-code px-2.5 py-1 rounded bg-amber-400/10 text-amber-400 border border-amber-400/30">IN PLANUNG • 2027</span>
+          </div>
+          <h2 class="text-xl font-bold font-mono-code text-white">
+            QO-100 Geostationäre Satelliten-Bodenstation
+          </h2>
+          <p class="text-sm text-slate-300 leading-relaxed">
+            Aufbau einer Empfangs- und Sendestation für den geostationären Amateurfunksatelliten Es'hail-2 / QO-100 mit 80cm Spiegel, Bullseye TCXO LNB, POTY Dual-Band-Feed und Up-Converter.
+          </p>
+        </div>
+        <div class="pt-2 font-mono-code text-xs text-slate-400">
+          <span>Status: Komponenten-Zusammenstellung & Vorbereitung</span>
+        </div>
+      </div>
+
     </div>
 
   </main>
 
   <!-- Footer -->
-  <footer class="card-theme border-t py-6 font-mono-code text-xs text-slate-400 text-center shadow-2xl">
-    <div class="max-w-7xl mx-auto px-4">
-      <span>YAESU STATION • © <span id="year"></span> DO4LC • Carsten • Vy 73 de DO4LC</span>
+  <footer class="card-theme border-t py-6 mt-12 font-mono-code text-xs text-slate-400 shadow-2xl">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-center">
+      <div><span class="accent-color font-bold">YAESU STATION</span> • © <span id="year"></span> DO4LC • Carsten</div>
+      <div>Vy 73 de DO4LC</div>
     </div>
   </footer>
 
