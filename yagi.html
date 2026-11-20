@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DO4LC - 2x Flexa Monoband Yagi (2m & 70cm) & Digitaler Kompass</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;700&family=Inter:wght@300;400;600;700&display=swap');
+    
+    body { 
+      font-family: 'Inter', sans-serif; 
+      background-color: #0b0c10; 
+      color: #ffffff;
+      background-image: linear-gradient(rgba(11, 12, 16, 0.92), rgba(11, 12, 16, 0.92)), url('https://i.ibb.co/fYZ4n53r/jaesu.jpg');
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      background-attachment: fixed;
+    }
+    
+    .font-mono-code { font-family: 'Fira Code', monospace; }
+    
+    .card-theme { 
+      background: linear-gradient(145deg, #161a24, #0f121a); 
+      border: 1px solid #d4af37;
+      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.7), 0 8px 10px -6px rgba(0, 0, 0, 0.5), inset 0 1px 1px rgba(212, 175, 55, 0.2);
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .card-theme:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 20px 30px -10px rgba(0, 0, 0, 0.8), 0 0 15px rgba(212, 175, 55, 0.3);
+    }
+    
+    .gold-border { border-color: #d4af37 !important; }
+    .accent-color { color: #ff3b30; }
+    
+    .accent-bg { 
+      background: linear-gradient(135deg, #ff4d4d, #cc1100); 
+      color: #ffffff;
+      box-shadow: 0 4px 15px rgba(255, 59, 48, 0.4), inset 0 1px 1px rgba(255, 255, 255, 0.3);
+    }
+
+    .accent-bg:hover {
+      box-shadow: 0 6px 20px rgba(255, 59, 48, 0.6), inset 0 1px 1px rgba(255, 255, 255, 0.4);
+    }
+
+    /* Kompass-Animation */
+    #compassNeedle {
+      transition: transform 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+      transform-origin: 50% 50%;
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col bg-[#0b0c10] text-white selection:bg-red-600 selection:text-white">
+
+  <!-- Header -->
+  <header class="sticky top-0 z-50 card-theme border-b backdrop-blur-md bg-opacity-90 shadow-2xl">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-16">
+        <a href="index.html" class="flex items-center gap-3 group">
+          <div class="h-10 px-3 rounded-lg card-theme border gold-border flex items-center justify-center shadow-lg bg-black/50 group-hover:border-red-500 transition">
+            <span class="font-mono-code font-bold text-xl tracking-wider accent-color">DO4LC</span>
+          </div>
+          <div class="hidden sm:block">
+            <span class="text-xs text-slate-400 font-mono-code block">Amateurfunk Station</span>
+          </div>
+        </a>
+
+        <!-- Navigation -->
+        <nav class="hidden md:flex gap-6 text-sm font-medium items-center">
+		<a href="index.html#about" class="hover:text-red-500 transition">Über mich</a>
+		<a href="index.html#path" class="hover:text-red-500 transition">Mein Weg</a>
+		<a href="projects.html" class="hover:text-red-500 transition">Projekte</a>
+		<a href="index.html#equipment" class="hover:text-red-500 transition">Ausrüstung</a>
+		<a href="wetter.html" class="hover:text-red-500 transition">Wetter</a>
+		<a href="links.html" class="hover:text-red-500 transition">Links</a>
+		<a href="guestbook.html" class="hover:text-red-500 transition">Gästebuch</a>
+		<a href="index.html#contact" class="hover:text-red-500 transition">Kontakt</a>
+		</nav>
+
+        <a href="projects.html" class="md:hidden text-xs font-mono-code px-3 py-1.5 rounded card-theme border gold-border text-amber-400">
+          <i class="fa-solid fa-arrow-left mr-1"></i> Zurück
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="max-w-6xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-10 flex-grow">
+
+    <!-- Titel & Status -->
+    <div class="text-center space-y-3">
+      <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full card-theme border text-xs font-mono-code">
+        <span class="w-2 h-2 rounded-full bg-amber-400 animate-ping"></span>
+        <span>ANTENNENSYSTEM & TELEMETRIE • QTH <strong class="text-amber-400">JN58</strong></span>
+      </div>
+      <h1 class="text-3xl sm:text-5xl font-extrabold tracking-tight">
+        2x Flexa Monoband Yagi (2m & 70cm) & <span class="font-mono-code accent-color">Digitaler Kompass</span>
+      </h1>
+      <p class="text-slate-300 text-sm sm:text-base max-w-2xl mx-auto">
+        Richtantennen-Setup auf dem Hy-Gain AR-500X Rotor mit selbstgebauter elektronischer Azimut-Auslesung via Magnetometer und Raspberry Pi Zero 2 W.
+      </p>
+    </div>
+
+    <!-- Hauptbereich: Kompassrose links, Technik-Details rechts -->
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+      
+      <!-- Linke Spalte: Interaktive Kompassrose -->
+      <div class="lg:col-span-6 card-theme p-6 sm:p-8 rounded-2xl border flex flex-col items-center space-y-6">
+        <div class="flex items-center justify-between w-full font-mono-code text-xs text-slate-400">
+          <span>AZIMUT-ANZEIGE</span>
+          <span class="text-amber-400 font-bold" id="directionLabel">NORD (0°)</span>
+        </div>
+
+        <!-- SVG Kompassrose -->
+        <div class="relative w-64 h-64 sm:w-72 sm:h-72 flex items-center justify-center">
+          <svg viewBox="0 0 200 200" class="w-full h-full drop-shadow-2xl">
+            <!-- Äußerer Goldring -->
+            <circle cx="100" cy="100" r="94" fill="#0b0c10" stroke="#d4af37" stroke-width="2" />
+            <circle cx="100" cy="100" r="82" fill="none" stroke="#1e293b" stroke-width="1" stroke-dasharray="4 4" />
+            
+            <!-- Grad-Markierungen -->
+            <g stroke="#64748b" stroke-width="1">
+              <line x1="100" y1="8" x2="100" y2="16" />
+              <line x1="146" y1="20" x2="142" y2="27" />
+              <line x1="180" y1="54" x2="173" y2="58" />
+              <line x1="192" y1="100" x2="184" y2="100" />
+              <line x1="180" y1="146" x2="173" y2="142" />
+              <line x1="146" y1="180" x2="142" y2="173" />
+              <line x1="100" y1="192" x2="100" y2="184" />
+              <line x1="54" y1="180" x2="58" y2="173" />
+              <line x1="20" y1="146" x2="27" y2="142" />
+              <line x1="8" y1="100" x2="16" y2="100" />
+              <line x1="20" y1="54" x2="27" y2="58" />
+              <line x1="54" y1="20" x2="58" y2="27" />
+            </g>
+
+            <!-- Himmelsrichtungen -->
+            <text x="100" y="29" text-anchor="middle" fill="#ff3b30" font-family="Fira Code, monospace" font-weight="bold" font-size="14">N</text>
+            <text x="173" y="105" text-anchor="middle" fill="#d4af37" font-family="Fira Code, monospace" font-weight="bold" font-size="14">O</text>
+            <text x="100" y="180" text-anchor="middle" fill="#d4af37" font-family="Fira Code, monospace" font-weight="bold" font-size="14">S</text>
+            <text x="27" y="105" text-anchor="middle" fill="#d4af37" font-family="Fira Code, monospace" font-weight="bold" font-size="14">W</text>
+
+            <!-- Drehbare Yagi-Nadel -->
+            <g id="compassNeedle">
+              <!-- Beam-Kegel -->
+              <polygon points="100,22 82,95 118,95" fill="rgba(255, 59, 48, 0.15)" />
+              <!-- Hauptmast / Boom -->
+              <line x1="100" y1="24" x2="100" y2="172" stroke="#ffffff" stroke-width="2.5" stroke-linecap="round" />
+              <!-- Yagi-Elemente (stilisiert) -->
+              <line x1="84" y1="36" x2="116" y2="36" stroke="#ff3b30" stroke-width="2.5" stroke-linecap="round" />
+              <line x1="80" y1="52" x2="120" y2="52" stroke="#ff3b30" stroke-width="2.5" stroke-linecap="round" />
+              <line x1="76" y1="70" x2="124" y2="70" stroke="#d4af37" stroke-width="3" stroke-linecap="round" />
+              <line x1="72" y1="158" x2="128" y2="158" stroke="#94a3b8" stroke-width="2.5" stroke-linecap="round" />
+              <!-- Pfeilspitze -->
+              <polygon points="100,16 94,28 106,28" fill="#ff3b30" />
+            </g>
+
+            <!-- Mittelpunkt -->
+            <circle cx="100" cy="100" r="7" fill="#161a24" stroke="#d4af37" stroke-width="2" />
+            <circle cx="100" cy="100" r="2.5" fill="#ff3b30" />
+          </svg>
+        </div>
+
+        <!-- Digitalanzeige & Schnell-Test-Buttons -->
+        <div class="w-full text-center space-y-3 font-mono-code">
+          <div class="bg-black/60 border border-slate-800 rounded-xl py-2 px-4 inline-block">
+            <span class="text-xs text-slate-400 block">AUSRICHTUNG</span>
+            <strong id="azimuthValue" class="text-2xl sm:text-3xl text-white">000°</strong>
+          </div>
+
+          <!-- Demo-Steuerung für Besucher zum Ausprobieren -->
+          <div class="pt-2">
+            <span class="text-[11px] text-slate-400 block mb-2">Vorschau-Simulation testen:</span>
+            <div class="flex flex-wrap justify-center gap-2 text-xs">
+              <button onclick="setAzimuth(0)" class="px-2.5 py-1 rounded bg-slate-800 hover:bg-red-600/80 border border-slate-700 transition">N (0°)</button>
+              <button onclick="setAzimuth(90)" class="px-2.5 py-1 rounded bg-slate-800 hover:bg-red-600/80 border border-slate-700 transition">O (90°)</button>
+              <button onclick="setAzimuth(180)" class="px-2.5 py-1 rounded bg-slate-800 hover:bg-red-600/80 border border-slate-700 transition">S (180°)</button>
+              <button onclick="setAzimuth(270)" class="px-2.5 py-1 rounded bg-slate-800 hover:bg-red-600/80 border border-slate-700 transition">W (270°)</button>
+              <button onclick="setAzimuth(315)" class="px-2.5 py-1 rounded bg-slate-800 hover:bg-red-600/80 border border-slate-700 transition">NW (315°)</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Quellcode-Button für das Pi-Skript / Repository -->
+        <div class="w-full pt-3 border-t border-slate-800">
+          <a href="https://github.com/" target="_blank" rel="noopener noreferrer" class="card-theme border gold-border w-full py-2.5 px-4 rounded-xl text-xs font-mono-code font-bold hover:border-red-500 transition flex items-center justify-center gap-2 text-amber-400">
+            <i class="fa-solid fa-code text-sm"></i>
+            <span>Quellcode (GitHub Repository)</span>
+            <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
+          </a>
+        </div>
+      </div>
+
+      <!-- Rechte Spalte: Hardware & Projektbeschreibung -->
+      <div class="lg:col-span-6 space-y-5">
+        
+        <!-- Karte 1: Antennen & Rotator -->
+        <div class="card-theme p-6 rounded-2xl border space-y-3">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-lg bg-black/50 border gold-border flex items-center justify-center text-red-500 text-lg">
+              <i class="fa-solid fa-tower-broadcast"></i>
+            </div>
+            <h2 class="text-lg font-bold font-mono-code text-amber-400">Richtantennen-Setup</h2>
+          </div>
+          <p class="text-sm text-slate-300 leading-relaxed">
+            Auf dem Mast arbeiten <strong>2x Flexa Monoband Yagi (2m und 70cm)</strong>, gedreht über einen <a href="https://www.wimo.com/de/ar-500x" target="_blank" rel="noopener noreferrer" class="text-amber-400 hover:underline font-semibold">Hy-Gain AR-500X Rotor</a>. Ideal für gezielte DX-Verbindungen, Relais-Betrieb und Satelliten-Tracking über weite Entfernungen.
+          </p>
+        </div>
+
+        <!-- Karte 2: Sensorik & Raspberry Pi -->
+        <div class="card-theme p-6 rounded-2xl border space-y-3">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-lg bg-black/50 border gold-border flex items-center justify-center text-sky-400 text-lg">
+              <i class="fa-solid fa-compass"></i>
+            </div>
+            <h2 class="text-lg font-bold font-mono-code text-amber-400">Elektronischer Kompass (DIY)</h2>
+          </div>
+          <p class="text-sm text-slate-300 leading-relaxed">
+            Da herkömmliche Rotor-Steuergeräte oft ungenau sind, erfasst ein direkt am Mast montiertes <a href="https://amzn.eu/d/02alwHzF" target="_blank" rel="noopener noreferrer" class="text-amber-400 hover:underline font-semibold">GY-273 / HMC5883L Magnetometer-Modul</a> das Erdmagnetfeld. Ein <a href="https://www.raspberrypi.com/products/raspberry-pi-zero-2-w/" target="_blank" rel="noopener noreferrer" class="text-amber-400 hover:underline font-semibold">Raspberry Pi Zero 2 W</a> liest die I²C-Sensordaten in Echtzeit aus, kalibriert die Abweichung und stellt die exakte Gradzahl über ein eigenes Web-Interface im Shack bereit.
+          </p>
+        </div>
+
+        <!-- Karte 3: Verlinkte Hardware-Komponenten -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 font-mono-code text-xs">
+          
+          <a href="https://amzn.eu/d/02alwHzF" target="_blank" rel="noopener noreferrer" class="card-theme p-4 rounded-xl border group hover:border-red-500 transition flex items-center justify-between">
+            <div>
+              <span class="text-slate-400 block">SENSORIK</span>
+              <strong class="text-white text-sm block mt-1 group-hover:text-amber-400 transition">GY-273 Modul</strong>
+            </div>
+            <i class="fa-solid fa-arrow-up-right-from-square text-slate-400 group-hover:text-red-500 transition"></i>
+          </a>
+
+          <a href="https://www.raspberrypi.com/products/raspberry-pi-zero-2-w/" target="_blank" rel="noopener noreferrer" class="card-theme p-4 rounded-xl border group hover:border-red-500 transition flex items-center justify-between">
+            <div>
+              <span class="text-slate-400 block">CONTROLLER</span>
+              <strong class="text-white text-sm block mt-1 group-hover:text-amber-400 transition">Pi Zero 2 W</strong>
+            </div>
+            <i class="fa-solid fa-arrow-up-right-from-square text-slate-400 group-hover:text-red-500 transition"></i>
+          </a>
+
+          <div class="card-theme p-4 rounded-xl border">
+            <span class="text-slate-400 block">ANTENNEN</span>
+            <strong class="text-white text-sm block mt-1">2x Flexa Monoband</strong>
+          </div>
+
+          <a href="https://www.wimo.com/de/ar-500x" target="_blank" rel="noopener noreferrer" class="card-theme p-4 rounded-xl border group hover:border-red-500 transition flex items-center justify-between">
+            <div>
+              <span class="text-slate-400 block">ROTOR</span>
+              <strong class="text-white text-sm block mt-1 group-hover:text-amber-400 transition">Hy-Gain AR-500X</strong>
+            </div>
+            <i class="fa-solid fa-arrow-up-right-from-square text-slate-400 group-hover:text-red-500 transition"></i>
+          </a>
+
+        </div>
+
+      </div>
+    </div>
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="card-theme border-t py-6 mt-12 font-mono-code text-xs text-slate-400 shadow-2xl">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-center">
+      <div><span class="accent-color font-bold">YAESU STATION</span> • © <span id="year"></span> DO4LC • Carsten</div>
+      <div>Vy 73 de DO4LC</div>
+    </div>
+  </footer>
+
+  <script>
+    document.getElementById('year').innerText = new Date().getFullYear();
+
+    function getDirectionName(deg) {
+      const dirs = ["NORD", "NNO", "NO", "ONO", "OST", "OSO", "SO", "SSO", "SÜD", "SSW", "SW", "WSW", "WEST", "WNW", "NW", "NNW"];
+      const idx = Math.round(deg / 22.5) % 16;
+      return dirs[idx];
+    }
+
+    function setAzimuth(deg) {
+      const needle = document.getElementById('compassNeedle');
+      const valText = document.getElementById('azimuthValue');
+      const dirLabel = document.getElementById('directionLabel');
+
+      needle.style.transform = `rotate(${deg}deg)`;
+      valText.innerText = `${String(deg).padStart(3, '0')}°`;
+      dirLabel.innerText = `${getDirectionName(deg)} (${deg}°)`;
+    }
+  </script>
+</body>
+</html>
