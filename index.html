@@ -68,6 +68,36 @@
         display: block;
       }
     }
+
+    /* News-Ticker Zeilenwechsel (von unten nach oben, zentriert & dick) */
+    .ticker-box {
+      position: relative;
+      overflow: hidden;
+      height: 100%;
+      width: 100%;
+      padding-left: 1rem;
+      padding-right: 1rem;
+    }
+    .ticker-line {
+      position: absolute;
+      left: 1rem;
+      right: 1rem;
+      top: 50%;
+      transform: translateY(150%);
+      opacity: 0;
+      transition: transform 0.55s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.45s ease;
+      text-align: center;
+      font-weight: 700;
+      line-height: 1.25;
+    }
+    .ticker-line.active {
+      transform: translateY(-50%);
+      opacity: 1;
+    }
+    .ticker-line.exit {
+      transform: translateY(-220%);
+      opacity: 0;
+    }
   </style>
 </head>
 <body class="min-h-screen flex flex-col justify-between selection:bg-red-600 selection:text-white">
@@ -94,25 +124,47 @@
         </div>
 
         <!-- Navigation -->
-			<nav class="hidden md:flex gap-6 text-sm font-medium items-center">
-			<a href="index.html#about" class="hover:text-red-500 transition">Über mich</a>
-			<a href="index.html#path" class="hover:text-red-500 transition">Mein Weg</a>
-			<a href="projects.html" class="hover:text-red-500 transition">Projekte</a>
-			<a href="index.html#equipment" class="hover:text-red-500 transition">Ausrüstung</a>
-			<a href="wetter.html" class="hover:text-red-500 transition">Wetter</a>
-			<a href="links.html" class="hover:text-red-500 transition">Links</a>
-			<a href="guestbook.html" class="hover:text-red-500 transition">Gästebuch</a>
-			<a href="index.html#contact" class="hover:text-red-500 transition">Kontakt</a>
-			</nav>
-          
+        <div class="flex items-center">
+          <nav class="hidden md:flex gap-6 text-sm font-medium items-center">
+            <a href="index.html#about" class="hover:text-red-500 transition">Über mich</a>
+            <a href="index.html#path" class="hover:text-red-500 transition">Mein Weg</a>
+            <a href="projects.html" class="hover:text-red-500 transition">Projekte</a>
+            <a href="index.html#equipment" class="hover:text-red-500 transition">Ausrüstung</a>
+            <a href="wetter.html" class="hover:text-red-500 transition">Wetter</a>
+            <a href="links.html" class="hover:text-red-500 transition">Links</a>
+            <a href="guestbook.html" class="hover:text-red-500 transition">Gästebuch</a>
+            <a href="index.html#contact" class="hover:text-red-500 transition">Kontakt</a>
+          </nav>
+
           <select id="langSelect" onchange="changeLanguage(this.value)" class="card-theme border gold-border text-xs font-mono-code rounded px-2 py-1 text-red-500 focus:outline-none cursor-pointer ml-4 shadow-inner">
             <option value="de">🇩🇪 DE</option>
             <option value="en">🇬🇧 EN</option>
           </select>
-        </nav>
+        </div>
       </div>
     </div>
   </header>
+
+  <!-- News-Ticker (Zeilenweise pro News von unten nach oben, zentriert & dick) -->
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-4 w-full">
+    <div id="newsTicker" class="card-theme border gold-border rounded-lg h-12 flex items-center overflow-hidden shadow-lg bg-black/60">
+      
+      <!-- Festes Label links -->
+      <div class="bg-red-600 text-white text-xs font-bold px-3 h-full flex items-center gap-2 shrink-0 tracking-wider uppercase font-mono-code">
+        <i class="fa-solid fa-tower-broadcast animate-pulse"></i>
+        <span>NEWS</span>
+      </div>
+
+      <!-- Zeilenabschnitte (je News ein eigener Eintrag) -->
+      <div class="ticker-box text-xs sm:text-sm font-bold text-center text-amber-400 font-mono-code">
+        <div class="ticker-line active">Neu CAT Softwar für Yaesu FD-DX-10 u.v.m. YAESU Geräte mehr Infos unter Links</div>
+        <div class="ticker-line">23cm Hardware wartet auf den Aufbau ( Frühr 2027 )</div>
+        <div class="ticker-line">Stationspage DO4LC wächst stätig</div>
+        <div class="ticker-line">C22 mit neuem Inernetauftritt unter www.C22.de</div>
+      </div>
+
+    </div>
+  </div>
 
   <!-- Hero Section -->
   <section class="relative py-16 overflow-hidden border-b gold-border">
@@ -310,7 +362,7 @@
             <li>
               <a href="ft2980.html" class="p-3 card-theme rounded-lg border flex justify-between items-center block hover:border-red-500 transition group">
                 <div class="flex items-center gap-3">
-                  <span onclick="event.preventDefault(); window.open('https://i.ibb.co/hx5wWDhS/Funkle-Radiowerkstatt-mit-Yaesu-Funkger-t.png', '_blank');" title="Großansicht öffnen">
+                  <span onclick="event.preventDefault(); window.open('https://ibb.co/hx5wWDhS/Funkle-Radiowerkstatt-mit-Yaesu-Funkger-t.png', '_blank');" title="Großansicht öffnen">
                     <img src="https://i.ibb.co/hx5wWDhS/Funkle-Radiowerkstatt-mit-Yaesu-Funkger-t.png" alt="Yaesu FT-2980E" class="h-12 w-16 object-cover rounded border gold-border hover:scale-105 transition shadow-md">
                   </span>
                   <div>
@@ -328,7 +380,7 @@
             <li>
               <a href="db25.html" class="p-3 card-theme rounded-lg border flex justify-between items-center block hover:border-red-500 transition group">
                 <div class="flex items-center gap-3">
-                  <span onclick="event.preventDefault(); window.open('https://i.ibb.co/cKN6x1mC/Radioddity-Funkger-t-im-Radiowerkstatt-Look-1.png', '_blank');" title="Großansicht öffnen">
+                  <span onclick="event.preventDefault(); window.open('https://ibb.co/cKN6x1mC/Radioddity-Funkger-t-im-Radiowerkstatt-Look-1.png', '_blank');" title="Großansicht öffnen">
                     <img src="https://i.ibb.co/cKN6x1mC/Radioddity-Funkger-t-im-Radiowerkstatt-Look-1.png" alt="Radioddity DB-25D" class="h-12 w-16 object-cover rounded border gold-border hover:scale-105 transition shadow-md">
                   </span>
                   <div>
@@ -346,7 +398,7 @@
             <li>
               <a href="ft5d.html" class="p-3 card-theme rounded-lg border flex justify-between items-center block hover:border-red-500 transition group">
                 <div class="flex items-center gap-3">
-                  <span onclick="event.preventDefault(); window.open('https://i.ibb.co/358CRwh1/Yaesu-FT5-D-im-Funkger-te-Studio-1.png', '_blank');" title="Großansicht öffnen">
+                  <span onclick="event.preventDefault(); window.open('https://ibb.co/358CRwh1/Yaesu-FT5-D-im-Funkger-te-Studio-1.png', '_blank');" title="Großansicht öffnen">
                     <img src="https://i.ibb.co/358CRwh1/Yaesu-FT5-D-im-Funkger-te-Studio-1.png" alt="Yaesu FT-5D" class="h-12 w-16 object-cover rounded border gold-border hover:scale-105 transition shadow-md">
                   </span>
                   <div>
@@ -410,7 +462,7 @@
 
   </main>
 
- <!-- Footer -->
+  <!-- Footer -->
   <footer class="card-theme border-t py-8 mt-12 font-mono-code text-xs text-slate-400 shadow-2xl">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col items-center justify-center gap-6 text-center">
       
@@ -452,6 +504,43 @@
 
   <script>
     document.getElementById('year').innerText = new Date().getFullYear();
+
+    /* News-Ticker Zeilenwechsel (von unten nach oben, Pause bei Hover) */
+    (function initTicker() {
+      const tickerContainer = document.getElementById('newsTicker');
+      const lines = tickerContainer ? Array.from(tickerContainer.querySelectorAll('.ticker-line')) : [];
+      if (lines.length <= 1) return;
+
+      let currentIndex = 0;
+      let isPaused = false;
+      const intervalMs = 5000;
+
+      tickerContainer.addEventListener('mouseenter', () => { isPaused = true; });
+      tickerContainer.addEventListener('mouseleave', () => { isPaused = false; });
+
+      setInterval(() => {
+        if (isPaused) return;
+
+        const currentLine = lines[currentIndex];
+        const nextIndex = (currentIndex + 1) % lines.length;
+        const nextLine = lines[nextIndex];
+
+        lines.forEach((line, idx) => {
+          if (idx !== currentIndex && idx !== nextIndex) {
+            line.classList.remove('active', 'exit');
+          }
+        });
+
+        currentLine.classList.remove('active');
+        currentLine.classList.add('exit');
+
+        nextLine.classList.remove('exit');
+        void nextLine.offsetWidth;
+        nextLine.classList.add('active');
+
+        currentIndex = nextIndex;
+      }, intervalMs);
+    })();
 
     let visits = localStorage.getItem('do4lc_visitor_count');
     if (!visits) { visits = 482; } else { visits = parseInt(visits) + 1; }
