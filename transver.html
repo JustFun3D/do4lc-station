@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="de" id="htmlRoot">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DO4LC - 23cm Transverter with PA (DG1TRF)</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;700&family=Inter:wght@300;400;600;700&display=swap');
+    
+    body { 
+      font-family: 'Inter', sans-serif; 
+      background-color: #0b0c10; 
+      color: #ffffff;
+      background-image: linear-gradient(rgba(11, 12, 16, 0.92), rgba(11, 12, 16, 0.92)), url('https://i.ibb.co/fYZ4n53r/jaesu.jpg');
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      background-attachment: fixed;
+    }
+    
+    .font-mono-code { font-family: 'Fira Code', monospace; }
+    
+    .card-theme { 
+      background: linear-gradient(145deg, #161a24, #0f121a); 
+      border: 1px solid #d4af37;
+      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.7), 0 8px 10px -6px rgba(0, 0, 0, 0.5), inset 0 1px 1px rgba(212, 175, 55, 0.2);
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .card-theme:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 15px 25px -5px rgba(0, 0, 0, 0.8), 0 0 15px rgba(212, 175, 55, 0.3);
+    }
+    
+    .gold-border { border-color: #d4af37 !important; }
+    .accent-color { color: #ff3b30; }
+    
+    .accent-bg { 
+      background: linear-gradient(135deg, #ff4d4d, #cc1100); 
+      color: #ffffff;
+      box-shadow: 0 4px 15px rgba(255, 59, 48, 0.4), inset 0 1px 1px rgba(255, 255, 255, 0.3);
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between selection:bg-red-600 selection:text-white">
+
+  <!-- Header -->
+  <header class="sticky top-0 z-50 card-theme border-b backdrop-blur-md bg-opacity-90 shadow-2xl">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-16">
+        <div class="flex items-center gap-3">
+          <a href="projects.html" class="h-10 px-3 rounded-lg card-theme border gold-border flex items-center justify-center shadow-lg bg-black/50 hover:border-red-500 transition">
+            <i class="fa-solid fa-arrow-left text-amber-400 mr-2"></i> <span class="font-mono-code text-xs text-white">Zurück zu Projekte</span>
+          </a>
+        </div>
+
+        <nav class="flex items-center gap-4">
+          <span class="font-mono-code accent-color font-bold text-lg">DO4LC • 23cm</span>
+        </nav>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-12">
+    
+    <!-- Title Section -->
+    <div class="text-center space-y-3">
+      <div class="inline-block px-3 py-1 rounded accent-bg font-bold font-mono-code text-xs border border-amber-400/50">
+        DG1TRF-10411 PROJECT DOCUMENTATION
+      </div>
+      <h1 class="text-3xl sm:text-5xl font-extrabold tracking-tight font-mono-code text-white">
+        23cm Transverter <span class="accent-color">with PA</span>
+      </h1>
+      <p class="font-mono-code text-xs sm:text-sm text-amber-400">
+        Revision information Ver 1.00 - Created by Thomas DG1TRF@darc.de
+      </p>
+    </div>
+
+    <!-- BACKGROUND -->
+    <section class="card-theme p-6 sm:p-8 rounded-2xl border space-y-6">
+      <h2 class="text-xl sm:text-2xl font-bold font-mono-code text-amber-400 border-b gold-border pb-3 flex items-center gap-2">
+        <i class="fa-solid fa-file-lines accent-color"></i> BACKGROUND
+      </h2>
+
+      <div class="space-y-4 text-sm sm:text-base text-slate-300 leading-relaxed">
+        <p>
+          Going On Air on 23cm band was on my schedule for some time but since my shack has some distance from the antenna with about 33m of cable there would be much power left to be transmitted from the antenna at the desired frequencies. The solution to this problem was locating the transmitter and receiver close to antenna using a linear Transverter by DB6NT. The module is also available as a kit which is convinient for a small HAM budget. A special challenge was to modify the circuit for repeater use with -28MHz offset. And I also added a linear PA with some 15W to be able to reach my favorite repeater on the Zugspitze DBØZU. The unit is powered from a battery which is charged by solar cells not far away from the Transverter. Current consumption in transmit mode can be up to 7 Amps. Antenna is a 14 element Yagi. A 2m all mode transceiver is used to operate the remote unit from the shack. Good luck with building the project. 73 de Thomas DG1TRF
+        </p>
+
+        <p>
+          Auf 23cm QRV zu werden war schon seit einiger Zeit auf meinem Plan. Aber da meine Gerätschaft im Keller einigermassen weit entfernt ist, bleibt nach 33m Kabel nicht mehr viel Sendeenergie. Die Lösung für diese Problem war also den Sender und Empfänger direkt an der Antenne zu plazieren. Da bot sich ein Transverter mit linearer Betriebsart an, der auch als Bausatz erhältlich ist was auch dem schmalen Amateurfunk-Budget sehr entgegenkommt.. Eine besondere Herausforderung war die Schaltung für Relaisbetrieb anzupassen zumal die Ablage von 28MHz recht gross ist. Ausserdem musste eine 15W Endstufe nachgeschaltet werden, um meinen Lieblingsumsetzer auf der Zugspitze zu erreichen. Das Gerät wird versorgt über solar gespeiste Batterien, welche sich in der Nähe des Transverters befinden. Das ist bei maximalen Betriebsströmen von 7A recht praktisch. Als Antenne kommt eine 14 Element Yagi zum Einsatz. Ein 2m All-Mode Transceiver dient als Nachsetzer für den ferngesteuerten Transverter. Viel Spass beim nachbauen 73 de Thomas DG1TRF
+        </p>
+      </div>
+    </section>
+
+    <!-- Bilder & Abbildungen -->
+    <section class="space-y-8">
+
+      <!-- 1. Complete Assembly with PA -->
+      <div class="card-theme p-6 sm:p-8 rounded-2xl border space-y-4">
+        <h2 class="text-lg sm:text-xl font-bold font-mono-code text-amber-400 border-b gold-border pb-2">
+          1. Complete Assembly with PA / Fertiges Modul mit Transverter, Endstufe und S/E Relais
+        </h2>
+        <div class="flex justify-center">
+          <a href="https://i.ibb.co/0y3N3ZdP/Transverter-pa5.jpg" target="_blank" rel="noopener noreferrer" class="block w-full">
+            <img src="https://i.ibb.co/0y3N3ZdP/Transverter-pa5.jpg" alt="1. Complete Assembly with PA / Fertiges Modul mit Transverter, Endstufe und S/E Relais" class="rounded-xl w-full max-h-[540px] object-contain border gold-border shadow-2xl bg-black/50 mx-auto">
+          </a>
+        </div>
+      </div>
+
+      <!-- 2. Transverter board top view -->
+      <div class="card-theme p-6 sm:p-8 rounded-2xl border space-y-4">
+        <h2 class="text-lg sm:text-xl font-bold font-mono-code text-amber-400 border-b gold-border pb-2">
+          2. Transverter board top view
+        </h2>
+        <div class="flex justify-center">
+          <a href="https://i.ibb.co/NR24XrD/Top-upright.jpg" target="_blank" rel="noopener noreferrer" class="block w-full">
+            <img src="https://i.ibb.co/NR24XrD/Top-upright.jpg" alt="2. Transverter board top view" class="rounded-xl w-full max-h-[540px] object-contain border gold-border shadow-2xl bg-black/50 mx-auto">
+          </a>
+        </div>
+      </div>
+
+      <!-- Transverter overall block diagram -->
+      <div class="card-theme p-6 sm:p-8 rounded-2xl border space-y-4">
+        <h2 class="text-lg sm:text-xl font-bold font-mono-code text-amber-400 border-b gold-border pb-2">
+          Transverter overall block diagram
+        </h2>
+        <div class="flex justify-center">
+          <a href="https://i.ibb.co/LXtwbJgf/23cm-Transverter-MK1-blk-diagram-1-02.jpg" target="_blank" rel="noopener noreferrer" class="block w-full">
+            <img src="https://i.ibb.co/LXtwbJgf/23cm-Transverter-MK1-blk-diagram-1-02.jpg" alt="Transverter overall block diagram" class="rounded-xl w-full max-h-[540px] object-contain border gold-border shadow-2xl bg-black/50 mx-auto">
+          </a>
+        </div>
+      </div>
+
+      <!-- Transverter RX/TX gain sweep -->
+      <div class="card-theme p-6 sm:p-8 rounded-2xl border space-y-4">
+        <h2 class="text-lg sm:text-xl font-bold font-mono-code text-amber-400 border-b gold-border pb-2">
+          Transverter RX (RF@-100dBm) and TX (IF@0dBm) gain sweep
+        </h2>
+        <div class="flex justify-center">
+          <a href="https://i.ibb.co/TMPkJJDr/Transverter-RX-TX-15d-Bm-sweep-gain.gif" target="_blank" rel="noopener noreferrer" class="block w-full">
+            <img src="https://i.ibb.co/TMPkJJDr/Transverter-RX-TX-15d-Bm-sweep-gain.gif" alt="Transverter RX (RF@-100dBm) and TX (IF@0dBm) gain sweep" class="rounded-xl w-full max-h-[540px] object-contain border gold-border shadow-2xl bg-black/50 mx-auto">
+          </a>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- Navigation Buttons -->
+    <div class="flex flex-wrap justify-center gap-4 pt-4">
+      <a href="projects.html" class="inline-flex items-center gap-2 card-theme border gold-border hover:border-red-500 px-5 py-3 rounded-lg font-mono-code font-bold text-xs sm:text-sm text-amber-400 transition">
+        <i class="fa-solid fa-folder-open"></i> <span>Alle Projekte</span>
+      </a>
+      <a href="index.html" class="inline-flex items-center gap-2 accent-bg px-6 py-3 rounded-lg font-mono-code font-bold text-xs sm:text-sm transition border border-amber-400/50 shadow-lg">
+        <i class="fa-solid fa-house"></i> <span>Zur Stationsübersicht</span>
+      </a>
+    </div>
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="card-theme border-t py-8 mt-12 font-mono-code text-xs text-slate-400 shadow-2xl space-y-2">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      <span class="accent-color font-bold">DO4LC STATION</span> • 23cm Transverter • Vy 73!
+    </div>
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-amber-400 font-bold">
+      Projekt Datum 04/2011 by DG1TRF
+    </div>
+  </footer>
+
+</body>
+</html>
